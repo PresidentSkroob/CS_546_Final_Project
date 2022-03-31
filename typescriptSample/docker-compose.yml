@@ -1,0 +1,23 @@
+services:
+  trcvr:
+    build: .
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=development
+    user: 'node'
+    links:
+      - 'mongo:db'
+  mongo:
+    image: mongo
+    container_name: mongo
+    environment:
+      - PUID=1000
+      - PGID=1000
+    volumes:
+      - mongo_data_container:/data/db
+    ports:
+      - 27017:27017
+    restart: unless-stopped
+volumes:
+  mongo_data_container:
