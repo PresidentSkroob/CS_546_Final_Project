@@ -11,15 +11,17 @@ router
       const appts = await appointments.getAll();
       res.json(appts);
     } catch (e) {
+      console.log(e);
       res.status(404).json({ error: e });
     }
   })
   .post(async (req, res) => {
     try {
       const b = req.body;
+      console.log(b.customerId, b.hairdresserId, b.startTime, b.endTime, b.service, b.comments, b.price);
       const appt = utils.validateAppointment(
-        b.customer_id,
-        b.hairdresser_id,
+        b.customerId,
+        b.hairdresserId,
         b.startTime,
         b.endTime,
         b.service,
@@ -28,6 +30,7 @@ router
       );
       res.json(await appointments.create(appt));
     } catch (e) {
+      console.log(e);
       res.status(404).json({ error: e });
     }
   });
@@ -38,6 +41,7 @@ router.route('/:id').get(async (req, res) => {
     const appt = await appointments.get(_id);
     res.json(appt);
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });

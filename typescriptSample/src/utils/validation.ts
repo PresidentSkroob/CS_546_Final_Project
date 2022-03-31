@@ -9,7 +9,7 @@ import * as utils from './index';
  * @param {number} startTime - Start time of appointment, as a POSIX timestamp
  * @param {number} endTime - End time of appointment, as a POSIX timestamp
  * @param {string} service - A keyword describing the service provided
- * @param {string} comments - Any comments or requests made in advance
+ * @param {string|undefined} comments - Any comments or requests made in advance
  * @param {number} price - Price of any goods and services
  * @return {Appointment} A validated appointment
  */
@@ -19,7 +19,7 @@ export function validateAppointment(
   startTime: number,
   endTime: number,
   service: string,
-  comments: string,
+  comments: string | undefined,
   price: number
 ): Appointment {
   const cid = utils.checkId(customerId, 'customer'); // also check if ID is in database
@@ -27,7 +27,7 @@ export function validateAppointment(
   const std = utils.checkDate(startTime, 'start timestamp');
   const etd = utils.checkDate(endTime, 'end timestamp');
   const serv = utils.checkString(service, 'service');
-  const comm = utils.checkString(comments, 'comments', true);
+  const comm = comments ? utils.checkString(comments, 'comments') : "";
   const pric = utils.checkNumber(price, NaN, NaN, 'price');
 
   const appt: Appointment = {
