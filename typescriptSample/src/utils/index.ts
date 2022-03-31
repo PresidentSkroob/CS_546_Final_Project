@@ -14,7 +14,7 @@ export * from './types';
 export function checkString(
   strVal: string,
   varName: string,
-  allowEmpty = false
+  allowEmpty: boolean = false
 ): string {
   strVal = strVal.trim();
   if (!allowEmpty && strVal.length === 0) {

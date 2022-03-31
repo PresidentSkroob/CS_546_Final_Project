@@ -4,7 +4,7 @@ import appointments from './appointments';
 const constructorMethod = (app: express.Application): void => {
   app.use('/appointments', appointments);
 
-  app.use('*', (req, res) => {
+  app.use('*', (_, res) => {
     res.status(404).json({ error: 'Not found' });
   });
 };

@@ -8,6 +8,7 @@ let _db: Db;
 
 export = {
   connectToDb: async () => {
+    // main difference here is docker integration via dotenv
     let mongoURL = mongoConfig.serverUrl;
     if (process.env.DATABASE_HOST) {
       mongoURL = `mongodb://${process.env.DATABASE_HOST}:27017`;

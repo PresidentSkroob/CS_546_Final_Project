@@ -6,7 +6,7 @@ const appointments = data.appointments;
 
 router
   .route('/')
-  .get(async (req, res) => {
+  .get(async (_, res) => {
     try {
       const appts = await appointments.getAll();
       res.json(appts);
