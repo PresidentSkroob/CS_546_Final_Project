@@ -1,4 +1,4 @@
-import appointments from './appointment';
-import reviews from './review';
+import appointments from './appointments';
+import reviews from './reviews';
 
 export = { appointments, reviews };
