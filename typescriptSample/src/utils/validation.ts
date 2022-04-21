@@ -1,5 +1,7 @@
 import { Appointment } from './types';
+import { Review } from './types';
 import * as utils from './index';
+import { stringify } from 'querystring';
 
 /**
  *
@@ -27,7 +29,7 @@ export function validateAppointment(
   const std = utils.checkDate(startTime, 'start timestamp');
   const etd = utils.checkDate(endTime, 'end timestamp');
   const serv = utils.checkString(service, 'service');
-  const comm = comments ? utils.checkString(comments, 'comments') : "";
+  const comm = comments ? utils.checkString(comments, 'comments') : '';
   const pric = utils.checkNumber(price, NaN, NaN, 'price');
 
   const appt: Appointment = {
@@ -41,4 +43,32 @@ export function validateAppointment(
   };
 
   return appt;
+}
+
+/**
+ *
+ * @param {string} posterId - ID of poster making review
+ * @param {string} hairdresserId - ID of hairdresser for review
+ * @param {string} body - The text body of the review
+ * @param {number} rating - The rating of the review
+ * @return {Review} - A validated review
+ */
+export function validateReview(
+  posterId: string,
+  hairdresserId: string,
+  body: string,
+  rating: number
+): Review {
+  const pid = utils.checkId(posterId, 'poster');
+  const hid = utils.checkId(hairdresserId, 'haidresser');
+  const bdy = utils.checkString(body, 'body');
+  const rtg = utils.checkNumber(rating, 1, 5, 'rating');
+
+  const revw: Review = {
+    posterId: pid,
+    hairdresserId: hid,
+    body: bdy,
+    rating: rtg,
+  };
+  return revw;
 }
