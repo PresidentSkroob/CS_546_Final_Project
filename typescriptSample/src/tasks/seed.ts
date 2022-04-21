@@ -2,6 +2,7 @@ import dbConnection from '../config/mongoConnection';
 import { ObjectId } from 'mongodb';
 import data from '../data';
 const appointments = data.appointments;
+const reviews = data.reviews;
 
 /**
  * Seeds the database before running the main webserver
@@ -21,7 +22,15 @@ async function main() {
     price: 12.99,
   });
 
-  console.log('Done seeding database');
+  console.log('Done seeding appointments in database');
+  await reviews.create({
+    posterId: new ObjectId().toString(),
+    hairdresserId: new ObjectId().toString(),
+    body: 'The service was excellent!',
+    rating: 4.6,
+  });
+
+  console.log('Done seeding reviews in database');
 
   dbConnection.closeConnection();
 }

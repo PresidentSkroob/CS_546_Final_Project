@@ -18,7 +18,15 @@ router
   .post(async (req, res) => {
     try {
       const b = req.body;
-      console.log(b.customerId, b.hairdresserId, b.startTime, b.endTime, b.service, b.comments, b.price);
+      console.log(
+        b.customerId,
+        b.hairdresserId,
+        b.startTime,
+        b.endTime,
+        b.service,
+        b.comments,
+        b.price
+      );
       const appt = utils.validateAppointment(
         b.customerId,
         b.hairdresserId,
