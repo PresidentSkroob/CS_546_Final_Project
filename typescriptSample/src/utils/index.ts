@@ -143,10 +143,9 @@ export function checkEmail(email: string, emailName: string): string {
   email = checkString(email, 'email address');
   // This Regex is RFC 5322, sourced from http://emailregex.com/
   // It is a bit unwieldly, so some other implementation/location might be better.
-  const regex = new RegExp(
-    '/^(([^<>()[]\\.,;:s@"]+(.[^<>()[]\\.,;:s@"]+)*)|(".+"))@(([[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}.[0-9]{1,3}])|(([a-zA-Z-0-9]+.)+[a-zA-Z]{2,}))$/'
-  );
-  if (!regex.test(email)) {
+	const reg = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
+  if (!reg.test(email)) {
     throw `Error: provided ${emailName} is invalid`;
   }
   return email;
