@@ -18,3 +18,4 @@ const getCollectionFn = (collection: string) => {
 
 export const test = getCollectionFn('test');
 export const reviews = getCollectionFn('reviews');
+export const users = getCollectionFn('users');

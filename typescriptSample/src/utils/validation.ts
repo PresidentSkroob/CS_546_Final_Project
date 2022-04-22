@@ -1,5 +1,6 @@
 import { Appointment } from './types';
 import { Review } from './types';
+import { User } from './types';
 import * as utils from './index';
 import { stringify } from 'querystring';
 
@@ -71,4 +72,46 @@ export function validateReview(
     rating: rtg,
   };
   return revw;
+}
+
+/**
+ *
+ * @param {string} email - Email address of user
+ * @param {string} password - Unhashed password of user
+ * @param {string} firstName - First name of user
+ * @param {string} lastName - Last name of user
+ * @param {Array<string>} appointmentIds - List of appointmentIds related to the user
+ * @param {Array<string>} reviewIds - List of reviewIds related to the user
+ * @param  {string} level - Access level of the user
+ * @return {User} - A validated user
+ */
+export function validateUser(
+  email: string,
+  password: string,
+  firstName: string,
+  lastName: string,
+  appointmentIds: Array<string>,
+  reviewIds: Array<string>,
+  level: string
+): User {
+  const eml = utils.checkEmail(email, 'user email');
+  const hpwd = utils.checkPassword(password);
+  const fnm = utils.checkString(firstName, 'first name');
+  const lnm = utils.checkString(lastName, 'last name');
+  const aptids = appointmentIds.map((elem) =>
+    utils.checkId(elem, 'appointment')
+  );
+  const rvwids = reviewIds.map((elem) => utils.checkId(elem, 'review'));
+  const lvl = utils.checkLevel(level);
+
+  const usr: User = {
+    email: eml,
+    password: hpwd, // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
+    firstName: fnm,
+    lastName: lnm,
+    appointmentIds: aptids,
+    reviewIds: rvwids,
+    level: lvl,
+  };
+  return usr;
 }
