@@ -17,6 +17,7 @@
   "author": "Alice Huston 10439804",
   "license": "ISC",
   "dependencies": {
+    "@types/bcrypt": "^5.0.0",
     "date-fns": "^2.28.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
