@@ -1,4 +1,7 @@
 import { appointments } from '../config/mongoCollections';
+
+import users from './users';
+
 import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
 import { Appointment } from '../utils';
@@ -45,13 +48,14 @@ async function get(id: string): Promise<Appointment<string>> {
  * @return {Promise<Appointment<string>>} - A promise of an appointment
  */
 async function create(appt: Appointment): Promise<Appointment<string>> {
-  const testCollection = await appointments();
-
-  const newInsertInformation = await testCollection.insertOne(appt);
+  const appointmentCollection = await appointments();
+  const newInsertInformation = await appointmentCollection.insertOne(appt);
   if (!newInsertInformation.insertedId || !newInsertInformation.acknowledged)
     throw 'Error: Insert failed!';
+  let foundAppointment = await get(newInsertInformation.insertedId.toString()) as Appointment<string>;
+  users.addAppointmentByUserId(foundAppointment);
 
-  return get(newInsertInformation.insertedId.toString());
+return await get(newInsertInformation.insertedId.toString());
 }
 
 export = {

@@ -1,8 +1,6 @@
 import { reviews } from '../config/mongoCollections';
 
 import users from './users';
-import appointments from './appointments';
-
 
 import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
@@ -55,7 +53,7 @@ async function create(review: Review): Promise<Review<string>> {
   if (!newInsertInformation.insertedId || !newInsertInformation.acknowledged)
   	throw `Error: Review insertion failed!`;
   let foundReview = await getById(newInsertInformation.insertedId.toString()) as Review<string>;
-  users.addReviewByUserId(foundReview );
+  users.addReviewByUserId(foundReview);
 
   return await getById(newInsertInformation.insertedId.toString());
 }
