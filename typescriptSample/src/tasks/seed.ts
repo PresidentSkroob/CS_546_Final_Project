@@ -54,7 +54,7 @@ async function main() {
 
   const review = await reviews.create({
     posterId: usr._id!.toString(),
-    hairdresserId: hrdsr._id!.toString(),
+    appointmentId: appt._id!.toString(),
     body: 'The service was excellent!',
     rating: 4.6,
   });

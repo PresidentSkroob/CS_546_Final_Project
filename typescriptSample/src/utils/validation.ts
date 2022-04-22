@@ -56,18 +56,18 @@ export function validateAppointment(
  */
 export function validateReview(
   posterId: string,
-  hairdresserId: string,
+  appointmentId: string,
   body: string,
   rating: number
 ): Review {
   const pid = utils.checkId(posterId, 'poster');
-  const hid = utils.checkId(hairdresserId, 'haidresser');
+  const aid = utils.checkId(appointmentId, 'appointment');
   const bdy = utils.checkString(body, 'body');
   const rtg = utils.checkNumber(rating, 1, 5, 'rating');
 
   const revw: Review = {
     posterId: pid,
-    hairdresserId: hid,
+    appointmentId: aid,
     body: bdy,
     rating: rtg,
   };

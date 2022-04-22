@@ -16,7 +16,7 @@ export interface Appointment<T = undefined> extends Schema<T> {
 export interface Review<T = undefined> extends Schema<T> {
   _id?: T;
   posterId: string;
-  hairdresserId: string;
+  appointmentId: string;
   body: string;
   rating: number;
 }
