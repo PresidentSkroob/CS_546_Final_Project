@@ -132,7 +132,53 @@ export function checkDate(date: string | number, dateName: string): Date {
   }
   return dt;
 }
-
+/**
+ * Checks if a given email address is valid.
+ * 
+ * @param {string} email - The email address to check
+ * @param {string} emailName - The name of the email parameter
+ * @return {string} - The validated email address
+ */
+export function checkEmail(email: string, emailName: string): string {
+	email = checkString(email, 'email address');
+	// This Regex is RFC 5322, sourced from http://emailregex.com/
+	// It is a bit unwieldly, so some other implementation/location might be better. 
+	const regex = new RegExp('/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/');
+	if(!regex.test(email)) {
+	 	throw `Error: provided ${emailName} is invalid`;
+	}
+	return email;
+}
+/**
+ * Checks if a given access level is valid (i.e. either 'user' or 'admin')
+ * 
+ * @param {string} level - The access level to check
+ * @return {string} - The validated level
+ */
+export function checkLevel(level: string): string {
+	level = checkString(level, 'user level');
+	if(level !== 'user' && level !== 'admin') {
+		throw `Error: provided user level is invalid`;
+	}
+	return level;
+}
+/**
+ * Checks if a given plain text password is valid (i.e. no spaces and minimum length)
+ * 
+ * @param {string} password - The *unhashed* password to check
+ * @param {number} minLength - The minimum length of the password, default 6.
+ * @return {string} - The validated password
+ */
+export function checkPassword(password: string, minLength: number = 6) {
+	password = checkString(password, 'user password');
+	if(password.length < minLength) { 
+		throw `Error: password cannot be shorter than ${minLength} characters`;
+	}
+	if(password.indexOf(' ') >= 0) { 
+		throw `Error: password cannot contain spaces`;
+	}
+	return password;
+}
 /*
 import moment from 'moment';
 
