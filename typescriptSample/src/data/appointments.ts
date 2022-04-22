@@ -1,4 +1,7 @@
-import { test } from '../config/mongoCollections';
+import { appointments } from '../config/mongoCollections';
+
+import users from './users';
+
 import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
 import { Appointment } from '../utils';
@@ -9,7 +12,7 @@ import { Appointment } from '../utils';
  * @return {Promise<Appointment<string>[]>} An array of appointments
  */
 async function getAll(): Promise<Appointment<string>[]> {
-  const testCollection = await test();
+  const testCollection = await appointments();
   const testAppts = (await testCollection.find().toArray()) as Array<
     Appointment<ObjectId | string>
   >;
@@ -28,7 +31,7 @@ async function getAll(): Promise<Appointment<string>[]> {
  */
 async function get(id: string): Promise<Appointment<string>> {
   id = utils.checkId(id, 'appointment');
-  const testCollection = await test();
+  const testCollection = await appointments();
   const appt = (await testCollection.findOne({
     _id: new ObjectId(id),
   })) as Appointment<ObjectId | string>;
@@ -45,13 +48,14 @@ async function get(id: string): Promise<Appointment<string>> {
  * @return {Promise<Appointment<string>>} - A promise of an appointment
  */
 async function create(appt: Appointment): Promise<Appointment<string>> {
-  const testCollection = await test();
-
-  const newInsertInformation = await testCollection.insertOne(appt);
+  const appointmentCollection = await appointments();
+  const newInsertInformation = await appointmentCollection.insertOne(appt);
   if (!newInsertInformation.insertedId || !newInsertInformation.acknowledged)
     throw 'Error: Insert failed!';
+  let foundAppointment = await get(newInsertInformation.insertedId.toString()) as Appointment<string>;
+  users.addAppointmentByUserId(foundAppointment);
 
-  return get(newInsertInformation.insertedId.toString());
+return await get(newInsertInformation.insertedId.toString());
 }
 
 export = {
