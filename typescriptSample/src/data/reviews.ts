@@ -58,8 +58,70 @@ async function create(review: Review): Promise<Review<string>> {
   return getById(newInsertInformation.insertedId.toString());
 }
 
+
+/**
+ * Gets all of the reviews and returns them sorted by rating
+ * 
+ * @return {Promise<Review<string>[]>} - The reviews sorted by rating.
+ */
+ async function getAllReviewsSortedByRatingDesc(): Promise<Review<string>[]> { 
+	const reviewCollection = await reviews();
+	const foundReviews = (await reviewCollection
+									.find()
+									.sort({rating: -1})
+									.toArray()) as Array<Review<ObjectId | string>>;
+  
+	foundReviews.forEach((elem) => {
+	  elem._id = elem._id!.toString();
+	});
+	return foundReviews as Review<string>[];
+}
+
+/**
+ * Gets all reviews which have posterId cid
+ * 
+ * @param cid - The customer/poster id to query by
+ * @return {Promise<Review<string>[]>} - A promise for the reviews
+ */
+async function getAllReviewsByCustomerId(cid: string): Promise<Review<string>[]> {
+	cid = utils.checkId(cid, 'customer');
+	const reviewCollection = await reviews();
+	let foundReviews = await reviewCollection.find({
+		posterId: cid
+	}).toArray() as Review<ObjectId | string>[];
+	if(!foundReviews || foundReviews.length === 0) throw `Error: no review found with poster id ${cid}`;
+	foundReviews.forEach( (elem) => {
+		elem._id = elem._id!.toString();
+	});
+
+	return foundReviews as Review<string>[];
+} 
+
+/**
+ * Gets all reviews which have hairdresserId hid
+ * 
+ * @param hid - The hairdresser id to query by
+ * @return {Promise<Review<string>[]>} - A promise for the reviews
+ */
+async function getAllReviewsByHairdresserId(hid: string): Promise<Review<string>[]> {
+	hid = utils.checkId(hid, 'hairdresser');
+	const reviewCollection = await reviews();
+	let foundReviews = await reviewCollection.find({
+		hairdresserId: hid	
+	}).toArray() as Review<ObjectId | string>[];
+	if(!foundReviews || foundReviews.length == 0) throw `Error: no review found with hairdresser id ${hid}`;
+	foundReviews.forEach( (elem) => { 
+		elem._id = elem._id!.toString();
+	});
+	return foundReviews as Review<string>[];
+}
+
+
 export = {
   getById,
   create,
   getAll,
+  getAllReviewsSortedByRatingDesc,
+  getAllReviewsByCustomerId,
+  getAllReviewsByHairdresserId
 };

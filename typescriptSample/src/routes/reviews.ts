@@ -32,6 +32,39 @@ router.post('/', async (req, res) => {
   }
 });
 
+router.get('/byRating', async (req, res) => {
+	try {
+		const foundReviews = await reviews.getAllReviewsSortedByRatingDesc();
+		res.json(foundReviews);
+	  } catch (e) {
+		console.log(e);
+		res.status(404).json({ error: e });
+	  }
+});
+
+router.get('/userc/:cid', async (req, res) => { 
+	try { 
+		const _id = utils.checkId(req.params.cid, 'customer id');
+		const foundReviews = await reviews.getAllReviewsByCustomerId(_id);
+		res.json(foundReviews);
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({ error: e });
+	}
+});
+
+router.get('/userh/:hid', async (req, res) => { 
+	try { 
+		const _id = utils.checkId(req.params.hid, 'hairdresser id');
+		const foundReviews = await reviews.getAllReviewsByHairdresserId(_id);
+		res.json(foundReviews);
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({ error: e });
+	}
+});
+
+
 router.get('/:id', async (req, res) => {
   try {
     const _id = utils.checkId(req.params.id, 'review');
