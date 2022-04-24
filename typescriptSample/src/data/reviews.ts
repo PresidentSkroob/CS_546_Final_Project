@@ -93,7 +93,6 @@ async function getAllReviewsByCustomerId(cid: string): Promise<Review<string>[]>
 	foundReviews.forEach( (elem) => {
 		elem._id = elem._id!.toString();
 	});
-
 	return foundReviews as Review<string>[];
 } 
 

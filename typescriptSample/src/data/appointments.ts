@@ -55,11 +55,51 @@ async function create(appt: Appointment): Promise<Appointment<string>> {
   let foundAppointment = await get(newInsertInformation.insertedId.toString()) as Appointment<string>;
   users.addAppointmentByUserId(foundAppointment);
 
-return await get(newInsertInformation.insertedId.toString());
+return get(newInsertInformation.insertedId.toString());
+}
+
+/**
+ * Gets all appointments which have customerId cid
+ * 
+ * @param cid - The customer id to query by
+ * @return {Promise<Appointment<string>[]>} - A promise for the appointments
+ */
+async function getAllApptsByCustomerId(cid: string): Promise <Appointment<string>[]> { 
+	cid = utils.checkId(cid, 'customer');
+	const appointmentCollection = await appointments();
+	let foundAppointments = await appointmentCollection.find({
+		customerId: cid
+	}).toArray() as Appointment<ObjectId | string>[];
+	if(!foundAppointments || foundAppointments.length === 0) throw `Error: no appointment found with customer id ${cid}`;
+	foundAppointments.forEach( (elem) => { 
+		elem._id = elem._id!.toString();
+	});
+	return foundAppointments as Appointment<string>[];
+}
+
+/**
+ * Gets all appointments which have hairdresserId hid
+ * 
+ * @param hid - The hairdresser id to query by
+ * @return {Promise<Appointment<string>[]>} - A promise for the appointments
+ */
+async function getAllApptsByHairdresserId(hid: string): Promise <Appointment<string>[]> { 
+	hid = utils.checkId(hid, 'hairdresser');
+	const appointmentCollection = await appointments();
+	let foundAppointments = await appointmentCollection.find({
+		hairdresserId: hid
+	}).toArray() as Appointment<ObjectId | string>[];
+	if(!foundAppointments || foundAppointments.length === 0) throw `Error: no appointment found with hairdresser id ${hid}`;
+	foundAppointments.forEach( (elem) => { 
+		elem._id = elem._id!.toString();
+	});
+	return foundAppointments as Appointment<string>[];
 }
 
 export = {
   get,
   create,
   getAll,
+  getAllApptsByCustomerId,
+  getAllApptsByHairdresserId
 };
