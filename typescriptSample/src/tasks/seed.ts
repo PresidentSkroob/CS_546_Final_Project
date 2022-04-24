@@ -74,6 +74,7 @@ async function main() {
 
   const review1 = await reviews.create({
     posterId: usr._id!.toString(),
+	hairdresserId: hrdsr._id!.toString(),
     appointmentId: appt1._id!.toString(),
     body: 'First review',
     rating: 4.6,
@@ -81,6 +82,7 @@ async function main() {
 
   const review2 = await reviews.create({
     posterId: usr._id!.toString(),
+	hairdresserId: hrdsr._id!.toString(),
     appointmentId: appt2._id!.toString(),
     body: 'Second review',
     rating: 1.3,
@@ -88,6 +90,7 @@ async function main() {
 
   const review3 = await reviews.create({
     posterId: usr._id!.toString(),
+	hairdresserId: hrdsr._id!.toString(),
     appointmentId: appt3._id!.toString(),
     body: 'third review',
     rating: 4.8,
