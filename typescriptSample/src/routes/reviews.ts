@@ -20,6 +20,7 @@ router.post('/', async (req, res) => {
     console.log(b.posterId, b.hairdresserId, b.body, b.rating);
     const revw = utils.validateReview(
       b.posterId,
+	  b.hairdresserId,
       b.appointmentId,
       b.body,
       b.rating

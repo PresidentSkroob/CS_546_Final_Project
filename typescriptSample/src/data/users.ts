@@ -87,15 +87,20 @@ async function checkUser(user: User): Promise<User<string>> {
  * Adds the _id of the given Review to its associated User with id posterId
  *
  * @param {Review} review - User to check
- * @return {Promise<User<string>>}- A promise for the updated User
+ * @return {Promise<User<string>>}- A promise for the updated customer
  */
 async function addReviewByUserId(review: Review<string | ObjectId>): Promise<User<string>> {
 	const userCollection = await users();
-	const updatedInformation = await userCollection.updateOne(
+	const updatedInformationCustomer = await userCollection.updateOne(
 		{_id: new ObjectId(review.posterId)},
 		{$push: {reviewIds: review._id!} });
-	if (updatedInformation.modifiedCount === 0 || !updatedInformation.acknowledged) 
-		throw `Error: Review addition to user failed`;
+	const updatedInformationHairdresser= await userCollection.updateOne(
+		{_id: new ObjectId(review.posterId)},
+		{$push: {reviewIds: review._id!} });		
+	if (updatedInformationCustomer.modifiedCount === 0 || !updatedInformationCustomer.acknowledged) 
+		throw `Error: Review addition to customer failed`;
+	if (updatedInformationHairdresser.modifiedCount === 0 || !updatedInformationHairdresser.acknowledged) 
+		throw `Error: Review addition to customer failed`;
 	return await getById(review.posterId);
 }
 /**
