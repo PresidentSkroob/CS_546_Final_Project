@@ -8,6 +8,10 @@ const constructorMethod = (app: express.Application): void => {
   app.use('/reviews', reviews);
   app.use('/users', users);
 
+  app.get('/', (_, res) => {
+    res.render('home/home', { title: "C'est La Vie Salon" });
+  })
+
   app.use('*', (_, res) => {
     res.status(404).json({ error: 'Not found' });
   });
