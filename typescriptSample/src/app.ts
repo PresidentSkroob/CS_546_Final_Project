@@ -1,8 +1,19 @@
 import express from 'express';
 const app = express();
-import configRoutes from './routes';
+const staticFolder = express.static(__dirname + '/../public');
 
+import configRoutes from './routes';
+import { engine } from 'express-handlebars';
+
+app.use('/public', staticFolder);
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+const viewInstance = engine({ defaultLayout: 'main' });
+
+app.engine('handlebars', viewInstance);
+app.set('view engine', 'handlebars');
+
 configRoutes(app);
 
 app.listen(3000, () => {
