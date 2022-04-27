@@ -17,6 +17,15 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/login', async (_req, res) => {
+  try {
+    res.render('login', { 'title': 'Login' });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: e });
+  }
+});
+
 router.post('/signup', async (req, res) => {
   try {
     const b = req.body;

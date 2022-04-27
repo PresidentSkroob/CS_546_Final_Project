@@ -9,8 +9,10 @@ const constructorMethod = (app: express.Application): void => {
   app.use('/users', users);
 
   app.get('/', (_, res) => {
-    res.render('home/home', { title: "C'est La Vie Salon" });
-  })
+    res.render('home', { title: "C'est La Vie Salon" });
+  });
+
+  app.get('/login')
 
   app.use('*', (_, res) => {
     res.status(404).json({ error: 'Not found' });

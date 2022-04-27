@@ -43,26 +43,28 @@ router
     }
   });
 
-router.get('/appts/:hid', async (req, res) => { 
-	try { 
-		const _id = utils.checkId(req.params.hid, 'hairdresser id');
-		const foundAppointments = await appointments.getAllApptsByHairdresserId(_id);
-		res.json(foundAppointments);
-	} catch (e) { 
-		console.log(e);
-		res.status(404).json({ error: e });
-	}
+router.get('/appts/:hid', async (req, res) => {
+  try {
+    const _id = utils.checkId(req.params.hid, 'hairdresser id');
+    const foundAppointments = await appointments.getAllApptsByHairdresserId(
+      _id
+    );
+    res.json(foundAppointments);
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({ error: e });
+  }
 });
 
 router.get('/history/:cid', async (req, res) => {
-	try { 
-		const _id = utils.checkId(req.params.cid, 'customer id');
-		const foundAppointments = await appointments.getAllApptsByCustomerId(_id);
-		res.json(foundAppointments);
-	} catch (e) { 
-		console.log(e);
-		res.status(404).json({ error: e });
-	}
+  try {
+    const _id = utils.checkId(req.params.cid, 'customer id');
+    const foundAppointments = await appointments.getAllApptsByCustomerId(_id);
+    res.json(foundAppointments);
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({ error: e });
+  }
 });
 
 router.route('/:id').get(async (req, res) => {

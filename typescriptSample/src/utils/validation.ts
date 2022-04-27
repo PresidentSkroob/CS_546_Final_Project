@@ -69,7 +69,7 @@ export function validateReview(
 
   const revw: Review = {
     posterId: pid,
-	hairdresserId: hid,
+    hairdresserId: hid,
     appointmentId: aid,
     body: bdy,
     rating: rtg,

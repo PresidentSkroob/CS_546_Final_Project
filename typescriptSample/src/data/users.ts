@@ -89,52 +89,76 @@ async function checkUser(user: User): Promise<User<string>> {
  * @param {Review} review - User to check
  * @return {Promise<User<string>>}- A promise for the updated customer
  */
-async function addReviewByUserId(review: Review<string | ObjectId>): Promise<User<string>> {
-	const userCollection = await users();
-	const updatedInformationCustomer = await userCollection.updateOne(
-		{_id: new ObjectId(review.posterId)},
-		{$push: {reviewIds: review._id!} });
-	const updatedInformationHairdresser= await userCollection.updateOne(
-		{_id: new ObjectId(review.posterId)},
-		{$push: {reviewIds: review._id!} });		
-	if (updatedInformationCustomer.modifiedCount === 0 || !updatedInformationCustomer.acknowledged) 
-		throw `Error: Review addition to customer failed`;
-	if (updatedInformationHairdresser.modifiedCount === 0 || !updatedInformationHairdresser.acknowledged) 
-		throw `Error: Review addition to customer failed`;
-	return await getById(review.posterId);
+async function addReviewByUserId(
+  review: Review<string | ObjectId>
+): Promise<User<string>> {
+  const userCollection = await users();
+  const updatedInformationCustomer = await userCollection.updateOne(
+    { _id: new ObjectId(review.posterId) },
+    { $push: { reviewIds: review._id! } }
+  );
+  const updatedInformationHairdresser = await userCollection.updateOne(
+    { _id: new ObjectId(review.posterId) },
+    { $push: { reviewIds: review._id! } }
+  );
+  if (
+    updatedInformationCustomer.modifiedCount === 0 ||
+    !updatedInformationCustomer.acknowledged
+  )
+    throw `Error: Review addition to customer failed`;
+  if (
+    updatedInformationHairdresser.modifiedCount === 0 ||
+    !updatedInformationHairdresser.acknowledged
+  )
+    throw `Error: Review addition to customer failed`;
+  return await getById(review.posterId);
 }
 /**
- * 
- * @param appointment 
- * @returns 
+ *
+ * @param appointment
+ * @returns
  */
-async function addAppointmentByUserId(appointment: Appointment<string | ObjectId>): Promise<User<string>[]> { 
-	const userCollection = await users();
-	const updatedInformationCustomer = await userCollection.updateOne(
-		{_id: (new ObjectId(appointment.customerId)) },
-		{$push: {appointmentIds: appointment._id!} });
-	const updatedInformationHairdresser = await userCollection.updateOne(
-		{_id: (new ObjectId(appointment.hairdresserId)) },
-		{$push: {appointmentIds: appointment._id!} });
+async function addAppointmentByUserId(
+  appointment: Appointment<string | ObjectId>
+): Promise<User<string>[]> {
+  const userCollection = await users();
+  const updatedInformationCustomer = await userCollection.updateOne(
+    { _id: new ObjectId(appointment.customerId) },
+    { $push: { appointmentIds: appointment._id! } }
+  );
+  const updatedInformationHairdresser = await userCollection.updateOne(
+    { _id: new ObjectId(appointment.hairdresserId) },
+    { $push: { appointmentIds: appointment._id! } }
+  );
 
-	if(updatedInformationCustomer.modifiedCount === 0 || !updatedInformationCustomer) 
-		throw `Error: Appointment addition to customer failed`;
-	if(updatedInformationHairdresser.modifiedCount === 0 || !updatedInformationHairdresser) 
-		throw `Error: Appointment addition to hairdresser failed`;
-	let modifiedUsers = await userCollection
-	.find({_id: (new ObjectId(appointment.customerId) || (new ObjectId(appointment.hairdresserId)))}).toArray() as
-	 Array<User<ObjectId | string>>;;
-    
-	modifiedUsers.forEach((elem) => utils.idToStr(elem));
+  if (
+    updatedInformationCustomer.modifiedCount === 0 ||
+    !updatedInformationCustomer
+  )
+    throw `Error: Appointment addition to customer failed`;
+  if (
+    updatedInformationHairdresser.modifiedCount === 0 ||
+    !updatedInformationHairdresser
+  )
+    throw `Error: Appointment addition to hairdresser failed`;
+  let modifiedUsers = (await userCollection
+    .find({
+      _id:
+        new ObjectId(appointment.customerId) ||
+        new ObjectId(appointment.hairdresserId),
+    })
+    .toArray()) as Array<User<ObjectId | string>>;
 
-	return modifiedUsers as User<string>[];
+  modifiedUsers.forEach((elem) => utils.idToStr(elem));
+
+  return modifiedUsers as User<string>[];
 }
 
 export = {
   getById,
   create,
   getAll,
-  checkUser, 
+  checkUser,
   addReviewByUserId,
-  addAppointmentByUserId
+  addAppointmentByUserId,
 };
