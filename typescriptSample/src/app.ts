@@ -21,7 +21,7 @@ app.use((_req, res, next) => {
   if (!res.locals.partials) res.locals.partials = {};
   res.locals.partials.navItems = [
     { navTitle: 'Home', navLink: '/' },
-    { navTitle: 'Login', navLink: '/login' },
+    { navTitle: 'Login', navLink: '/users/login' },
   ];
   next();
 });
@@ -51,8 +51,7 @@ app.use((req, _res, next) => {
   const route = req.originalUrl;
 
   console.log(
-    `[${ts}]: ${method} ${route} (${
-      !req.session.user ? 'Non-' : ''
+    `[${ts}]: ${method} ${route} (${!req.session.user ? 'Non-' : ''
     }Authenticated User)`
   );
 
