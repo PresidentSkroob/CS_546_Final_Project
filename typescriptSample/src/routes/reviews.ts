@@ -49,10 +49,25 @@ router.post('/', async (req, res) => {
   }
 });
 
-router.get('/byRating', async (req, res) => {
+router.get('/high-to-low', async (req, res) => {
   try {
-    const foundReviews = await reviews.getAllReviewsSortedByRatingDesc();
-    res.json(foundReviews);
+	const foundReviews = await reviews.getAllReviewsSortedByRatingDesc();
+	let relevantInformation = [];
+	for(let i = 0; i < foundReviews.length; i++) {
+		let foundCustomer = await users.getById(foundReviews[i].posterId);
+		let foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
+		let customerName = foundCustomer.firstName + " " +foundCustomer.lastName;
+		let hairdresserName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
+		let cur = {
+			customerName: customerName,
+			hairdresserName: hairdresserName,
+			rating: foundReviews[i].rating,
+			body: foundReviews[i].body
+		};
+		relevantInformation.push(cur);
+	}
+	res.render('reviews', { reviews: relevantInformation });
+	// res.json(foundReviews);
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
