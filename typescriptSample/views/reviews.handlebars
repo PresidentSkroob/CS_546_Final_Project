@@ -17,6 +17,13 @@
 			<label for="sort-asc-button">Sort by Low to High: </label>
 			<button id="sort-asc-button" type="submit">Sort</button>
 		</form>
+
+		<form action="/reviews/searchreviews" method="POST">
+			<label for="searchReviewTerm">Search Term:</label>
+            <input id="searchReviewTerm" type="text" name="searchReviewTerm" />
+            <button type="submit">Search</button>
+		</form>
+
 	</div>
 	
     <div class="review-container">
