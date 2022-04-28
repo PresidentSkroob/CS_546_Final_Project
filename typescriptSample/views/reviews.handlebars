@@ -19,7 +19,13 @@
 			<label for="sort-desc-button">Sort by High to Low: </label>
 			<button id="sort-desc-button" type="submit">Sort</button>
 		</form>
+
+		<form action="/reviews/low-to-high" method="GET">
+			<label for="sort-asc-button">Sort by Low to High: </label>
+			<button id="sort-asc-button" type="submit">Sort</button>
+		</form>
 	</div>
+	
     <div id="review-container">
       <ul class="icon-list">
         {{#each reviews}}

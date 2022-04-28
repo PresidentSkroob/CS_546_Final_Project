@@ -79,6 +79,24 @@ async function getAllReviewsSortedByRatingDesc(): Promise<Review<string>[]> {
 }
 
 /**
+ * Gets all of the reviews and returns them sorted by rating ascending
+ *
+ * @return {Promise<Review<string>[]>} - The reviews sorted by rating.
+ */
+ async function getAllReviewsSortedByRatingAsc(): Promise<Review<string>[]> {
+	const reviewCollection = await reviews();
+	const foundReviews = (await reviewCollection
+	  .find()
+	  .sort({ rating: 1 })
+	  .toArray()) as Array<Review<ObjectId | string>>;
+  
+	foundReviews.forEach((elem) => {
+	  elem._id = elem._id!.toString();
+	});
+	return foundReviews as Review<string>[];
+  }
+
+/**
  * Gets all reviews which have posterId cid
  *
  * @param cid - The customer/poster id to query by
@@ -131,6 +149,7 @@ export = {
   create,
   getAll,
   getAllReviewsSortedByRatingDesc,
+  getAllReviewsSortedByRatingAsc,
   getAllReviewsByCustomerId,
   getAllReviewsByHairdresserId,
 };
