@@ -77,7 +77,6 @@ router.get('/high-to-low', async (req, res) => {
 router.get('/low-to-high', async (req, res) => {
 	try {
 	  const foundReviews = await reviews.getAllReviewsSortedByRatingAsc();
-	  console.log(foundReviews);
 	  let relevantInformation = [];
 	  for(let i = 0; i < foundReviews.length; i++) {
 		  let foundCustomer = await users.getById(foundReviews[i].posterId);
