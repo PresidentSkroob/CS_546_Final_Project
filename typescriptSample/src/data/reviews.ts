@@ -136,12 +136,31 @@ async function getAllReviewsByHairdresserId(
       hairdresserId: hid,
     })
     .toArray()) as Review<ObjectId | string>[];
-  if (!foundReviews || foundReviews.length == 0)
+  if (!foundReviews || foundReviews.length === 0)
     throw `Error: no review found with hairdresser id ${hid}`;
   foundReviews.forEach((elem) => {
     elem._id = elem._id!.toString();
   });
   return foundReviews as Review<string>[];
+}
+
+async function getReviewsBySearchTerm(
+	searchTerm: string
+): Promise<Review<string>[]> { 
+	searchTerm = utils.checkString(searchTerm, 'review search term');
+	const reviewCollection = await reviews();
+	let foundReviews = (await reviewCollection
+		.find({
+			body: { $regex: searchTerm }
+		}).toArray()) as Review<ObjectId | string>[];
+
+	if(!foundReviews || foundReviews.length === 0)
+
+	  throw `Error: no reviews found with term ${searchTerm}`;
+	foundReviews.forEach((elem) => {
+		elem._id = elem._id!.toString();
+	});
+	return foundReviews as Review<string>[];
 }
 
 export = {
@@ -152,4 +171,5 @@ export = {
   getAllReviewsSortedByRatingAsc,
   getAllReviewsByCustomerId,
   getAllReviewsByHairdresserId,
+  getReviewsBySearchTerm
 };
