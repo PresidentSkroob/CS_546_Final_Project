@@ -9,13 +9,6 @@
     <hr class="col-3 col-md-2 mb-5">
 	<div>
 		<form action="/reviews/high-to-low" method="GET">
-			
-			{{!-- <label for="sort-options">Sort By: </label>
-			<select class="sortpicker" id="sort-options">
-				<option value="high-to-low">High to Low</option>
-				<option value="low-to-high">Low to High</option>
-			</select>
-			<input type="submit"> --}}
 			<label for="sort-desc-button">Sort by High to Low: </label>
 			<button id="sort-desc-button" type="submit">Sort</button>
 		</form>
@@ -26,15 +19,17 @@
 		</form>
 	</div>
 	
-    <div id="review-container">
-      <ul class="icon-list">
+    <div class="review-container">
+      <ul class="review-list">
         {{#each reviews}}
             <li>
-                <h3>{{customerName}} says: </h3>
-				<h5>Hairdresser: {{hairdresserName}}</h4>
-                <p>Rating: {{rating}}/5</p>
-                <p>{{body}}</p>
+                <h3 class="customer-name">{{customerName}} says: </h3>
+				<h5 class="hairdresser-name">Hairdresser: {{hairdresserName}}</h4>
+                <p class="review-rating">Rating: {{rating}}/5</p>
+                <p class="review-body">{{body}}</p>
+				
             </li>
+			<hr class="col-3 col-md-2 mb-5">
         {{/each}}
       </ul>
     </div>

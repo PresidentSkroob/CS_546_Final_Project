@@ -22,6 +22,7 @@ app.use((_req, res, next) => {
   res.locals.partials.navItems = [
     { navTitle: 'Home', navLink: '/' },
     { navTitle: 'Login', navLink: '/users/login' },
+	{ navTitle: 'Reviews', navLink: '/reviews/' }
   ];
   next();
 });
