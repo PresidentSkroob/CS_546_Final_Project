@@ -70,7 +70,7 @@ router.get('/high-to-low', async (req, res) => {
 	// res.json(foundReviews);
   } catch (e) {
     console.log(e);
-    res.status(404).json({ error: e });
+	res.status(404).json({ error: e });
   }
 });
 
@@ -123,7 +123,8 @@ router.post('/searchreviews', async (req, res) => {
 
 	} catch (e) { 
 		console.log(e);
-		res.status(404).json({ error: e });
+		res.status(400).render('reviews', { error: e });
+		//res.status(404).json({ error: e });
 	}
 
 });

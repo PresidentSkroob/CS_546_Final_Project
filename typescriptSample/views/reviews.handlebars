@@ -1,13 +1,18 @@
 <div>
-    <h1>Reviews Page</h1>
-    <p class="fs-5 col-md-8">
-      Users who have made accounts can leave a review, consisting of a
-      title, comments body, and numeric rating. This page will also include
-      sorting/searching by rating or specific hairdresser.
-    </p>
-
+	<link href='/public/css/reviews.css' rel='stylesheet' />
+    <h1>Reviews</h1>
+	<div id="top-div">
+		<img id="company-logo" src="../public/images/Logo.png">
+    	<h3>
+			Enjoy our service? Leave a review!
+      	{{!-- Users who have made accounts can leave a review, consisting of a
+      	title, comments body, and numeric rating. This page will also include
+     	sorting/searching by rating or specific hairdresser. --}}
+    	</h3>
+	</div>
     <hr class="col-3 col-md-2 mb-5">
-	<div>
+	<h3>See what our customers think!</h3>
+	<div id="form-div" >
 		<form action="/reviews/high-to-low" method="GET">
 			<label for="sort-desc-button">Sort by High to Low: </label>
 			<button id="sort-desc-button" type="submit">Sort</button>
@@ -25,13 +30,18 @@
 		</form>
 
 	</div>
+	<div class="error-div">
+		{{#if error}}
+			<p>{{error}}</p>
+		{{/if}}
+	</div>
 	
-    <div class="review-container">
-      <ul class="review-list">
+    <div id="review-div">
+      <ul id="review-list" style="list-style-type:none;">
         {{#each reviews}}
             <li>
-                <h3 class="customer-name">{{customerName}} says: </h3>
-				<h5 class="hairdresser-name">Hairdresser: {{hairdresserName}}</h4>
+                <h4 class="customer-name">{{customerName}} says: </h4>
+				<h5 class="hairdresser-name">Hairdresser: {{hairdresserName}}</h5>
                 <p class="review-rating">Rating: {{rating}}/5</p>
                 <p class="review-body">{{body}}</p>
 				

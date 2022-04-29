@@ -148,10 +148,11 @@ async function getReviewsBySearchTerm(
 	searchTerm: string
 ): Promise<Review<string>[]> { 
 	searchTerm = utils.checkString(searchTerm, 'review search term');
+	let regex = new RegExp(searchTerm, 'i');
 	const reviewCollection = await reviews();
 	let foundReviews = (await reviewCollection
 		.find({
-			body: { $regex: searchTerm }
+			body: { $regex: regex }
 		}).toArray()) as Review<ObjectId | string>[];
 
 	if(!foundReviews || foundReviews.length === 0)
