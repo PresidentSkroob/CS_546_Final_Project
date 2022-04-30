@@ -39,6 +39,23 @@ async function getById(id: string): Promise<User<string>> {
   return utils.idToStr(foundUser) as User<string>;
 }
 
+async function getByFirstAndLast(first: string, last: string): Promise<User<string>> {
+	first = utils.checkString(first, "first name");
+	let firstRegex = new RegExp(first, 'i');
+	last = utils.checkString(last, "last name");
+	let lastRegex = new RegExp(last, 'i');
+	const userCollection = await users();
+	const foundUser = await userCollection.findOne({
+		$and: [
+		{ firstName: { $regex: firstRegex } },
+		{ lastName: { $regex: lastRegex } }
+		]
+
+	}) as User<ObjectId | string>;
+	if (!foundUser) throw `Error: no user found with name ${first} ${last}`;
+	return utils.idToStr(foundUser) as User<string>;
+}
+
 /**
  * Creates a new user
  *

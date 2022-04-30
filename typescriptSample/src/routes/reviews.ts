@@ -4,6 +4,7 @@ import data from '../data';
 import * as utils from '../utils';
 const reviews = data.reviews;
 const users = data.users;
+const appointments = data.appointments;
 
 router.get('/', async (req, res) => {
   try {
@@ -31,18 +32,51 @@ router.get('/', async (req, res) => {
   }
 });
 
+router.get('/create', async (req, res) => { 
+	try { 
+		if(req.session.user) { 
+			let foundAppointments = await appointments.getAllApptsByCustomerId(req.session.user);
+			let relevantInformation = [];
+			for(let i = 0; i < foundAppointments.length; i++) { 
+				let foundHairdresser = await users.getById(foundAppointments[i].hairdresserId);
+				if(relevantInformation)
+				relevantInformation.push(
+				{name: foundHairdresser.firstName + " " + foundHairdresser.lastName,
+				 id: foundHairdresser._id!
+				});
+			}
+			//relevantInformation = [...new Set(relevantInformation)];
+			relevantInformation = [...new Map(relevantInformation.map(v => [v.id, v])).values()];
+
+			res.render('createreview', {hairdressers: relevantInformation});
+		} else {
+			res.redirect('/reviews');
+		}
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({ error: e });
+	}
+});
+
 router.post('/', async (req, res) => {
   try {
     const b = req.body;
-    console.log(b.posterId, b.hairdresserId, b.body, b.rating);
-    const revw = utils.validateReview(
-      b.posterId,
-      b.hairdresserId,
-      b.appointmentId,
-      b.body,
-      b.rating
-    );
-    res.json(await reviews.create(revw));
+    console.log(req.session.user, b.hairdressersdrop, b.body, b.reviewrating);
+	const revw = utils.validateReview(
+		req.session.user,
+		b.hairdressersdrop,
+		b.body,
+		b.reviewrating 
+	);
+    // const revw = utils.validateReview(
+    //   b.posterId,
+    //   b.hairdresserId,
+    //   //b.appointmentId,
+    //   b.body,
+    //   b.rating
+    // );
+    await reviews.create(revw);
+	res.redirect('/reviews');
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
