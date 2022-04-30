@@ -1,7 +1,7 @@
-<link href='/public/css/signin.css' rel='stylesheet' />
+<link href='/public/css/login.css' rel='stylesheet' />
 
-<div class='text-center form-signin' id="signin-div">
-  <form>
+<div class='text-center form-signin' id='signin-div'>
+  <form id='login-form'>
     <img
       class='mb-4'
       src='/public/images/Logo.png'
@@ -9,7 +9,7 @@
       width='72'
       height='57'
     />
-    <h1 class='h3 mb-3 fw-normal'>Ces't La Vie</h1>
+    <h1 class='h3 mb-3 fw-normal'>C'est La Vie</h1>
 
     <div class='form-floating'>
       <input
@@ -36,16 +36,18 @@
         Remember me
       </label>
     </div>
-    <button class='w-100 btn btn-lg btn-primary' type='submit'>
+    <button class='w-100 btn btn-lg btn-primary' type='submit' id='login-btn'>
       Sign in
     </button>
-    <button class='w-100 btn btn-lg btn-primary' type='submit'>
+    <button class='w-100 btn btn-lg btn-primary' type='submit' id='register-btn'>
       Create Account
     </button>
-    <button class='w-100 btn btn-lg btn-primary' type='submit'>
+    <button class='w-100 btn btn-lg btn-primary' type='submit' id='priv-login'>
       Hair Dresser Login
     </button>
     <p class='mt-5 mb-3 text-muted'>&copy; 2022 - FuBAR Productions</p>
   </form>
 
 </div>
+
+<script src="/public/js/login.js" defer></script>

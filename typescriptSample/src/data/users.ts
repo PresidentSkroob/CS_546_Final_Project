@@ -1,7 +1,7 @@
 import { users } from '../config/mongoCollections';
 import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
-import { User } from '../utils';
+import { User,LoginAttempt } from '../utils';
 import { Review } from '../utils';
 import { Appointment } from '../utils';
 import bcrypt from 'bcrypt'; // npm install --save @types/bcrypt
@@ -68,7 +68,7 @@ async function create(user: User): Promise<User<string>> {
  * @param {User} user - User to check
  * @return {Promise<User<string>>}- A promise for the found user.
  */
-async function checkUser(user: User): Promise<User<string>> {
+async function checkUser(user: User|LoginAttempt): Promise<User<string>> {
   const userCollection = await users();
   const foundUser = (await userCollection.findOne({
     email: user.email,
