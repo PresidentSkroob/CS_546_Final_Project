@@ -1,11 +1,5 @@
 /* signin.css */
 
-div .signin-div{
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
 .form-signin {
     width: 100%;
     max-width: 60%;

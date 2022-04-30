@@ -25,10 +25,16 @@ export interface Review<T = undefined> extends Schema<T> {
 export interface User<T = undefined> extends Schema<T> {
   _id?: T;
   email: string;
-  password: string; // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
+  password: string; 
   firstName: string;
   lastName: string;
   appointmentIds: Array<string>;
   reviewIds: Array<string>;
   level: string;
+}
+
+
+export interface LoginAttempt {
+  email: string;
+  password: string; // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
 }

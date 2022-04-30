@@ -2,6 +2,7 @@ import express = require('express');
 const router: express.Router = new (express.Router as any)();
 import data from '../data';
 import * as utils from '../utils';
+import xss from 'xss';
 const users = data.users;
 
 // Note: these routes do not yet consider any form of authentication.
@@ -17,12 +18,23 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.get('/login', async (_req, res) => {
+router.route('/login').get(async (_req, res) => {
   try {
     res.render('login', { 'title': 'Login' });
   } catch (e) {
     console.log(e);
     res.status(500).json({ error: e });
+  }
+}).post(async (req, res) => {
+  try {
+    const user = utils.validateLoginAttempt(xss(req.body.email), xss(req.body.password));
+    req.body.password = "";
+    const status = await users.checkUser(user)
+    user.password = "";
+    req.session.user = status._id!;
+    return res.json({ authenticated: true });
+  } catch (e) {
+    res.status(400).json({ error: e });
   }
 });
 

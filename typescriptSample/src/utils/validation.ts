@@ -1,6 +1,4 @@
-import { Appointment } from './types';
-import { Review } from './types';
-import { User } from './types';
+import { Appointment, LoginAttempt, Review, User } from './types';
 import * as utils from './index';
 import { stringify } from 'querystring';
 
@@ -116,5 +114,21 @@ export function validateUser(
     reviewIds: rvwids,
     level: lvl,
   };
+  return usr;
+}
+
+/**
+ * 
+ * @param email 
+ * @param password 
+ * @return {LoginAttempt}
+ */
+export function validateLoginAttempt(email: string, password: string): LoginAttempt {
+  const eml = utils.checkEmail(email, 'user email');
+  const pwd = utils.checkPassword(password);
+  const usr: LoginAttempt = {
+    email: eml,
+    password: pwd // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
+  }
   return usr;
 }
