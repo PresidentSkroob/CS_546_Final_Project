@@ -1,65 +1,75 @@
 * {
-    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+  font-family: 'Helvetica Neue Thin', Arial, Helvetica, sans-serif;
 }
 h1 {
-    size: 50px;
+  size: 50px;
 }
 body {
-    align-items: center; 
-    padding-top: 40px;
-    padding-bottom: 40px;
-    background-color: #f5f5f5;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
 }
 .box {
-    box-sizing: border-box;
-    float: left;
-    width: 33.3%;
-    padding: 50px;
-    margin-top: 3px;
+  box-sizing: border-box;
+  float: left;
+  width: 33.3%;
+  padding: 50px;
+  margin-top: 3px;
 }
 .clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
-#homepage-num1, #homepage-reviews, #homepage-contact, #homepage-about{ 
-    border: 6px solid #ED5A58;
-    padding: 20px;
-    overflow: hidden;
+  content: '';
+  clear: both;
+  display: table;
+}
+#homepage-num1,
+#homepage-reviews,
+#homepage-contact,
+#homepage-about {
+  border: 6px solid #ed5a58;
+  padding: 20px;
+  overflow: hidden;
 }
 #homepage-logo {
-    width: 300px;
-    height: 300px;
-    margin-left: 35px;
-    object-fit: contain;
+  width: 300px;
+  height: 300px;
+  margin-left: 35px;
+  object-fit: contain;
 }
 #homepage-title {
-    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+  font-family: 'Helvetica Neue Thin', Arial, Helvetica, sans-serif;
 }
 #homepage-paragraph {
-    float: right;
+  float: right;
 }
-#homepage-register-button, #homepage-login-button {
-    display: inline-block;
-    font-size: 40px;
+#homepage-register-button,
+#homepage-login-button {
+  display: inline-block;
+  font-size: 40px;
 }
-#homepage-register-label, #homepage-login-label {
-    display: inline-block;
-    font-size: 40px;
+#homepage-register-label,
+#homepage-login-label {
+  display: inline-block;
+  font-size: 40px;
 }
 #homepage-img {
-    float: left;
+  float: left;
 }
 #homepage-desc {
-    float: right;
-    margin-right: 0px;
-    text-align: center;
-    font-size: 60px;
-    display: block;
-    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+  float: right;
+  margin-right: 0px;
+  text-align: center;
+  font-size: 60px;
+  display: block;
+  font-family: 'Helvetica Neue Thin', Arial, Helvetica, sans-serif;
 }
-#homepage-reviews-desc, #homepage-about-desc, #homepage-contact-desc, #homepage-reviews-button, #homepage-about-button, #homepage-contact-button {
-    text-align: center;
-    font-size: 40px;
-    display: inline-block;
+#homepage-reviews-desc,
+#homepage-about-desc,
+#homepage-contact-desc,
+#homepage-reviews-button,
+#homepage-about-button,
+#homepage-contact-button {
+  text-align: center;
+  font-size: 40px;
+  display: inline-block;
 }

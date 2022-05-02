@@ -9,7 +9,7 @@ $(function () {
           email: $('#floatingInput').val().trim(),
           password: $('#floatingPassword').val().trim(),
           firstName: $('#floatingFirstName').val().trim(),
-          lastName: $('#floatingLastName').val().trim()
+          lastName: $('#floatingLastName').val().trim(),
         },
       };
       $.ajax(requestConfig).then((response) => {

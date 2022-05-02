@@ -57,7 +57,8 @@ app.use((req, _res, next) => {
   const route = req.originalUrl;
 
   console.log(
-    `[${ts}]: ${method} ${route} (${!req.session.user ? 'Non-' : ''
+    `[${ts}]: ${method} ${route} (${
+      !req.session.user ? 'Non-' : ''
     }Authenticated User)`
   );
 
@@ -70,12 +71,14 @@ app.use(async (req, res, next) => {
     const usr = await users.getById(req.session.user);
     res.locals.partials.auth = {
       is_auth: true,
+      id: usr._id!,
       firstName: usr.firstName,
-      lastName: usr.lastName
-    }
+      lastName: usr.lastName,
+      has_perms: usr.level === 'admin',
+    };
   }
   next();
-})
+});
 
 configRoutes(app);
 

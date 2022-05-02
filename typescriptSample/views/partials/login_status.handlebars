@@ -1,8 +1,16 @@
-<span class="login-status">
-  {{#if partials.auth.is_auth}}
+{{#if partials.auth.is_auth}}
+  {{#if partials.auth.has_perms}}
+    <span class='portal'>
+      <a href='users/private'>Admin Portal</a>
+    </span>
+  {{/if}}
+{{/if}}
+{{#if partials.auth.is_auth}}
+  <span class='account'><a href="/users/{{partials.auth.id}}">Account</a></span>
+  <span class='login-status'>
     Welcome
     {{partials.auth.firstName}}
     {{partials.auth.lastName}}
-    <a href='/users/logout' id="logout-url">Logout</a>
-  {{/if}}
-</span>
+    <a href='/users/logout' id='logout-url'>Logout</a>
+  </span>
+{{/if}}

@@ -61,7 +61,7 @@ export function validateReview(
 ): Review {
   const pid = utils.checkId(posterId, 'poster');
   const hid = utils.checkId(hairdresserId, 'hairdresser');
- // const aid = utils.checkId(appointmentId, 'appointment');
+  // const aid = utils.checkId(appointmentId, 'appointment');
   const bdy = utils.checkString(body, 'body');
   const rtg = utils.checkNumber(rating, 1, 5, 'rating');
 
@@ -118,17 +118,20 @@ export function validateUser(
 }
 
 /**
- * 
- * @param email 
- * @param password 
+ *
+ * @param email
+ * @param password
  * @return {LoginAttempt}
  */
-export function validateLoginAttempt(email: string, password: string): LoginAttempt {
+export function validateLoginAttempt(
+  email: string,
+  password: string
+): LoginAttempt {
   const eml = utils.checkEmail(email, 'user email');
   const pwd = utils.checkPassword(password);
   const usr: LoginAttempt = {
     email: eml,
-    password: pwd // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
-  }
+    password: pwd, // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
+  };
   return usr;
 }
