@@ -91,9 +91,9 @@ export function validateUser(
   password: string,
   firstName: string,
   lastName: string,
-  appointmentIds: Array<string>,
-  reviewIds: Array<string>,
-  level: string
+  appointmentIds: Array<string> = [],
+  reviewIds: Array<string> = [],
+  level: string = 'user'
 ): User {
   const eml = utils.checkEmail(email, 'user email');
   const hpwd = utils.checkPassword(password);

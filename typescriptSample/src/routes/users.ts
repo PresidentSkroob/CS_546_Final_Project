@@ -38,7 +38,14 @@ router.route('/login').get(async (_req, res) => {
   }
 });
 
-router.post('/signup', async (req, res) => {
+router.route('/signup').get(async (_req, res) => {
+  try {
+    res.render('signup', { 'title': 'Signup' });
+  } catch (e) {
+    console.log(e);
+    res.status(500).json({ error: e });
+  }
+}).post(async (req, res) => {
   try {
     const b = req.body;
     console.log(
@@ -46,20 +53,18 @@ router.post('/signup', async (req, res) => {
       b.password,
       b.firstName,
       b.lastName,
-      b.appointmentIds,
-      b.reviewIds,
-      b.level
     );
     const usr = utils.validateUser(
-      b.email,
-      b.password,
-      b.firstName,
-      b.lastName,
-      b.appointmentIds,
-      b.reviewIds,
-      b.level
+      xss(b.email),
+      xss(b.password),
+      xss(b.firstName),
+      xss(b.lastName),
     );
-    res.json(await users.create(usr));
+    b.password = "";
+    const status = await users.create(usr);
+    usr.password = "";
+    req.session.user = status._id!;
+    return res.json({ authenticated: true });
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
