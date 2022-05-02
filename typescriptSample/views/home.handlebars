@@ -1,7 +1,38 @@
-<h1>C'est La Vie Salon</h1>
+<link href='/public/css/homepage.css' rel='stylesheet' />
+<h1 id="homepage-title">C'est La Vie Salon</h1>
 
-<div>
-  <p>
-    Welcome to C'est La Vie Hair Salon!
-  </p>
+
+<div id="homepage-num1">
+  <div id="homepage-img">
+    <img id="homepage-logo" src="../public/images/Logo.png">
+  </div>
+
+  <div id="homepage-paragraph">
+    <p id="homepage-desc">
+     Welcome to C'est La Vie Hair Salon! <br> World class barbers live here.<br>
+    <label for="homepage-register-button" id="homepage-register-label">New to C'est La Vie?</label>
+    <button id="homepage-register-button" type='button' onclick="location.href = '/users/signup';">Register</button>
+    <label for="homepage-login-button" id="homepage-login-label">Returning?</label>
+    <button id="homepage-login-button" type='button' onclick="location.href = '/users/login?';">Login</button>
+    </p>
+  </div>
+</div>
+
+<div class="clearfix">
+  <div class="box" id="homepage-reviews">
+      <p id="homepage-reviews-desc">
+        Our clients speak the truth.</p>
+      <button id="homepage-reviews-button" type="button" onclick="location.href = '/reviews';">Read our reviews</button>
+  </div>
+
+  <div class="box" id="homepage-about">
+      <p id="homepage-about-desc">
+        Who are we?</p>
+      <button id="homepage-about-button" type="button" onclick="location.href = '/about';">About Us</button>
+  </div>
+
+  <div class="box" id="homepage-contact">
+    <p id="homepage-contact-desc">Questions? Concerns?</p>
+    <button id="homepage-contact-button" type="button" onclick="location.href = '/contact';">Contact Us!</button>
+  </div>
 </div>

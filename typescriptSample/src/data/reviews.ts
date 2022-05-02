@@ -79,6 +79,24 @@ async function getAllReviewsSortedByRatingDesc(): Promise<Review<string>[]> {
 }
 
 /**
+ * Gets all of the reviews and returns them sorted by rating ascending
+ *
+ * @return {Promise<Review<string>[]>} - The reviews sorted by rating.
+ */
+ async function getAllReviewsSortedByRatingAsc(): Promise<Review<string>[]> {
+	const reviewCollection = await reviews();
+	const foundReviews = (await reviewCollection
+	  .find()
+	  .sort({ rating: 1 })
+	  .toArray()) as Array<Review<ObjectId | string>>;
+  
+	foundReviews.forEach((elem) => {
+	  elem._id = elem._id!.toString();
+	});
+	return foundReviews as Review<string>[];
+  }
+
+/**
  * Gets all reviews which have posterId cid
  *
  * @param cid - The customer/poster id to query by
@@ -118,7 +136,7 @@ async function getAllReviewsByHairdresserId(
       hairdresserId: hid,
     })
     .toArray()) as Review<ObjectId | string>[];
-  if (!foundReviews || foundReviews.length == 0)
+  if (!foundReviews || foundReviews.length === 0)
     throw `Error: no review found with hairdresser id ${hid}`;
   foundReviews.forEach((elem) => {
     elem._id = elem._id!.toString();
@@ -126,11 +144,33 @@ async function getAllReviewsByHairdresserId(
   return foundReviews as Review<string>[];
 }
 
+async function getReviewsBySearchTerm(
+	searchTerm: string
+): Promise<Review<string>[]> { 
+	searchTerm = utils.checkString(searchTerm, 'review search term');
+	let regex = new RegExp(searchTerm, 'i');
+	const reviewCollection = await reviews();
+	let foundReviews = (await reviewCollection
+		.find({
+			body: { $regex: regex }
+		}).toArray()) as Review<ObjectId | string>[];
+
+	if(!foundReviews || foundReviews.length === 0)
+
+	  throw `Error: no reviews found with term ${searchTerm}`;
+	foundReviews.forEach((elem) => {
+		elem._id = elem._id!.toString();
+	});
+	return foundReviews as Review<string>[];
+}
+
 export = {
   getById,
   create,
   getAll,
   getAllReviewsSortedByRatingDesc,
+  getAllReviewsSortedByRatingAsc,
   getAllReviewsByCustomerId,
   getAllReviewsByHairdresserId,
+  getReviewsBySearchTerm
 };

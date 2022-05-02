@@ -23,6 +23,9 @@ app.use((_req, res, next) => {
     { navTitle: 'Home', navLink: '/' },
     { navTitle: 'Login', navLink: '/users/login' },
     { navTitle: 'Signup', navLink: '/users/signup' },
+	  { navTitle: 'Reviews', navLink: '/reviews/' },
+    { navTitle: 'Contact Us', navLink: '/contact/' },
+    { navTitle: 'About Us', navLink: '/about/' },
   ];
   next();
 });
