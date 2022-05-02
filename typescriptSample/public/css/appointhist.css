@@ -1,0 +1,7 @@
+* {
+    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+}
+
+table, th, td {
+    border: 1px solid black;
+}

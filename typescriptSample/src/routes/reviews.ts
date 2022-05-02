@@ -10,7 +10,6 @@ router.get('/', async (req, res) => {
   try {
     const foundReviews = await reviews.getAll();
     const relevantInformation = [];
-
     for (let i = 0; i < foundReviews.length; i++) {
       const foundCustomer = await users.getById(foundReviews[i].posterId);
       const foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
