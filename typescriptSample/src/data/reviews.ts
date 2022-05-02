@@ -52,9 +52,7 @@ async function create(review: Review): Promise<Review<string>> {
 
   if (!newInsertInformation.insertedId || !newInsertInformation.acknowledged)
     throw `Error: Review insertion failed!`;
-  let foundReview = (await getById(
-    newInsertInformation.insertedId.toString()
-  )) as Review<string>;
+  const foundReview = await getById(newInsertInformation.insertedId.toString());
   await users.addReviewByUserId(foundReview);
 
   return getById(newInsertInformation.insertedId.toString());
@@ -83,23 +81,23 @@ async function getAllReviewsSortedByRatingDesc(): Promise<Review<string>[]> {
  *
  * @return {Promise<Review<string>[]>} - The reviews sorted by rating.
  */
- async function getAllReviewsSortedByRatingAsc(): Promise<Review<string>[]> {
-	const reviewCollection = await reviews();
-	const foundReviews = (await reviewCollection
-	  .find()
-	  .sort({ rating: 1 })
-	  .toArray()) as Array<Review<ObjectId | string>>;
-  
-	foundReviews.forEach((elem) => {
-	  elem._id = elem._id!.toString();
-	});
-	return foundReviews as Review<string>[];
-  }
+async function getAllReviewsSortedByRatingAsc(): Promise<Review<string>[]> {
+  const reviewCollection = await reviews();
+  const foundReviews = (await reviewCollection
+    .find()
+    .sort({ rating: 1 })
+    .toArray()) as Array<Review<ObjectId | string>>;
+
+  foundReviews.forEach((elem) => {
+    elem._id = elem._id!.toString();
+  });
+  return foundReviews as Review<string>[];
+}
 
 /**
  * Gets all reviews which have posterId cid
  *
- * @param cid - The customer/poster id to query by
+ * @param {string} cid - The customer/poster id to query by
  * @return {Promise<Review<string>[]>} - A promise for the reviews
  */
 async function getAllReviewsByCustomerId(
@@ -107,7 +105,7 @@ async function getAllReviewsByCustomerId(
 ): Promise<Review<string>[]> {
   cid = utils.checkId(cid, 'customer');
   const reviewCollection = await reviews();
-  let foundReviews = (await reviewCollection
+  const foundReviews = (await reviewCollection
     .find({
       posterId: cid,
     })
@@ -123,7 +121,7 @@ async function getAllReviewsByCustomerId(
 /**
  * Gets all reviews which have hairdresserId hid
  *
- * @param hid - The hairdresser id to query by
+ * @param {string} hid - The hairdresser id to query by
  * @return {Promise<Review<string>[]>} - A promise for the reviews
  */
 async function getAllReviewsByHairdresserId(
@@ -131,7 +129,7 @@ async function getAllReviewsByHairdresserId(
 ): Promise<Review<string>[]> {
   hid = utils.checkId(hid, 'hairdresser');
   const reviewCollection = await reviews();
-  let foundReviews = (await reviewCollection
+  const foundReviews = (await reviewCollection
     .find({
       hairdresserId: hid,
     })
@@ -145,23 +143,23 @@ async function getAllReviewsByHairdresserId(
 }
 
 async function getReviewsBySearchTerm(
-	searchTerm: string
-): Promise<Review<string>[]> { 
-	searchTerm = utils.checkString(searchTerm, 'review search term');
-	let regex = new RegExp(searchTerm, 'i');
-	const reviewCollection = await reviews();
-	let foundReviews = (await reviewCollection
-		.find({
-			body: { $regex: regex }
-		}).toArray()) as Review<ObjectId | string>[];
+  searchTerm: string
+): Promise<Review<string>[]> {
+  searchTerm = utils.checkString(searchTerm, 'review search term');
+  const regex = new RegExp(searchTerm, 'i');
+  const reviewCollection = await reviews();
+  const foundReviews = (await reviewCollection
+    .find({
+      body: { $regex: regex },
+    })
+    .toArray()) as Review<ObjectId | string>[];
 
-	if(!foundReviews || foundReviews.length === 0)
-
-	  throw `Error: no reviews found with term ${searchTerm}`;
-	foundReviews.forEach((elem) => {
-		elem._id = elem._id!.toString();
-	});
-	return foundReviews as Review<string>[];
+  if (!foundReviews || foundReviews.length === 0)
+    throw `Error: no reviews found with term ${searchTerm}`;
+  foundReviews.forEach((elem) => {
+    elem._id = elem._id!.toString();
+  });
+  return foundReviews as Review<string>[];
 }
 
 export = {
@@ -172,5 +170,5 @@ export = {
   getAllReviewsSortedByRatingAsc,
   getAllReviewsByCustomerId,
   getAllReviewsByHairdresserId,
-  getReviewsBySearchTerm
+  getReviewsBySearchTerm,
 };

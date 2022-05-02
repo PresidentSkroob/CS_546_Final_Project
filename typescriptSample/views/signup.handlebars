@@ -10,7 +10,25 @@
       height='57'
     />
     <h1 class='h3 mb-3 fw-normal'>C'est La Vie</h1>
-
+    
+    <div class='form-floating'>
+      <input
+        type='text'
+        class='form-control'
+        id='floatingFirstName'
+        placeholder='First Name'
+      />
+      <label for='floatingFirstName'>First Name</label>
+    </div>
+    <div class='form-floating'>
+      <input
+        type='text'
+        class='form-control'
+        id='floatingLastName'
+        placeholder='Last Name'
+      />
+      <label for='floatingLastName'>Last Name</label>
+    </div>
     <div class='form-floating'>
       <input
         type='email'
@@ -36,12 +54,12 @@
         Remember me
       </label>
     </div>
-    <button class='w-100 btn btn-lg btn-primary' type='submit' id='login-btn'>
-      Sign in
+    <button class='w-100 btn btn-lg btn-primary' type='submit' id='signup-btn'>
+      Sign up
     </button>
     <p class='mt-5 mb-3 text-muted'>&copy; 2022 - FuBAR Productions</p>
   </form>
-  <a href="/users/signup">Don't have an account yet? Click here!</a>
+  <a href="/users/login">Have an account already? Click here!</a>
 </div>
 
-<script src="/public/js/login.js" defer></script>
+<script src="/public/js/signup.js" defer></script>

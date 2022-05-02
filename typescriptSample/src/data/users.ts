@@ -1,7 +1,7 @@
 import { users } from '../config/mongoCollections';
 import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
-import { User,LoginAttempt } from '../utils';
+import { User, LoginAttempt } from '../utils';
 import { Review } from '../utils';
 import { Appointment } from '../utils';
 import bcrypt from 'bcrypt'; // npm install --save @types/bcrypt
@@ -39,21 +39,23 @@ async function getById(id: string): Promise<User<string>> {
   return utils.idToStr(foundUser) as User<string>;
 }
 
-async function getByFirstAndLast(first: string, last: string): Promise<User<string>> {
-	first = utils.checkString(first, "first name");
-	let firstRegex = new RegExp(first, 'i');
-	last = utils.checkString(last, "last name");
-	let lastRegex = new RegExp(last, 'i');
-	const userCollection = await users();
-	const foundUser = await userCollection.findOne({
-		$and: [
-		{ firstName: { $regex: firstRegex } },
-		{ lastName: { $regex: lastRegex } }
-		]
-
-	}) as User<ObjectId | string>;
-	if (!foundUser) throw `Error: no user found with name ${first} ${last}`;
-	return utils.idToStr(foundUser) as User<string>;
+async function getByFirstAndLast(
+  first: string,
+  last: string
+): Promise<User<string>> {
+  first = utils.checkString(first, 'first name');
+  const firstRegex = new RegExp(first, 'i');
+  last = utils.checkString(last, 'last name');
+  const lastRegex = new RegExp(last, 'i');
+  const userCollection = await users();
+  const foundUser = (await userCollection.findOne({
+    $and: [
+      { firstName: { $regex: firstRegex } },
+      { lastName: { $regex: lastRegex } },
+    ],
+  })) as User<ObjectId | string>;
+  if (!foundUser) throw `Error: no user found with name ${first} ${last}`;
+  return utils.idToStr(foundUser) as User<string>;
 }
 
 /**
@@ -85,7 +87,7 @@ async function create(user: User): Promise<User<string>> {
  * @param {User} user - User to check
  * @return {Promise<User<string>>}- A promise for the found user.
  */
-async function checkUser(user: User|LoginAttempt): Promise<User<string>> {
+async function checkUser(user: User | LoginAttempt): Promise<User<string>> {
   const userCollection = await users();
   const foundUser = (await userCollection.findOne({
     email: user.email,
@@ -158,7 +160,7 @@ async function addAppointmentByUserId(
     !updatedInformationHairdresser
   )
     throw `Error: Appointment addition to hairdresser failed`;
-  let modifiedUsers = (await userCollection
+  const modifiedUsers = (await userCollection
     .find({
       _id:
         new ObjectId(appointment.customerId) ||

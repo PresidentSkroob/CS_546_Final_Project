@@ -52,9 +52,9 @@ async function create(appt: Appointment): Promise<Appointment<string>> {
   const newInsertInformation = await appointmentCollection.insertOne(appt);
   if (!newInsertInformation.insertedId || !newInsertInformation.acknowledged)
     throw 'Error: Insert failed!';
-  let foundAppointment = (await get(
+  const foundAppointment = await get(
     newInsertInformation.insertedId.toString()
-  )) as Appointment<string>;
+  );
   users.addAppointmentByUserId(foundAppointment);
 
   return get(newInsertInformation.insertedId.toString());
@@ -63,7 +63,7 @@ async function create(appt: Appointment): Promise<Appointment<string>> {
 /**
  * Gets all appointments which have customerId cid
  *
- * @param cid - The customer id to query by
+ * @param {string} cid - The customer id to query by
  * @return {Promise<Appointment<string>[]>} - A promise for the appointments
  */
 async function getAllApptsByCustomerId(
@@ -71,7 +71,7 @@ async function getAllApptsByCustomerId(
 ): Promise<Appointment<string>[]> {
   cid = utils.checkId(cid, 'customer');
   const appointmentCollection = await appointments();
-  let foundAppointments = (await appointmentCollection
+  const foundAppointments = (await appointmentCollection
     .find({
       customerId: cid,
     })
@@ -87,7 +87,7 @@ async function getAllApptsByCustomerId(
 /**
  * Gets all appointments which have hairdresserId hid
  *
- * @param hid - The hairdresser id to query by
+ * @param {string} hid - The hairdresser id to query by
  * @return {Promise<Appointment<string>[]>} - A promise for the appointments
  */
 async function getAllApptsByHairdresserId(
@@ -95,7 +95,7 @@ async function getAllApptsByHairdresserId(
 ): Promise<Appointment<string>[]> {
   hid = utils.checkId(hid, 'hairdresser');
   const appointmentCollection = await appointments();
-  let foundAppointments = (await appointmentCollection
+  const foundAppointments = (await appointmentCollection
     .find({
       hairdresserId: hid,
     })

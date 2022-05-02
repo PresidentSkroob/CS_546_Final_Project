@@ -1,26 +1,25 @@
 * {
-    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+  font-family: 'Helvetica Neue Thin', Arial, Helvetica, sans-serif;
 }
 
 #company-logo {
-	width: 300px;
-    height: 300px;
-    margin: 35px;
-    object-fit: contain;
+  width: 300px;
+  height: 300px;
+  margin: 35px;
+  object-fit: contain;
 }
 
-#top-div { 
-	border: 6px solid #ED5A58;
-    padding: 20px;
-    overflow: hidden;
+#top-div {
+  border: 6px solid #ed5a58;
+  padding: 20px;
+  overflow: hidden;
 }
 
-#form-div { 
-	padding: 8px;
-
+#form-div {
+  padding: 8px;
 }
 
-.error-div { 
-	color: red;
-	font-weight: bold;
+.error-div {
+  color: red;
+  font-weight: bold;
 }

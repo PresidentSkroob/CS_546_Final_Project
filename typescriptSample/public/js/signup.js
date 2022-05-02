@@ -1,13 +1,15 @@
 $(function () {
   $('#login-form button').click(function (ev) {
     ev.preventDefault(); // cancel form submission
-    if ($(ev.target).attr('id') == 'login-btn') {
+    if ($(ev.target).attr('id') == 'signup-btn') {
       const requestConfig = {
         method: 'POST',
-        url: '/users/login',
+        url: '/users/signup',
         data: {
           email: $('#floatingInput').val().trim(),
           password: $('#floatingPassword').val().trim(),
+          firstName: $('#floatingFirstName').val().trim(),
+          lastName: $('#floatingLastName').val().trim(),
         },
       };
       $.ajax(requestConfig).then((response) => {

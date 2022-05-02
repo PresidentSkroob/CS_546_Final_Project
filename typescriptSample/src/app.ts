@@ -6,6 +6,8 @@ const staticFolder = express.static(__dirname + '/../public');
 import session from 'express-session';
 import configRoutes from './routes';
 import { engine } from 'express-handlebars';
+import data from './data';
+const users = data.users;
 
 /* eslint-disable */
 // This is a truly stupid solution, I should find something better
@@ -22,10 +24,10 @@ app.use((_req, res, next) => {
   res.locals.partials.navItems = [
     { navTitle: 'Home', navLink: '/' },
     { navTitle: 'Login', navLink: '/users/login' },
-	  { navTitle: 'Reviews', navLink: '/reviews/' },
+    { navTitle: 'Signup', navLink: '/users/signup' },
+    { navTitle: 'Reviews', navLink: '/reviews/' },
     { navTitle: 'Contact Us', navLink: '/contact/' },
     { navTitle: 'About Us', navLink: '/about/' },
-    
   ];
   next();
 });
@@ -55,10 +57,26 @@ app.use((req, _res, next) => {
   const route = req.originalUrl;
 
   console.log(
-    `[${ts}]: ${method} ${route} (${!req.session.user ? 'Non-' : ''
+    `[${ts}]: ${method} ${route} (${
+      !req.session.user ? 'Non-' : ''
     }Authenticated User)`
   );
 
+  next();
+});
+
+app.use(async (req, res, next) => {
+  if (!res.locals.partials) res.locals.partials = {};
+  if (req.session.user) {
+    const usr = await users.getById(req.session.user);
+    res.locals.partials.auth = {
+      is_auth: true,
+      id: usr._id!,
+      firstName: usr.firstName,
+      lastName: usr.lastName,
+      has_perms: usr.level === 'admin',
+    };
+  }
   next();
 });
 

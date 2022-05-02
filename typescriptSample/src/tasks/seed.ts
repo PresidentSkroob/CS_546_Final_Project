@@ -18,7 +18,7 @@ async function main() {
   const db = await dbConnection.connectToDb();
   await db.dropDatabase();
 
-  let usr = await users.create({
+  const usr = await users.create({
     email: 'johnsmith@gmail.com',
     password: 'supersecret',
     firstName: 'John',
@@ -28,7 +28,7 @@ async function main() {
     level: 'user',
   });
 
-  let hrdsr = await users.create({
+  const hrdsr = await users.create({
     email: 'alexandergomez@gmail.com',
     password: 'mypassword',
     firstName: 'Alexander',
@@ -75,7 +75,7 @@ async function main() {
   const review1 = await reviews.create({
     posterId: usr._id!.toString(),
     hairdresserId: hrdsr._id!.toString(),
-    //appointmentId: appt1._id!.toString(),
+    // appointmentId: appt1._id!.toString(),
     body: 'First review',
     rating: 4.6,
   });
@@ -83,7 +83,7 @@ async function main() {
   const review2 = await reviews.create({
     posterId: usr._id!.toString(),
     hairdresserId: hrdsr._id!.toString(),
-    //appointmentId: appt2._id!.toString(),
+    // appointmentId: appt2._id!.toString(),
     body: 'Second review',
     rating: 1.3,
   });
@@ -91,7 +91,7 @@ async function main() {
   const review3 = await reviews.create({
     posterId: usr._id!.toString(),
     hairdresserId: hrdsr._id!.toString(),
-    //appointmentId: appt3._id!.toString(),
+    // appointmentId: appt3._id!.toString(),
     body: 'third review',
     rating: 4.8,
   });
