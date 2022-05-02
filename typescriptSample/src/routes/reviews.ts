@@ -24,7 +24,7 @@ router.get('/', async (req, res) => {
 		};
 		relevantInformation.push(cur);
 	}
-	res.render('reviews', { reviews: relevantInformation });
+	res.render('reviews', { reviews: relevantInformation, 'title': "Reviews" });
     // res.json(foundReviews);
   } catch (e) {
     console.log(e);
