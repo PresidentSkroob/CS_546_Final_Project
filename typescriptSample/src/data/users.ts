@@ -44,9 +44,9 @@ async function getByFirstAndLast(
   last: string
 ): Promise<User<string>> {
   first = utils.checkString(first, 'first name');
-  let firstRegex = new RegExp(first, 'i');
+  const firstRegex = new RegExp(first, 'i');
   last = utils.checkString(last, 'last name');
-  let lastRegex = new RegExp(last, 'i');
+  const lastRegex = new RegExp(last, 'i');
   const userCollection = await users();
   const foundUser = (await userCollection.findOne({
     $and: [
@@ -160,7 +160,7 @@ async function addAppointmentByUserId(
     !updatedInformationHairdresser
   )
     throw `Error: Appointment addition to hairdresser failed`;
-  let modifiedUsers = (await userCollection
+  const modifiedUsers = (await userCollection
     .find({
       _id:
         new ObjectId(appointment.customerId) ||

@@ -52,9 +52,7 @@ async function create(review: Review): Promise<Review<string>> {
 
   if (!newInsertInformation.insertedId || !newInsertInformation.acknowledged)
     throw `Error: Review insertion failed!`;
-  const foundReview = (await getById(
-    newInsertInformation.insertedId.toString()
-  ));
+  const foundReview = await getById(newInsertInformation.insertedId.toString());
   await users.addReviewByUserId(foundReview);
 
   return getById(newInsertInformation.insertedId.toString());
@@ -148,9 +146,9 @@ async function getReviewsBySearchTerm(
   searchTerm: string
 ): Promise<Review<string>[]> {
   searchTerm = utils.checkString(searchTerm, 'review search term');
-  let regex = new RegExp(searchTerm, 'i');
+  const regex = new RegExp(searchTerm, 'i');
   const reviewCollection = await reviews();
-  let foundReviews = (await reviewCollection
+  const foundReviews = (await reviewCollection
     .find({
       body: { $regex: regex },
     })

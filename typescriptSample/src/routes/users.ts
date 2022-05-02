@@ -95,26 +95,22 @@ router.route('/private').get(async (req, res) => {
       if (usr.level === 'admin') {
         res.render('admin', { title: `Admin Portal` });
       } else {
-        res
-          .status(403)
-          .render('error', {
-            title: 'Insufficient Permissions',
-            'error-msg':
-              'You do not have sufficient permissions to access this resource.',
-            'error-status': 403,
-          });
+        res.status(403).render('error', {
+          title: 'Insufficient Permissions',
+          'error-msg':
+            'You do not have sufficient permissions to access this resource.',
+          'error-status': 403,
+        });
       }
     } else {
       res.redirect('/users/login');
     }
   } catch (e) {
-    res
-      .status(500)
-      .render('error', {
-        title: 'Server Error',
-        'error-status': 500,
-        'error-msg': e,
-      });
+    res.status(500).render('error', {
+      title: 'Server Error',
+      'error-status': 500,
+      'error-msg': e,
+    });
   }
 });
 
@@ -124,13 +120,11 @@ router.get('/:id', async (req, res) => {
     try {
       _id = utils.checkId(_id, 'user');
     } catch (e) {
-      res
-        .status(404)
-        .render('error', {
-          title: 'Page Not Found',
-          'error-msg': e,
-          'error-status': 404,
-        });
+      res.status(404).render('error', {
+        title: 'Page Not Found',
+        'error-msg': e,
+        'error-status': 404,
+      });
     }
     const usr = await users.getById(_id);
     res.render('user', {
@@ -144,13 +138,11 @@ router.get('/:id', async (req, res) => {
       },
     });
   } catch (e) {
-    res
-      .status(404)
-      .render('error', {
-        title: 'Invalid User ID',
-        'error-msg': e,
-        'error-status': 404,
-      });
+    res.status(404).render('error', {
+      title: 'Invalid User ID',
+      'error-msg': e,
+      'error-status': 404,
+    });
   }
 });
 // router.post('/login', async (req, res) => {

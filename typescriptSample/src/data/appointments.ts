@@ -52,9 +52,9 @@ async function create(appt: Appointment): Promise<Appointment<string>> {
   const newInsertInformation = await appointmentCollection.insertOne(appt);
   if (!newInsertInformation.insertedId || !newInsertInformation.acknowledged)
     throw 'Error: Insert failed!';
-  const foundAppointment = (await get(
+  const foundAppointment = await get(
     newInsertInformation.insertedId.toString()
-  ));
+  );
   users.addAppointmentByUserId(foundAppointment);
 
   return get(newInsertInformation.insertedId.toString());

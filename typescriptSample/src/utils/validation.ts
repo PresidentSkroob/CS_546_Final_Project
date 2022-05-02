@@ -55,7 +55,7 @@ export function validateAppointment(
 export function validateReview(
   posterId: string,
   hairdresserId: string,
-  //appointmentId: string,
+  // appointmentId: string,
   body: string,
   rating: number
 ): Review {
@@ -68,7 +68,7 @@ export function validateReview(
   const revw: Review = {
     posterId: pid,
     hairdresserId: hid,
-    //appointmentId: aid,
+    // appointmentId: aid,
     body: bdy,
     rating: rtg,
   };
