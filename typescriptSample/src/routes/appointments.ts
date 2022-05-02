@@ -119,7 +119,6 @@ router.get('/history/:cid', async (req, res) => {
 
   
     res.render('custappointhis', { appointmentParser, 'title': "Appointment History" });
-    console.log(foundAppointments);
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
