@@ -69,7 +69,7 @@ export function checkNumber(
   if (isNaN(num) || num < min || num > max) {
     throw `parameter "${paramName}" is ill-formed (expected: number between ${min} and ${max})`;
   }
-  return num;
+  return Number(num);
 }
 
 /**

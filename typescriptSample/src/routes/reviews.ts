@@ -92,7 +92,7 @@ router.post('/', async (req, res) => {
 router.get('/high-to-low', async (req, res) => {
   try {
     const foundReviews = await reviews.getAllReviewsSortedByRatingDesc();
-    const relevantInformation = [];
+    let relevantInformation = [];
     for (let i = 0; i < foundReviews.length; i++) {
       const foundCustomer = await users.getById(foundReviews[i].posterId);
       const foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
@@ -118,7 +118,7 @@ router.get('/high-to-low', async (req, res) => {
 router.get('/low-to-high', async (req, res) => {
   try {
     const foundReviews = await reviews.getAllReviewsSortedByRatingAsc();
-    const relevantInformation = [];
+    let relevantInformation = [];
     for (let i = 0; i < foundReviews.length; i++) {
       const foundCustomer = await users.getById(foundReviews[i].posterId);
       const foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
