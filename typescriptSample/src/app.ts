@@ -6,6 +6,8 @@ const staticFolder = express.static(__dirname + '/../public');
 import session from 'express-session';
 import configRoutes from './routes';
 import { engine } from 'express-handlebars';
+import data from './data';
+const users = data.users;
 
 /* eslint-disable */
 // This is a truly stupid solution, I should find something better
@@ -23,7 +25,7 @@ app.use((_req, res, next) => {
     { navTitle: 'Home', navLink: '/' },
     { navTitle: 'Login', navLink: '/users/login' },
     { navTitle: 'Signup', navLink: '/users/signup' },
-	  { navTitle: 'Reviews', navLink: '/reviews/' },
+    { navTitle: 'Reviews', navLink: '/reviews/' },
     { navTitle: 'Contact Us', navLink: '/contact/' },
     { navTitle: 'About Us', navLink: '/about/' },
   ];
@@ -61,6 +63,19 @@ app.use((req, _res, next) => {
 
   next();
 });
+
+app.use(async (req, res, next) => {
+  if (!res.locals.partials) res.locals.partials = {};
+  if (req.session.user) {
+    const usr = await users.getById(req.session.user);
+    res.locals.partials.auth = {
+      is_auth: true,
+      firstName: usr.firstName,
+      lastName: usr.lastName
+    }
+  }
+  next();
+})
 
 configRoutes(app);
 

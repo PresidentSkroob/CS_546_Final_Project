@@ -1,18 +1,17 @@
 $(function () {
-  function onLoad() {
+	$('#logout-url').click((ev) => {
+    ev.preventDefault(); // cancel form submission
     const requestConfig = {
       method: 'GET',
-      url: '/users/status',
+      url: '/users/logout',
       data: {},
     };
     $.ajax(requestConfig).then((response) => {
-			if (response.authenticated) {
-				$('#login-status').show()
+			if (response.success) {
+				$('.login-status').hide();
 			} else {
         err(response.error);
-      }
+			}
     });
-  }
-
-	onLoad();
+  });
 });

@@ -1,7 +1,6 @@
-<nav class='navbar'>
-  <ul>
+  <nav class='navbar'>
     {{#each partials.navItems}}
-      <li><a href='{{navLink}}'>{{navTitle}}</a></li>
+      <a href='{{navLink}}'>{{navTitle}}</a>
     {{/each}}
-  </ul>
-</nav>
+    {{>login_status}}
+  </nav>

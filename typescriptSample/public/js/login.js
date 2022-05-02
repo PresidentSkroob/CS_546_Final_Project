@@ -1,9 +1,7 @@
 $(function () {
   $('#login-form button').click(function (ev) {
     ev.preventDefault(); // cancel form submission
-    console.log('trying?');
     if ($(ev.target).attr('id') == 'login-btn') {
-      //do button 1 thing
       const requestConfig = {
         method: 'POST',
         url: '/users/login',
@@ -19,12 +17,6 @@ $(function () {
           err(response.error);
         }
       });
-    }
-    if ($(this).attr('value') == 'button-two') {
-      alert('Button Two Pressed, NOT SUBMITTING');
-    }
-    if ($(this).attr('value') == 'button-three') {
-      alert('Button Three Pressed, NOT SUBMITTING');
     }
   });
 });

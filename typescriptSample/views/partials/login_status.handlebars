@@ -1,0 +1,8 @@
+<span class="login-status">
+  {{#if partials.auth.is_auth}}
+    Welcome
+    {{partials.auth.firstName}}
+    {{partials.auth.lastName}}
+    <a href='/users/logout' id="logout-url">Logout</a>
+  {{/if}}
+</span>

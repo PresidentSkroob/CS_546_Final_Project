@@ -18,12 +18,15 @@ router.get('/', async (req, res) => {
   }
 });
 
-router.route('/login').get(async (_req, res) => {
+router.route('/login').get(async (req, res) => {
   try {
-    res.render('login', { 'title': 'Login' });
+    if (req.session.user) {
+      return res.redirect('/');
+    } else {
+      return res.render('login', { 'title': 'Login' });  
+    }
   } catch (e) {
-    console.log(e);
-    res.status(500).json({ error: e });
+    return res.status(500).json({ error: e });
   }
 }).post(async (req, res) => {
   try {
@@ -48,12 +51,6 @@ router.route('/signup').get(async (_req, res) => {
 }).post(async (req, res) => {
   try {
     const b = req.body;
-    console.log(
-      b.email,
-      b.password,
-      b.firstName,
-      b.lastName,
-    );
     const usr = utils.validateUser(
       xss(b.email),
       xss(b.password),
@@ -69,6 +66,16 @@ router.route('/signup').get(async (_req, res) => {
     console.log(e);
     res.status(404).json({ error: e });
   }
+});
+
+router.route('/logout').get((req, res) => {
+  try {
+    req.session.user = "";
+    res.json({ success: true });
+  } catch (e) {
+    res.status(500).json({ error: e });
+  }
+
 });
 
 router.get('/:id', async (req, res) => {
