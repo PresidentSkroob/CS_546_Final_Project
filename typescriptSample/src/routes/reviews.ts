@@ -6,31 +6,7 @@ const reviews = data.reviews;
 const users = data.users;
 const appointments = data.appointments;
 
-router.get('/', async (req, res) => {
-  try {
-    const foundReviews = await reviews.getAll();
-    const relevantInformation = [];
-    for (let i = 0; i < foundReviews.length; i++) {
-      const foundCustomer = await users.getById(foundReviews[i].posterId);
-      const foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
-      const customerName = foundCustomer.firstName + ' ' + foundCustomer.lastName;
-      const hairdresserName =
-        foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
-      const cur = {
-        customerName: customerName,
-        hairdresserName: hairdresserName,
-        rating: foundReviews[i].rating,
-        body: foundReviews[i].body,
-      };
-      relevantInformation.push(cur);
-    }
-    res.render('reviews', { reviews: relevantInformation });
-    // res.json(foundReviews);
-  } catch (e) {
-    console.log(e);
-    res.status(404).json({ error: e });
-  }
-});
+
 
 router.get('/create', async (req, res) => {
   try {
@@ -49,7 +25,6 @@ router.get('/create', async (req, res) => {
             id: foundHairdresser._id!,
           });
       }
-      // relevantInformation = [...new Set(relevantInformation)];
       relevantInformation = [
         ...new Map(relevantInformation.map((v) => [v.id, v])).values(),
       ];
@@ -64,23 +39,18 @@ router.get('/create', async (req, res) => {
   }
 });
 
+
+
 router.post('/', async (req, res) => {
   try {
     const b = req.body;
-    console.log(req.session.user, b.hairdressersdrop, b.body, b.reviewrating);
+    // console.log(req.session.user, b.hairdressersdrop, b.body, b.reviewrating);
     const revw = utils.validateReview(
       req.session.user,
       b.hairdressersdrop,
       b.body,
       b.reviewrating
     );
-    // const revw = utils.validateReview(
-    //   b.posterId,
-    //   b.hairdresserId,
-    //   //b.appointmentId,
-    //   b.body,
-    //   b.rating
-    // );
     await reviews.create(revw);
     res.redirect('/reviews');
   } catch (e) {
@@ -88,6 +58,54 @@ router.post('/', async (req, res) => {
     res.status(404).json({ error: e });
   }
 });
+
+// Middleware to populate the list of hairdressers. 
+router.use('*', async(req, res, next)  => {
+	const foundReviews = await reviews.getAll();
+	let allHairdressers = [];
+	for(let i = 0; i < foundReviews.length;i ++) {
+		const foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
+		allHairdressers.push( { name: foundHairdresser.firstName + ' ' + foundHairdresser.lastName,
+								hid: foundHairdresser._id! });
+		
+	}
+	allHairdressers = [
+		...new Map(allHairdressers.map((v) => [v.hid, v])).values()
+	];
+	res.locals.partials.hairdressers = allHairdressers;
+	next();
+
+});
+
+router.get('/', async (req, res) => {
+  try {
+    const foundReviews = await reviews.getAll();
+    const relevantInformation = [];
+    for (let i = 0; i < foundReviews.length; i++) {
+      const foundCustomer = await users.getById(foundReviews[i].posterId);
+      const foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
+      const customerName = foundCustomer.firstName + ' ' + foundCustomer.lastName;
+      const hairdresserName =
+        foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
+      const cur = {
+        customerName: customerName,
+        hairdresserName: hairdresserName,
+        rating: foundReviews[i].rating,
+        body: foundReviews[i].body,
+      };
+      relevantInformation.push(cur);
+
+    }
+
+    res.render('reviews', { reviews: relevantInformation,
+							hairdressers: res.locals.partials.hairdressers });
+  } catch (e) {
+    console.log(e);
+    res.status(404).json({ error: e });
+  }
+});
+
+
 
 router.get('/high-to-low', async (req, res) => {
   try {
@@ -107,8 +125,8 @@ router.get('/high-to-low', async (req, res) => {
       };
       relevantInformation.push(cur);
     }
-    res.render('reviews', { reviews: relevantInformation });
-    // res.json(foundReviews);
+    res.render('reviews', { reviews: relevantInformation,
+		hairdressers: res.locals.partials.hairdressers  });
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
@@ -133,8 +151,8 @@ router.get('/low-to-high', async (req, res) => {
       };
       relevantInformation.push(cur);
     }
-    res.render('reviews', { reviews: relevantInformation });
-    // res.json(foundReviews);
+    res.render('reviews', { reviews: relevantInformation,
+		hairdressers: res.locals.partials.hairdressers });
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
@@ -162,11 +180,11 @@ router.post('/searchreviews', async (req, res) => {
       };
       relevantInformation.push(cur);
     }
-    res.render('reviews', { reviews: relevantInformation });
+    res.render('reviews', { reviews: relevantInformation,
+		hairdressers: res.locals.partials.hairdressers });
   } catch (e) {
     console.log(e);
-    res.status(400).render('reviews', { error: e });
-    // res.status(404).json({ error: e });
+    res.status(400).render('reviews', { hairdressers: res.locals.partials.hairdressers, error: e });
   }
 });
 
@@ -179,6 +197,32 @@ router.get('/userc/:cid', async (req, res) => {
     console.log(e);
     res.status(404).json({ error: e });
   }
+});
+
+router.get('/byhairdresser/', async(req, res) => {
+	try { 
+		const foundReviews = await reviews.getAllReviewsByHairdresserId(req.query.hairdressersdrop!.toString());
+		const relevantInformation = [];
+		for (let i = 0; i < foundReviews.length; i++) {
+			const foundCustomer = await users.getById(foundReviews[i].posterId);
+			const foundHairdresser = await users.getById(foundReviews[i].hairdresserId);
+			const customerName = foundCustomer.firstName + ' ' + foundCustomer.lastName;
+			const hairdresserName =
+			  foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
+			const cur = {
+			  customerName: customerName,
+			  hairdresserName: hairdresserName,
+			  rating: foundReviews[i].rating,
+			  body: foundReviews[i].body,
+			};
+			relevantInformation.push(cur);
+		  }
+		res.render('reviews', { reviews: relevantInformation,
+			hairdressers: res.locals.partials.hairdressers });
+	} catch (e) {
+		console.log(e);
+		res.status(404).json({ error: e });
+	}
 });
 
 router.get('/userh/:hid', async (req, res) => {
