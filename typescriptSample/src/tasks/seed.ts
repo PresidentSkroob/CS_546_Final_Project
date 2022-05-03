@@ -8,17 +8,12 @@ const users = data.users;
 
 /**
  * Seeds the database before running the main webserver
- *
- *
- * Note: Currently the seeded appointment and review are not added
- * John Smith's respective arrays. This will have to be done on the
- * backend.
  */
 async function main() {
   const db = await dbConnection.connectToDb();
   await db.dropDatabase();
 
-  const usr = await users.create({
+  const usr1 = await users.create({
     email: 'johnsmith@gmail.com',
     password: 'supersecret',
     firstName: 'John',
@@ -28,7 +23,17 @@ async function main() {
     level: 'user',
   });
 
-  const hrdsr = await users.create({
+  const usr2 = await users.create({
+    email: 'almacorvin@gmail.com',
+    password: 'almacorvin22',
+    firstName: 'Alma',
+    lastName: 'Corvin',
+    appointmentIds: [],
+    reviewIds: [],
+    level: 'user',
+  });
+
+  const hrdsr1 = await users.create({
     email: 'alexandergomez@gmail.com',
     password: 'mypassword',
     firstName: 'Alexander',
@@ -38,11 +43,21 @@ async function main() {
     level: 'admin',
   });
 
+  const hrdsr2 = await users.create({
+    email: 'zachroho@gmail.com',
+    password: 'thelettereight',
+    firstName: 'Zachary',
+    lastName: 'Rohovit',
+    appointmentIds: [],
+    reviewIds: [],
+    level: 'admin',
+  });
+
   console.log('Done seeding users in database');
 
   const appt1 = await appointments.create({
-    customerId: usr._id!.toString(),
-    hairdresserId: hrdsr._id!.toString(),
+    customerId: usr1._id!.toString(),
+    hairdresserId: hrdsr1._id!.toString(),
     startTime: new Date('2022-03-12 12:00 EST').getTime(),
     endTime: new Date('2022-03-12 13:00 EST').getTime(),
     service: 'haircut',
@@ -51,8 +66,8 @@ async function main() {
   });
 
   const appt2 = await appointments.create({
-    customerId: usr._id!.toString(),
-    hairdresserId: hrdsr._id!.toString(),
+    customerId: usr1._id!.toString(),
+    hairdresserId: hrdsr1._id!.toString(),
     startTime: new Date('2022-03-12 13:00 EST').getTime(),
     endTime: new Date('2022-03-12 14:00 EST').getTime(),
     service: 'haircut',
@@ -61,8 +76,8 @@ async function main() {
   });
 
   const appt3 = await appointments.create({
-    customerId: usr._id!.toString(),
-    hairdresserId: hrdsr._id!.toString(),
+    customerId: usr1._id!.toString(),
+    hairdresserId: hrdsr1._id!.toString(),
     startTime: new Date('2022-03-12 14:00 EST').getTime(),
     endTime: new Date('2022-03-12 15:00 EST').getTime(),
     service: 'haircut',
@@ -70,27 +85,37 @@ async function main() {
     price: 14.99,
   });
 
+   const appt4 = await appointments.create({
+    customerId: usr2._id!.toString(),
+    hairdresserId: hrdsr2._id!.toString(),
+    startTime: new Date('2022-03-12 15:00 EST').getTime(),
+    endTime: new Date('2022-03-12 16:00 EST').getTime(),
+    service: 'haircut',
+    comments: 'Fourth appointment',
+    price: 999.99,
+  });
+
   console.log('Done seeding appointments in database');
 
   const review1 = await reviews.create({
-    posterId: usr._id!.toString(),
-    hairdresserId: hrdsr._id!.toString(),
+    posterId: usr1._id!.toString(),
+    hairdresserId: hrdsr1._id!.toString(),
     // appointmentId: appt1._id!.toString(),
     body: 'First review',
     rating: 4.6,
   });
 
   const review2 = await reviews.create({
-    posterId: usr._id!.toString(),
-    hairdresserId: hrdsr._id!.toString(),
+    posterId: usr1._id!.toString(),
+    hairdresserId: hrdsr1._id!.toString(),
     // appointmentId: appt2._id!.toString(),
     body: 'Second review',
     rating: 1.3,
   });
 
   const review3 = await reviews.create({
-    posterId: usr._id!.toString(),
-    hairdresserId: hrdsr._id!.toString(),
+    posterId: usr1._id!.toString(),
+    hairdresserId: hrdsr1._id!.toString(),
     // appointmentId: appt3._id!.toString(),
     body: 'third review',
     rating: 4.8,

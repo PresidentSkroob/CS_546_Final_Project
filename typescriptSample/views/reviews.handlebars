@@ -2,7 +2,7 @@
 	<link href='/public/css/reviews.css' rel='stylesheet' />
     <h1>Reviews</h1>
 	<div id="top-div">
-		<img id="company-logo" src="../public/images/Logo.png">
+		<img id="company-logo" src="/public/images/Logo.png">
     	<h3><a href="/reviews/create">Enjoy our service? Leave a review!</a></h3>
 	</div>
     <hr class="col-3 col-md-2 mb-5">
@@ -22,6 +22,16 @@
 			<label for="searchReviewTerm">Search Term:</label>
             <input id="searchReviewTerm" type="text" name="searchReviewTerm" />
             <button type="submit">Search</button>
+		</form>
+
+		<form action="/reviews/byhairdresser/" method="GET">
+			<label for="hairdressersdrop">Search By Hairdresser</label>
+			<select id="hairdressersdrop" name="hairdressersdrop">
+				{{#each hairdressers}}
+					<option value="{{this.hid}}" class="hairdresser-option">{{this.name}}</option>
+				{{/each}}
+			</select>
+			<button type="submit">Search</button>
 		</form>
 
 	</div>
@@ -46,9 +56,4 @@
       </ul>
     </div>
 
-    <script
-      src="/docs/5.1/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-      crossorigin="anonymous"
-    ></script>
 </div>
