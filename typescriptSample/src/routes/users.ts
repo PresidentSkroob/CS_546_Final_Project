@@ -127,16 +127,30 @@ router.get('/:id', async (req, res) => {
       });
     }
     const usr = await users.getById(_id);
-    res.render('user', {
-      title: `${usr.firstName}'s Account`,
-      user: {
-        firstName: usr.firstName,
-        lastName: usr.lastName,
-        email: usr.email,
-        appointments: await appointments.getAllApptsByCustomerId(usr._id!),
-        reviews: reviews.getAllReviewsByCustomerId(usr._id!),
-      },
-    });
+    if (usr.level === 'user') {
+      res.render('user', {
+        title: `${usr.firstName}'s Account`,
+        user: {
+          firstName: usr.firstName,
+          lastName: usr.lastName,
+          email: usr.email,
+          appointments: await appointments.getAllApptsByCustomerId(usr._id!),
+          reviews: await reviews.getAllReviewsByCustomerId(usr._id!),
+        },
+      });
+    } else {
+      res.render('user', {
+        title: `${usr.firstName}'s Account`,
+        user: {
+          firstName: usr.firstName,
+          lastName: usr.lastName,
+          email: usr.email,
+          appointments: await appointments.getAllApptsByHairdresserId(usr._id!),
+          reviews: await reviews.getAllReviewsByHairdresserId(usr._id!),
+        },
+      });
+
+    }
   } catch (e) {
     res.status(404).render('error', {
       title: 'Invalid User ID',
