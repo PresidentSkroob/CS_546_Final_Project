@@ -16,3 +16,16 @@ $(function () {
     });
   });
 });
+
+/**
+ * Displays an error message to the user
+ *
+ * @param {string} msg - error message to show
+ */
+function err(msg) {
+  if (typeof msg !== 'string' || msg.length === 0) {
+    msg = 'invalid error message';
+  }
+  $('.error-msg').text(msg);
+  $('.error-div').show();
+}
