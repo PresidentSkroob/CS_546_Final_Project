@@ -65,12 +65,12 @@
     </style>
 
     <!-- Custom styles for this template -->
-    <link href="Calendar.css" rel="stylesheet" />
+    <link href="style.css" rel="stylesheet" />
   </head>
   <body>
     <svg xmlns="/docs/5.1/dist/css/bootstrap.min.css" style="display: none">
       <symbol id="check" viewBox="0 0 16 16">
-        <title>Check</title>
+        <title>Calendar Scheduling Page</title>
         <path
           d="M13.854 3.646a.5.5 0 0 1 0 .708l-7 7a.5.5 0 0 1-.708 0l-3.5-3.5a.5.5 0 1 1 .708-.708L6.5 10.293l6.646-6.647a.5.5 0 0 1 .708 0z"
         />
@@ -191,111 +191,76 @@
             </div>
           </div>
         </div>
-
-        <h2 class="display-6 text-center mb-4">Calendar</h2>
+        <div class="calendar">
         <!-- CALENDAR WILL UPDATE BASED ON THE SERVICE SELECTED BY THE USER  -->
-
-        <div class="table-responsive">
-          <table
-            bgcolor="lightgrey"
-            align="center"
-            cellspacing="21"
-            cellpadding="21"
-          >
-            <!-- The tr tag is used to enter 
-            rows in the table -->
-
-            <!-- It is used to give the heading to the
-            table. We can give the heading to the 
-            top and bottom of the table -->
-
-            <caption align="top">
-              <!-- Here we have used the attribute 
-                that is style and we have colored 
-                the sentence to make it better 
-                depending on the web page-->
-            </caption>
-
-            <!-- Here th stands for the heading of the
-            table that comes in the first row-->
-
-            <!-- The text in this table header tag will 
-            appear as bold and is center aligned-->
-
-            <thead>
-              <tr>
-                <!-- Here we have applied inline style 
-                     to make it more attractive-->
-                <th style="color: white; background: purple">Sun</th>
-                <th style="color: white; background: purple">Mon</th>
-                <th style="color: white; background: purple">Tue</th>
-                <th style="color: white; background: purple">Wed</th>
-                <th style="color: white; background: purple">Thu</th>
-                <th style="color: white; background: purple">Fri</th>
-                <th style="color: white; background: purple">Sat</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td>1</td>
-                <td>2</td>
-              </tr>
-              <tr></tr>
-              <tr>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
-                <td>9</td>
-              </tr>
-              <tr>
-                <td>10</td>
-                <td>11</td>
-                <td>12</td>
-                <td>13</td>
-                <td>14</td>
-                <td>15</td>
-                <td>16</td>
-              </tr>
-              <tr>
-                <td>17</td>
-                <td>18</td>
-                <td>19</td>
-                <td>20</td>
-                <td>21</td>
-                <td>22</td>
-                <td>23</td>
-              </tr>
-              <tr>
-                <td>24</td>
-                <td>25</td>
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-                <td>29</td>
-                <td>30</td>
-              </tr>
-              <tr>
-                <td>31</td>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-              </tr>
-            </tbody>
-          </table>
+          <div class="month">
+            <i class="fas fa-angle-left 
+            prev"></i>
+            <div class="date">
+              <!-- Need to show current month -->
+              <h1>May</h1>
+              <p>Sat April 30, 2022</p>
+            </div>
+            <i class="fas fa-angle-right 
+            next"></i>
+          </div>
+          <div class="weekdays">
+            <div>Sun</div>
+            <div>Mon</div>
+            <div>Tue</div>
+            <div>Wed</div>
+            <div>Thr</div>
+            <div>Fri</div>
+            <div>Sat</div>
+          </div>
+          <div class="days">
+            <div class="prev-date">25</div>
+            <div class="prev-date">26</div>
+            <div class="prev-date">27</div>
+            <div class="prev-date">28</div>
+            <div class="prev-date">29</div>
+            <div>1</div>
+            <div>2</div>
+            <div>3</div>
+            <div>4</div>
+            <div>5</div>
+            <div>6</div>
+            <div>7</div>
+            <div>8</div>
+            <div>9</div>
+            <div>10</div>
+            <div>11</div>
+            <div>12</div>
+            <div>13</div>
+            <div>14</div>
+            <div>15</div>
+            <div>16</div>
+            <div>17</div>
+            <div>18</div>
+            <div>19</div>
+            <div>20</div>
+            <div>21</div>
+            <div>22</div>
+            <div>23</div>
+            <div>24</div>
+            <div>25</div>
+            <div>26</div>
+            <div>27</div>
+            <div>28</div>
+            <div>29</div>
+            <div>30</div>
+            <div class="next-date">1</div>
+            <div class="next-date">2</div>
+            <div class="next-date">3</div>
+            <div class="next-date">4</div>
+            <div class="next-date">5</div>
+            <div class="next-date">6</div>
+          </div>
+        </div>
+        </div>
         </div>
       </main>
     </div>
+    <script src="script.js"></script>
   </body>
 </html>
