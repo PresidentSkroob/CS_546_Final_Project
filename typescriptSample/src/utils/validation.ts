@@ -83,6 +83,8 @@ export function validateReview(
  * @param {string} lastName - Last name of user
  * @param {Array<string>} appointmentIds - List of appointmentIds related to the user
  * @param {Array<string>} reviewIds - List of reviewIds related to the user
+ * @param {string} job - Profession of user (admin only)
+ * @param {string} biography - Biography of user (admin only)
  * @param  {string} level - Access level of the user
  * @return {User} - A validated user
  */
@@ -93,6 +95,8 @@ export function validateUser(
   lastName: string,
   appointmentIds: Array<string> = [],
   reviewIds: Array<string> = [],
+  job: string = "",
+  biography: string = "",
   level: string = 'user'
 ): User {
   const eml = utils.checkEmail(email, 'user email');
@@ -104,7 +108,6 @@ export function validateUser(
   );
   const rvwids = reviewIds.map((elem) => utils.checkId(elem, 'review'));
   const lvl = utils.checkLevel(level);
-
   const usr: User = {
     email: eml,
     password: hpwd, // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
@@ -112,6 +115,8 @@ export function validateUser(
     lastName: lnm,
     appointmentIds: aptids,
     reviewIds: rvwids,
+    job: job,
+    biography: biography,
     level: lvl,
   };
   return usr;

@@ -66,7 +66,7 @@ router
         xss(b.email),
         xss(b.password),
         xss(b.firstName),
-        xss(b.lastName)
+        xss(b.lastName),
       );
       b.password = '';
       const status = await users.create(usr);

@@ -1,0 +1,25 @@
+.space, .break{
+    margin-left: 8px;
+}
+h3 {
+    margin-left: 4px;
+}
+.important-info {
+    font-weight: bold;
+    margin-left: 8px;
+}
+#google-map {
+    margin-top: 4px;
+    border: 2px solid #ed5a58;
+    width: 50%
+}
+#hours {
+    margin-top: 4px;
+    border: 2px solid #ed5a58;
+    width: 40%
+}
+#phone-number {
+    margin-top: 4px;
+    border: 2px solid #ed5a58;
+    width: 40%
+}
