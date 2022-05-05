@@ -30,6 +30,8 @@ export interface User<T = undefined> extends Schema<T> {
   lastName: string;
   appointmentIds: Array<string>;
   reviewIds: Array<string>;
+  job: string;
+  biography: string;
   level: string;
 }
 

@@ -1,0 +1,37 @@
+<link href='/public/css/about.css' rel='stylesheet' />
+<h1 id="title">About Us</h1>
+<br>
+<img src="/public/images/salon-img.jpeg" alt="Cest La Vie Salon" id="salon-img">
+<p>Here at C'est La Vie Salon, we thrive in a joyful and prestigious environment. All of our world-class barbers come with
+    years of experience, <br>as well as thousands of hair appointments under their belt. We specialize in cutting, coloring,
+    and styling for all occations; casual or not.
+    <br>
+</p>
+<h3>Here are our wonderful salonists:</h3>
+
+<div id="admin-table">
+        {{#each listOfAdmins}}
+            <h3>Say hello to... {{first}}!</h3>
+            <table>
+                <tr>
+                    <th>Salonist</th>
+                    <td>{{fullName}}</td>
+                </tr>
+                <tr>
+                    <th>Email Address</th>
+                    <td>{{contact}}</td>
+                </tr>
+                <tr>
+                    <th>Specialty</th>
+                    <td>{{specialty}}</td>
+                </tr>
+            </table>
+
+            <div class="biography">
+            <p>Get to know them with a small biography:<br><br>
+            {{biography}}</p>
+            </div>
+
+            <br><br>
+        {{/each}}
+</div>

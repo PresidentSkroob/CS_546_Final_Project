@@ -102,6 +102,9 @@ router.get('/history/:cid', async (req, res) => {
       let fullDay = monthsArr[month] + " " + ordinal_suffix_of(day) + ", " + year;
 
       let typeService = foundAppointments[i].service;
+      if (typeService == 'haircut') {
+        typeService = "Haircut"
+      }
       let comments = foundAppointments[i].comments;
       let price = foundAppointments[i].price;
 
