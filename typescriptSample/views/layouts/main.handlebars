@@ -5,7 +5,8 @@
     <title>{{title}}</title>
     <meta name='description' content='' />
     <meta name='viewport' content='width=device-width, initial-scale=1' />
-    <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
+    <link rel='apple-touch-icon' href='/public/images/Logo.png' />
+    <link rel='shortcut icon' href='/public/images/Logo.png' />
     <link rel='stylesheet' href='/public/css/main_styles.css' />
     <script
       src="https://code.jquery.com/jquery-3.5.1.js"
@@ -27,6 +28,10 @@
       {{> nav}}
     </header>
     <main>
+      <div class="error-div" hidden>
+        <h2 class="error-header">Error</h2>
+        <p class="error-msg"></p>
+      </div>
       {{{body}}}
     </main>
   </body>
