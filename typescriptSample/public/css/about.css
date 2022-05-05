@@ -1,3 +1,7 @@
+#salon-img {
+    width: 40%;
+    height: 40%
+}
 * {
     font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
 }
@@ -7,4 +11,10 @@ table, th, td {
 }
 td {
     text-align: center;
+}
+
+.biography {
+    margin-top: 2px;
+    border: 2px solid #ed5a58;
+    width: 70%
 }
