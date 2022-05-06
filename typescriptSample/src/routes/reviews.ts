@@ -2,6 +2,7 @@ import express = require('express');
 const router: express.Router = new (express.Router as any)();
 import data from '../data';
 import * as utils from '../utils';
+import xss from 'xss';
 const reviews = data.reviews;
 const users = data.users;
 const appointments = data.appointments;
@@ -47,15 +48,34 @@ router.post('/', async (req, res) => {
     // console.log(req.session.user, b.hairdressersdrop, b.body, b.reviewrating);
     const revw = utils.validateReview(
       req.session.user,
-      b.hairdressersdrop,
-      b.body,
-      b.reviewrating
+      xss(b.hairdressersdrop),
+      xss(b.body),
+      Number(xss(b.reviewrating))
     );
     await reviews.create(revw);
+
     res.redirect('/reviews');
   } catch (e) {
+	const foundAppointments = await appointments.getAllApptsByCustomerId(
+        req.session.user
+      );
+      let relevantInformation = [];
+      for (let i = 0; i < foundAppointments.length; i++) {
+        const foundHairdresser = await users.getById(
+          foundAppointments[i].hairdresserId
+        );
+        if (relevantInformation)
+          relevantInformation.push({
+            name: foundHairdresser.firstName + ' ' + foundHairdresser.lastName,
+            id: foundHairdresser._id!,
+          });
+      }
+      relevantInformation = [
+        ...new Map(relevantInformation.map((v) => [v.id, v])).values(),
+      ];
+
     console.log(e);
-    res.status(404).json({ error: e });
+    res.status(400).render('createreview', { hairdressers: relevantInformation, error: e });
   }
 });
 
@@ -161,7 +181,7 @@ router.get('/low-to-high', async (req, res) => {
 
 router.post('/searchreviews', async (req, res) => {
   try {
-    let searchReviewTerm = req.body.searchReviewTerm;
+    let searchReviewTerm = xss(req.body.searchReviewTerm);
     searchReviewTerm = utils.checkString(searchReviewTerm, 'searchReviewTerm');
 
     const foundReviews = await reviews.getReviewsBySearchTerm(searchReviewTerm);
@@ -190,7 +210,7 @@ router.post('/searchreviews', async (req, res) => {
 
 router.get('/userc/:cid', async (req, res) => {
   try {
-    const _id = utils.checkId(req.params.cid, 'customer id');
+    const _id = utils.checkId(xss(req.params.cid), 'customer id');
     const foundReviews = await reviews.getAllReviewsByCustomerId(_id);
     res.json(foundReviews);
   } catch (e) {
@@ -201,7 +221,7 @@ router.get('/userc/:cid', async (req, res) => {
 
 router.get('/byhairdresser/', async(req, res) => {
 	try { 
-		const foundReviews = await reviews.getAllReviewsByHairdresserId(req.query.hairdressersdrop!.toString());
+		const foundReviews = await reviews.getAllReviewsByHairdresserId(xss(req.query.hairdressersdrop!.toString()));
 		const relevantInformation = [];
 		for (let i = 0; i < foundReviews.length; i++) {
 			const foundCustomer = await users.getById(foundReviews[i].posterId);
@@ -227,7 +247,7 @@ router.get('/byhairdresser/', async(req, res) => {
 
 router.get('/userh/:hid', async (req, res) => {
   try {
-    const _id = utils.checkId(req.params.hid, 'hairdresser id');
+    const _id = utils.checkId(xss(req.params.hid), 'hairdresser id');
     const foundReviews = await reviews.getAllReviewsByHairdresserId(_id);
     res.json(foundReviews);
   } catch (e) {
@@ -238,7 +258,7 @@ router.get('/userh/:hid', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   try {
-    const _id = utils.checkId(req.params.id, 'review');
+    const _id = utils.checkId(xss(req.params.id), 'review');
     const revw = await reviews.getById(_id);
     res.json(revw);
   } catch (e) {
