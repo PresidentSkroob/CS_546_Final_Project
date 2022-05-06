@@ -5,6 +5,7 @@ import users from './users';
 import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
 import { Appointment } from '../utils';
+var areIntervalsOverlapping = require('date-fns/areIntervalsOverlapping');
 
 /**
  * Gets all appointments from the test collection
@@ -108,10 +109,26 @@ async function getAllApptsByHairdresserId(
   return foundAppointments as Appointment<string>[];
 }
 
+async function checkAppointment(appt: Appointment) { 
+	const appointmentCollection = await appointments();
+	const foundAppointments = await getAllApptsByHairdresserId(appt.hairdresserId);
+	if(foundAppointments && foundAppointments.length !== 0) {
+		for(let i = 0; i < foundAppointments.length; i++) { 
+			if( areIntervalsOverlapping(
+				{ start: new Date(appt.startTime), end: new Date(appt.endTime) },
+				{ start: new Date(foundAppointments[i].startTime), end: new Date(foundAppointments[i].endTime) } ) ) {
+					throw `Error: appointment time already taken!`
+				}
+		}
+	}
+	return {valid: true };
+}
+
 export = {
   get,
   create,
   getAll,
   getAllApptsByCustomerId,
   getAllApptsByHairdresserId,
+  checkAppointment
 };
