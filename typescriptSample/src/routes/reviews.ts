@@ -118,7 +118,8 @@ router.get('/', async (req, res) => {
     }
 
     res.render('reviews', { reviews: relevantInformation,
-							hairdressers: res.locals.partials.hairdressers });
+							hairdressers: res.locals.partials.hairdressers,
+						 	title: "Reviews"	});
   } catch (e) {
     console.log(e);
     res.status(404).json({ error: e });
