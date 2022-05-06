@@ -18,6 +18,11 @@
             <input id="reviewrating" type="number" step="0.1"name="reviewrating" min="1" max ="5"/>
             <button type="submit">Submit</button>
 		</form>
-		<textarea name="body" form="review-form"></textarea> 
+		<textarea name="body" form="review-form"></textarea>
+		<div class="error-div">
+			{{#if error}}
+				<p>{{error}}</p>
+			{{/if}}
+		</div>
 	</div>
 </div>
