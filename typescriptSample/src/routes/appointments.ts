@@ -64,7 +64,6 @@ router.post('/service', async (req, res) => {
 		if(req.session.user) { 
 			const _id = utils.checkId(req.body.hairdressersdrop, "hairdresser id");
 			utils.checkDate(req.body.datetime, "appointment datetime").toLocaleString();
-			console.log(req.body);
 			const foundHairdresser = await users.getById(xss(_id));
 			res.render('service', {title: "Service Page", datetime: xss(req.body.datetime), hairdresser: {name: foundHairdresser.firstName + " " + foundHairdresser.lastName, id: xss(req.body.hairdressersdrop)} });
 		} else { 
@@ -81,7 +80,6 @@ router.post('/service', async (req, res) => {
 });
 
 router.post('/finalization', async (req, res) => {
-	console.log(req.body);
 	try { 
 		if(req.session.user) {
       let foundHairdresser = await users.getById(req.body.hairdresser);
@@ -108,7 +106,6 @@ router.post('/finalization', async (req, res) => {
         service: req.body.service_selection,
         price: price
       }
-      console.log(renderedInfo);
 			res.render('finalization', renderedInfo);
 		} else { 
 			res.redirect("/");
@@ -121,11 +118,9 @@ router.post('/finalization', async (req, res) => {
 })
 
 router.post('/confirmation', async (req, res) => {
-	console.log(req.body);
 	try { 
 		if(req.session.user) {
       const b = req.body;
-      console.log(b);
       const appt = utils.validateAppointment(
         req.session.user,
         b.hairdresserId,
