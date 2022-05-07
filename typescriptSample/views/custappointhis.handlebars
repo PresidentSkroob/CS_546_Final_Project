@@ -4,33 +4,35 @@
 <div>
     <div id="appointment-table">
         {{#each appointmentParser}}
-            <h3>This is the information for the appointment you booked on: {{dateAlone}}</h1>
-            <table>
-                <tr>
-                    <th>Your salonist</th>
-                    <td>{{hairdresserName}}</td>
-                </tr>
-                <tr>
-                    <th>Start Time</th>
-                    <td>{{startTime}}</td>
-                </tr>
-                <tr>
-                    <th>Finish Time</th>
-                    <td>{{endTime}}</td>
-                </tr>
-                <tr>
-                    <th>Service Type</th>
-                    <td>{{service}}</td>
-                </tr>
-                <tr>
-                    <th>Price (USD)</th>
-                    <td>${{price}}</td>
+            <div class="appointment">
+                <h3>This is the information for the appointment you booked on: {{dateAlone}}</h3>
+                <table>
+                    <tr>
+                        <th>Your salonist</th>
+                        <td>{{hairdresserName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Start Time</th>
+                        <td>{{startTime}}</td>
+                    </tr>
+                    <tr>
+                        <th>Finish Time</th>
+                        <td>{{endTime}}</td>
+                    </tr>
+                    <tr>
+                        <th>Service Type</th>
+                        <td>{{service}}</td>
+                    </tr>
+                    <tr>
+                        <th>Price (USD)</th>
+                        <td>${{price}}</td>
 
-                </tr>
-            </table>
-                <p>Comments you had: {{comments}}</p>
+                    </tr>
+                </table>
+                    <p>Comments you had when booking: {{comments}}</p>
+                <h3>Please give us feedback! Leave a review by clicking <a href="/reviews/create">here</a></h3>
+            </div>
         {{/each}}
-      
     </div>
 <script
       src="/docs/5.1/dist/js/bootstrap.bundle.min.js"

@@ -3,7 +3,7 @@
     <h1>Reviews</h1>
 	<div id="top-div">
 		<img id="company-logo" src="/public/images/Logo.png">
-    	<h3><a href="/reviews/create">Enjoy our service? Leave a review!</a></h3>
+    	<a href="/reviews/create">Enjoy our service? Leave a review!</a>
 	</div>
     <hr class="col-3 col-md-2 mb-5">
 	<h3>See what our customers think!</h3>
@@ -42,18 +42,16 @@
 	</div>
 	
     <div id="review-div">
-      <ul id="review-list" style="list-style-type:none;">
+      {{!-- <ul id="review-list" style="list-style-type:none;"> --}}
         {{#each reviews}}
-            <li>
+            {{!-- <li> --}}
                 <h4 class="customer-name">{{customerName}} says: </h4>
 				<h5 class="hairdresser-name">Hairdresser: {{hairdresserName}}</h5>
                 <p class="review-rating">Rating: {{rating}}/5</p>
                 <p class="review-body">{{body}}</p>
-				
-            </li>
+            {{!-- </li> --}}
 			<hr class="col-3 col-md-2 mb-5">
         {{/each}}
-      </ul>
+      {{!-- </ul> --}}
     </div>
-
 </div>
