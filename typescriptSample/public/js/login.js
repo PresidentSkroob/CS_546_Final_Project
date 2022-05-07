@@ -10,13 +10,19 @@ $(function () {
           password: $('#floatingPassword').val().trim(),
         },
       };
-      $.ajax(requestConfig).then((response) => {
-        if (response.authenticated) {
-          window.location.href = '/';
-        } else {
-          err(response.error);
+      $.ajax(requestConfig).then(
+        (response) => {
+          if (response.authenticated) {
+            window.location.href = '/';
+          } else {
+            console.log(response.error);
+            err(response.error);
+          }
+        },
+        (response) => {
+          err(response.responseJSON.error);
         }
-      });
+      );
     }
   });
 });

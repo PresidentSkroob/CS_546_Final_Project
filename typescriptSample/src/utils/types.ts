@@ -11,6 +11,8 @@ export interface Appointment<T = undefined> extends Schema<T> {
   service: string;
   comments: string;
   price: number;
+  stString?: string; // start time as string
+  etString?: string; // end time as string
 }
 
 export interface Review<T = undefined> extends Schema<T> {

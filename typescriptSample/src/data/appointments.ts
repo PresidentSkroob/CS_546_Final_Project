@@ -109,19 +109,27 @@ async function getAllApptsByHairdresserId(
   return foundAppointments as Appointment<string>[];
 }
 
-async function checkAppointment(appt: Appointment) { 
-	const appointmentCollection = await appointments();
-	const foundAppointments = await getAllApptsByHairdresserId(appt.hairdresserId);
-	if(foundAppointments && foundAppointments.length !== 0) {
-		for(let i = 0; i < foundAppointments.length; i++) { 
-			if( areIntervalsOverlapping(
-				{ start: new Date(appt.startTime), end: new Date(appt.endTime) },
-				{ start: new Date(foundAppointments[i].startTime), end: new Date(foundAppointments[i].endTime) } ) ) {
-					throw `Error: appointment time already taken!`
-				}
-		}
-	}
-	return {valid: true };
+async function checkAppointment(appt: Appointment) {
+  const appointmentCollection = await appointments();
+  const foundAppointments = await getAllApptsByHairdresserId(
+    appt.hairdresserId
+  );
+  if (foundAppointments && foundAppointments.length !== 0) {
+    for (let i = 0; i < foundAppointments.length; i++) {
+      if (
+        areIntervalsOverlapping(
+          { start: new Date(appt.startTime), end: new Date(appt.endTime) },
+          {
+            start: new Date(foundAppointments[i].startTime),
+            end: new Date(foundAppointments[i].endTime),
+          }
+        )
+      ) {
+        throw `Error: appointment time already taken!`;
+      }
+    }
+  }
+  return { valid: true };
 }
 
 export = {
@@ -130,5 +138,5 @@ export = {
   getAll,
   getAllApptsByCustomerId,
   getAllApptsByHairdresserId,
-  checkAppointment
+  checkAppointment,
 };

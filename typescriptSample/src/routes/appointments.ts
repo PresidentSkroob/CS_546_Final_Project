@@ -14,22 +14,12 @@ router
       const appts = await appointments.getAll();
       res.json(appts);
     } catch (e) {
-      console.log(e);
       res.status(404).json({ error: e });
     }
   })
   .post(async (req, res) => {
     try {
       const b = req.body;
-      console.log(
-        b.customerId,
-        b.hairdresserId,
-        b.startTime,
-        b.endTime,
-        b.service,
-        b.comments,
-        b.price
-      );
       const appt = utils.validateAppointment(
         b.customerId,
         b.hairdresserId,
@@ -39,10 +29,9 @@ router
         b.comments,
         b.price
       );
-	  if(await appointments.checkAppointment(appt))
-      	res.json(await appointments.create(appt));
+      if (await appointments.checkAppointment(appt))
+        res.json(await appointments.create(appt));
     } catch (e) {
-      console.log(e);
       res.status(404).json({ error: e });
     }
   });
@@ -55,7 +44,6 @@ router.get('/appts/:hid', async (req, res) => {
     );
     res.json(foundAppointments);
   } catch (e) {
-    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -75,37 +63,54 @@ router.get('/history/:cid', async (req, res) => {
     //   res.render('custappointhis', { noAppointmentsNotif });
     // }
 
-    for(let i = 0; i < foundAppointments.length; i++) { 
-      let foundHairdresser = await users.getById(foundAppointments[i].hairdresserId);
-      let salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
+    for (let i = 0; i < foundAppointments.length; i++) {
+      let foundHairdresser = await users.getById(
+        foundAppointments[i].hairdresserId
+      );
+      let salonistName =
+        foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
       let startDate = new Date(foundAppointments[i].startTime);
       let endDate = new Date(foundAppointments[i].endTime);
       //date parsing
 
       function ordinal_suffix_of(num: number) {
         var j = num % 10,
-            k = num % 100;
+          k = num % 100;
         if (j == 1 && k != 11) {
-            return num + "st";
+          return num + 'st';
         }
         if (j == 2 && k != 12) {
-            return num + "nd";
+          return num + 'nd';
         }
         if (j == 3 && k != 13) {
-            return num + "rd";
+          return num + 'rd';
         }
-        return num + "th";
+        return num + 'th';
       }
 
       var month = startDate.getUTCMonth(); // jan - 0, dec - 11
       var day = startDate.getUTCDate();
       var year = startDate.getUTCFullYear();
-      let monthsArr = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      let fullDay = monthsArr[month] + " " + ordinal_suffix_of(day) + ", " + year;
+      let monthsArr = [
+        'January',
+        'February',
+        'March',
+        'April',
+        'May',
+        'June',
+        'July',
+        'August',
+        'September',
+        'October',
+        'November',
+        'December',
+      ];
+      let fullDay =
+        monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
 
       let typeService = foundAppointments[i].service;
       if (typeService == 'haircut') {
-        typeService = "Haircut"
+        typeService = 'Haircut';
       }
       let comments = foundAppointments[i].comments;
       let price = foundAppointments[i].price;
@@ -118,14 +123,15 @@ router.get('/history/:cid', async (req, res) => {
         service: typeService,
         comments: comments,
         price: price,
+      };
+      appointmentParser.push(thisObj);
+    }
 
-      }
-      appointmentParser.push(thisObj)}
-
-  
-    res.render('custappointhis', { appointmentParser, 'title': "Appointment History" });
+    res.render('custappointhis', {
+      appointmentParser,
+      title: 'Appointment History',
+    });
   } catch (e) {
-    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -136,7 +142,6 @@ router.route('/:id').get(async (req, res) => {
     const appt = await appointments.get(_id);
     res.json(appt);
   } catch (e) {
-    console.log(e);
     res.status(404).json({ error: e });
   }
 });

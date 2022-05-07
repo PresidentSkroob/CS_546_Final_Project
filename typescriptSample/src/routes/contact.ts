@@ -2,10 +2,9 @@ import express = require('express');
 const router: express.Router = new (express.Router as any)();
 import qrcode from 'qrcode';
 
-
 router.route('/qr').post(async (req, res) => {
   try {
-    const im = await qrcode.toDataURL(req.body.url)
+    const im = await qrcode.toDataURL(req.body.url);
     return res.json({ success: true, img: im });
   } catch (e) {
     return res.status(500).json({ error: e });

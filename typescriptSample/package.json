@@ -9,7 +9,7 @@
     "predevbuild": "npm run format && npm run lint",
     "devbuild": "npm run build && npm run seed",
     "build": "tsc",
-    "seed": "node ./dist/tasks/seed.js",
+    "seed": "npm run build && node ./dist/tasks/seed.js",
     "prestart": "npm run build",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"

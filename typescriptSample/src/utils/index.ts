@@ -159,7 +159,7 @@ export function checkEmail(email: string, emailName: string): string {
  */
 export function checkLevel(level: string): string {
   level = checkString(level, 'user level');
-  if (level !== 'user' && level !== 'admin') {
+  if (level !== 'user' && level !== 'admin' && level !== 'hairdresser') {
     throw `Error: provided user level is invalid`;
   }
   return level;

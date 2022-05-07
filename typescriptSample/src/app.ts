@@ -5,7 +5,7 @@ const staticFolder = express.static(__dirname + '/../public');
 
 import session from 'express-session';
 import configRoutes from './routes';
-import { engine } from 'express-handlebars';
+import { create } from 'express-handlebars';
 import data from './data';
 const users = data.users;
 
@@ -14,6 +14,7 @@ const users = data.users;
 declare module 'express-session' {
   interface Session {
     user: string;
+    views: number;
   }
 }
 /* eslint-enable */
@@ -37,9 +38,26 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-const viewInstance = engine({ defaultLayout: 'main' });
+const hbs = create({
+  helpers: {
+    compare(left: any, right: any, ops: any) {
+      return left === right ? ops.fn(this) : ops.inverse(this);
+    },
+    generateDropdown(choice: string, ops: Array<any>) {
+      let html = '<select>';
+      ops.forEach((e) => {
+        html = html.concat(
+          `<option value=${e.toLowerCase()} ${
+            choice == e ? 'selected' : ''
+          }>${e}</option>`
+        );
+      });
+      return html.concat('</select>');
+    },
+  },
+});
 
-app.engine('handlebars', viewInstance);
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
 app.use(
@@ -56,12 +74,18 @@ app.use((req, _res, next) => {
   const method = req.method;
   const route = req.originalUrl;
 
-  console.log(
-    `[${ts}]: ${method} ${route} (${
-      !req.session.user ? 'Non-' : ''
-    }Authenticated User)`
-  );
+  const log = `[${ts}]: ${method} ${route} (${
+    !req.session.user ? 'Non-' : ''
+  }Authenticated User)`;
+  console.log(log);
 
+  next();
+});
+
+app.use((req, _res, next) => {
+  if (req.originalUrl === '/') {
+    req.session.views++;
+  }
   next();
 });
 
