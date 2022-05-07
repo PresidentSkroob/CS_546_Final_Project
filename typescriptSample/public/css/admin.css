@@ -1,0 +1,18 @@
+table {
+  border-spacing: 30px 0;
+  text-align: left;
+}
+.biography,
+.comments,
+.review-body {
+  word-wrap: normal;
+  max-width: 40em;
+}
+
+#review-div,
+#appt-div,
+#user-div {
+  max-height: 10em;
+  overflow: scroll;
+  padding-left: 5em;
+}
