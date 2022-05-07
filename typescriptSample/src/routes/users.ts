@@ -127,21 +127,54 @@ router.get('/:id', async (req, res) => {
       });
     }
     const usr = await users.getById(_id);
+    const listOfReviewsByCustomerId = await reviews.getAllReviewsByCustomerId2(usr._id!);
+    let userReviews = [];
+    if (!listOfReviewsByCustomerId || listOfReviewsByCustomerId.length == 0) {
+      const empty = {
+        empty: "You haven't made any reviews yet!"
+      }
+      if (usr.level === 'user') {
+        return res.render('user', {
+          title: `${usr.firstName}'s Account`,
+          user: {
+            id: usr._id,
+            firstName: usr.firstName,
+            lastName: usr.lastName,
+            email: usr.email,
+            empty: empty
+          },
+        })
+      }
+    } else {
+      for (let i=0; i < listOfReviewsByCustomerId.length; i++) {
+        let foundHairdresser = await users.getById(listOfReviewsByCustomerId[i].hairdresserId);
+        let salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
+        let obj = {
+          //ratingId: listOfReviewsByCustomerId[i]._id,
+          hairdresserName: salonistName,
+          body: listOfReviewsByCustomerId[i].body,
+          rating: listOfReviewsByCustomerId[i].rating
+        }
+        userReviews.push(obj);
+      }
+    }
+
     if (usr.level === 'user') {
       res.render('user', {
         title: `${usr.firstName}'s Account`,
         user: {
+          id: usr._id,
           firstName: usr.firstName,
           lastName: usr.lastName,
           email: usr.email,
-          appointments: await appointments.getAllApptsByCustomerId(usr._id!),
-          reviews: await reviews.getAllReviewsByCustomerId(usr._id!),
+          reviews: userReviews,
         },
       });
     } else {
       res.render('user', {
         title: `${usr.firstName}'s Account`,
         user: {
+          id: usr._id,
           firstName: usr.firstName,
           lastName: usr.lastName,
           email: usr.email,

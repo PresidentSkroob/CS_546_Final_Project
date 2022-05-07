@@ -119,6 +119,30 @@ async function getAllReviewsByCustomerId(
 }
 
 /**
+ * Gets all reviews which have posterId cid
+ * Only difference: when empty, this returns empty array (for querying reviews in /user)
+ * @param {string} cid - The customer/poster id to query by
+ * @return {Promise<Review<string>[]>} - A promise for the reviews
+ */
+ async function getAllReviewsByCustomerId2(
+  cid: string
+): Promise<Review<string>[]> {
+  cid = utils.checkId(cid, 'customer');
+  const reviewCollection = await reviews();
+  const foundReviews = (await reviewCollection
+    .find({
+      posterId: cid,
+    })
+    .toArray()) as Review<ObjectId | string>[];
+  if (!foundReviews || foundReviews.length === 0)
+    return [];
+  foundReviews.forEach((elem) => {
+    elem._id = elem._id!.toString();
+  });
+  return foundReviews as Review<string>[];
+}
+
+/**
  * Gets all reviews which have hairdresserId hid
  *
  * @param {string} hid - The hairdresser id to query by
@@ -194,6 +218,7 @@ export = {
   getAllReviewsSortedByRatingDesc,
   getAllReviewsSortedByRatingAsc,
   getAllReviewsByCustomerId,
+  getAllReviewsByCustomerId2,
   getAllReviewsByHairdresserId,
   getAllReviewsByHairdresserId2,
   getReviewsBySearchTerm,
