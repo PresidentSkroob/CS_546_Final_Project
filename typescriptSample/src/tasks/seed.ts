@@ -69,8 +69,8 @@ async function main() {
   const appt1 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-03-12 12:00 EST').getTime(),
-    endTime: new Date('2022-03-12 13:00 EST').getTime(),
+    startTime: new Date('2022-05-12 12:00 EST').getTime(),
+    endTime: new Date('2022-05-12 13:00 EST').getTime(),
     service: 'haircut',
     comments: 'First appointment',
     price: 12.99,
@@ -79,8 +79,8 @@ async function main() {
   const appt2 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-03-12 13:00 EST').getTime(),
-    endTime: new Date('2022-03-12 14:00 EST').getTime(),
+    startTime: new Date('2022-05-12 13:00 EST').getTime(),
+    endTime: new Date('2022-05-12 14:00 EST').getTime(),
     service: 'haircut',
     comments: 'Second appointment',
     price: 14.99,
@@ -89,8 +89,8 @@ async function main() {
   const appt3 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-03-12 14:00 EST').getTime(),
-    endTime: new Date('2022-03-12 15:00 EST').getTime(),
+    startTime: new Date('2022-05-12 14:00 EST').getTime(),
+    endTime: new Date('2022-05-12 15:00 EST').getTime(),
     service: 'haircut',
     comments: 'Third appointment',
     price: 14.99,
@@ -99,8 +99,8 @@ async function main() {
    const appt4 = await appointments.create({
     customerId: usr2._id!.toString(),
     hairdresserId: hrdsr2._id!.toString(),
-    startTime: new Date('2022-03-12 15:00 EST').getTime(),
-    endTime: new Date('2022-03-12 16:00 EST').getTime(),
+    startTime: new Date('2022-05-12 15:00 EST').getTime(),
+    endTime: new Date('2022-05-12 16:00 EST').getTime(),
     service: 'haircut',
     comments: 'Fourth appointment',
     price: 999.99,

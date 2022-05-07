@@ -6,6 +6,7 @@ import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
 import { Appointment } from '../utils';
 var areIntervalsOverlapping = require('date-fns/areIntervalsOverlapping');
+var isSameDay = require('date-fns/isSameDay');
 
 /**
  * Gets all appointments from the test collection
@@ -110,7 +111,6 @@ async function getAllApptsByHairdresserId(
 }
 
 async function checkAppointment(appt: Appointment) { 
-	const appointmentCollection = await appointments();
 	const foundAppointments = await getAllApptsByHairdresserId(appt.hairdresserId);
 	if(foundAppointments && foundAppointments.length !== 0) {
 		for(let i = 0; i < foundAppointments.length; i++) { 
@@ -124,11 +124,32 @@ async function checkAppointment(appt: Appointment) {
 	return {valid: true };
 }
 
+async function getAllAppointmentsOnDay(dateStr: string) {
+	const foundAppointments = await getAll();	
+	// const foundAppointments = appointmentCollection.find({
+
+	// })
+
+	let apptsOnDay = [];
+	if(foundAppointments && foundAppointments.length !== 0) { 
+		for(let i = 0; i < foundAppointments.length; i++) { 
+			if( isSameDay( new Date(foundAppointments[i].startTime), new Date(dateStr) ) ) { 
+				apptsOnDay.push(foundAppointments[i]);
+			}
+		}
+	}
+
+
+	return apptsOnDay;
+}
+
+
 export = {
   get,
   create,
   getAll,
   getAllApptsByCustomerId,
   getAllApptsByHairdresserId,
-  checkAppointment
+  checkAppointment,
+  getAllAppointmentsOnDay
 };

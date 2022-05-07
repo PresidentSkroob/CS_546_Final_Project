@@ -47,6 +47,27 @@ router
     }
   });
 
+// Calendar Route for Date/Time selection
+router.get('/calendar', async (req, res) => { 
+	try { 
+
+		res.render('calendar', {title: 'Calendar'});
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({error : e});
+	}
+});
+
+router.get('/service', async (req, res) => { 
+	try { 
+
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({error: e});
+	}
+});
+
+
 router.get('/appts/:hid', async (req, res) => {
   try {
     const _id = utils.checkId(req.params.hid, 'hairdresser id');
@@ -130,6 +151,18 @@ router.get('/history/:cid', async (req, res) => {
   }
 });
 
+router.post('/bydate', async (req, res) => { 
+	try { 
+		let dateStr = req.body.dateStr;
+		console.log(`dateStr in bydate: ${dateStr}`);
+		const foundAppointments = await appointments.getAllAppointmentsOnDay(dateStr);
+		res.json({success: true, bdy: foundAppointments});
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({ error: e });
+	}
+});
+
 router.route('/:id').get(async (req, res) => {
   try {
     const _id = utils.checkId(req.params.id, 'appointment');
@@ -140,5 +173,6 @@ router.route('/:id').get(async (req, res) => {
     res.status(404).json({ error: e });
   }
 });
+
 
 export = router;
