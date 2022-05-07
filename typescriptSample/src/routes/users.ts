@@ -126,9 +126,12 @@ router.get('/:id', async (req, res) => {
         'error-status': 404,
       });
     }
+    if (_id !== req.session.user) {
+      return res.status(403).render('error', { title: 'Access Denied', 'error-msg': 'Users may not access other users\' accounts.', 'error-status': 403 });
+    }
     const usr = await users.getById(_id);
     if (usr.level === 'user') {
-      res.render('user', {
+      return res.render('user', {
         title: `${usr.firstName}'s Account`,
         user: {
           firstName: usr.firstName,
@@ -139,7 +142,7 @@ router.get('/:id', async (req, res) => {
         },
       });
     } else {
-      res.render('user', {
+      return res.render('user', {
         title: `${usr.firstName}'s Account`,
         user: {
           firstName: usr.firstName,
