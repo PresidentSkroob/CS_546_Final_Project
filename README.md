@@ -8,7 +8,7 @@ Authors: Jared Kronyak <jkronyak@stevens.edu>; Alice Huston <shuston@stevens.edu
 
 <b> A) Overview </b>
 
-Congratulations! This is the first step in your journey towards using our fully functional faux-business of Ces't La Vie. Functioning in all ways like a real business, Ces't La Vie is a dynamic web app that allows any user to create an account, schedule an appointment, select the type of service, leave a review, and engage with the business!
+Congratulations! This is the first step in your journey towards using our fully functional faux-business of Ces't La Vie. Functioning in all ways like a real business, Ces't La Vie is Hairsalon with Hairdressers/Barbers located in Hoboken, New Jersey, with a dynamic web app that allows any user to create an account, schedule an appointment, select the type of service, leave a review, and engage with the business!
 
 
 <b> B) Key Topics/Core Features: </b>
@@ -40,6 +40,18 @@ Congratulations! This is the first step in your journey towards using our fully 
 
 
 <b> D) Steps to Use </b>
+
+
+- [ ] After arriving on the landing page, the Ces't La Vie homepage, with the option to (1) register (2) log in (3) about (4) contact (5) reviews. If you're a returning user click on log in, where you'll be redirected to log in with your credentials (email & password) and click submit. Otherwise, if you're a new user, please sign up 💇 💇‍♀️
+- [ ] Upon logging in you will have the ability to select a day from the calendar (based on the business hours/dates) and book a time.
+- [ ] After selecting a time, you will have the ability to select a service to book, with the specified Hairdresser, shown with the requisite pricing.
+- [ ] Once you have selected your booking information (day, time, and service) you will be redirected to the Appointment Finalization page :tada:
+- [ ] A user who books an appointment will have the ability to leave a review. This review will be shown on the 'Reviews' page.
+- [ ] A user who is navigating the site will also have the ability to navigate to the About page, where they can learn about Ces't la Vie or any of the Hairdresssers.
+- [ ] Additionally, a user who is navigating the site will have the ability to navigate to the Contact page, where they can view the business location, the hours of operation, and business details.
+
+
+
 
 
 

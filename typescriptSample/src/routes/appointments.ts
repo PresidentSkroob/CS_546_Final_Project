@@ -1,11 +1,8 @@
-import { time } from 'console';
-import { privateDecrypt } from 'crypto';
 import express = require('express');
 const router: express.Router = new (express.Router as any)();
 import xss from 'xss';
 import data from '../data';
 import * as utils from '../utils';
-import { Appointment } from '../utils';
 const users = data.users;
 const appointments = data.appointments;
 
@@ -43,7 +40,7 @@ router.get('/calendar', async (req, res) => {
 	try {
 		if(req.session.user) { 
 			const foundHairdressers = await users.getAllHairdressers();
-			let relevantInformation = [];
+			const relevantInformation = [];
 			for(let i = 0; i < foundHairdressers.length; i++) { 
 				relevantInformation.push({id: foundHairdressers[i]._id,
 					 name: foundHairdressers[i].firstName + " " + foundHairdressers[i].lastName });
@@ -65,15 +62,21 @@ router.get('/calendar', async (req, res) => {
 router.post('/service', async (req, res) => { 
 	try { 
 		if(req.session.user) { 
+			const _id = utils.checkId(req.body.hairdressersdrop, "hairdresser id");
+			utils.checkDate(req.body.datetime, "appointment datetime").toLocaleString();
 			console.log(req.body);
-			const foundHairdresser = await users.getById(xss(req.body.hairdressersdrop));
+			const foundHairdresser = await users.getById(xss(_id));
 			res.render('service', {title: "Service Page", datetime: xss(req.body.datetime), hairdresser: {name: foundHairdresser.firstName + " " + foundHairdresser.lastName, id: xss(req.body.hairdressersdrop)} });
 		} else { 
 			res.redirect("/");
 		}
 	} catch (e) { 
 		console.log(e);
-		res.status(404).json({error : e});
+		res.status(400).render('error', {
+			title: 'Error',
+			'error-msg': e,
+			'error-status': 400
+		});
 	}
 });
 
@@ -140,7 +143,11 @@ router.post('/confirmation', async (req, res) => {
 
 	} catch (e) { 
 		console.log(e);
-		res.status(404).json({error: e});
+		res.status(400).render('error', {
+			title: 'Error',
+			'error-msg': e,
+			'error-status': 400
+		});
 	}
 })
 
@@ -172,17 +179,17 @@ router.get('/history/:cid', async (req, res) => {
     } else {
 
     for (let i = 0; i < foundAppointments.length; i++) {
-      let foundHairdresser = await users.getById(
+      const foundHairdresser = await users.getById(
         foundAppointments[i].hairdresserId
       );
-      let salonistName =
+      const salonistName =
         foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
-      let startDate = new Date(foundAppointments[i].startTime);
-      let endDate = new Date(foundAppointments[i].endTime);
-      //date parsing
+		const startDate = new Date(foundAppointments[i].startTime);
+		const endDate = new Date(foundAppointments[i].endTime);
+      // date parsing
 
       function ordinal_suffix_of(num: number) {
-        var j = num % 10,
+        const j = num % 10,
           k = num % 100;
         if (j == 1 && k != 11) {
           return num + 'st';
@@ -196,10 +203,10 @@ router.get('/history/:cid', async (req, res) => {
         return num + 'th';
       }
 
-      var month = startDate.getUTCMonth(); // jan - 0, dec - 11
-      var day = startDate.getUTCDate();
-      var year = startDate.getUTCFullYear();
-      let monthsArr = [
+      const month = startDate.getUTCMonth(); // jan - 0, dec - 11
+      const day = startDate.getUTCDate();
+      const year = startDate.getUTCFullYear();
+      const monthsArr = [
         'January',
         'February',
         'March',
@@ -213,17 +220,17 @@ router.get('/history/:cid', async (req, res) => {
         'November',
         'December',
       ];
-      let fullDay =
+      const fullDay =
         monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
 
       let typeService = foundAppointments[i].service;
       if (typeService == 'haircut') {
         typeService = 'Haircut';
       }
-      let comments = foundAppointments[i].comments;
+      const comments = foundAppointments[i].comments;
       let price = foundAppointments[i].price;
 
-      let thisObj = {
+      const thisObj = {
         dateAlone: fullDay,
         hairdresserName: salonistName,
         startTime: startDate,
@@ -247,7 +254,7 @@ router.get('/history/:cid', async (req, res) => {
 
 router.post('/check', async (req, res) => { 
 	try { 
-		const foundAppointments = await appointments.checkAppointmentByDateTimeAndHairdresser(xss(req.body.dateStr), xss(req.body.hid));
+		await appointments.checkAppointmentByDateTimeAndHairdresser(xss(req.body.dateStr), xss(req.body.hid));
 		
 		res.json({success: true });
 	} catch (e) { 

@@ -5,8 +5,8 @@ import users from './users';
 import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
 import { Appointment } from '../utils';
-var areIntervalsOverlapping = require('date-fns/areIntervalsOverlapping');
-var isSameDay = require('date-fns/isSameDay');
+const areIntervalsOverlapping = require('date-fns/areIntervalsOverlapping');
+const isSameDay = require('date-fns/isSameDay');
 
 /**
  * Gets all appointments from the test collection
@@ -135,8 +135,13 @@ async function getAllApptsByHairdresserId(
   return foundAppointments as Appointment<string>[];
 }
 
+/**
+ * Checks if an Appointment's stand and end time are not already tae
+ * 
+ * @param {Appointment} appt - The Appointment to check
+ * @return {Object} - An object containing true if the given Appointment is valid. 
+ */
 async function checkAppointment(appt: Appointment) {
-  const appointmentCollection = await appointments();
   const foundAppointments = await getAllApptsByHairdresserId(
     appt.hairdresserId
   );
@@ -158,21 +163,20 @@ async function checkAppointment(appt: Appointment) {
   return { valid: true };
 }
 
+/**
+ * Given dateStr and an hairdresserId, check if an hour timeslot after dateStr is already 
+ * taken. 
+ * 
+ * @param {string} dateStr - String representation of the datetime. 
+ * @param {string} hid - The hairdresserId to query by. 
+ * @return {Object} - Contains {valid: true} if the appointment can be added, false if not. 
+ */
 async function checkAppointmentByDateTimeAndHairdresser(dateStr: string, hid: string) { 
 	dateStr = utils.checkDate(dateStr, 'appointment').toISOString();
 	hid = utils.checkId(hid, 'hairdresser');
-	// const appointmentCollection = await appointments();
 	const foundAppointments = await getAllApptsByHairdresserId(hid);	
-
-	// const fAppt = await appointmentCollection.find({ 
-	// 	hairdresserId: new ObjectId(hid),
-	// 	startTime: { $lt: new Date(dateStr).setTime(new Date(dateStr).getTime() + (60 * 60 * 1000) ) },
-	// 	endTime: { $gt: new Date(dateStr) }
-	// }).toArray();
-
-	// if(fAppt && fAppt.length !== 0) throw `Error: appointment time already taken!`
-	let newStart = new Date(dateStr);
-	let newEnd = new Date(dateStr);
+	const newStart = new Date(dateStr);
+	const newEnd = new Date(dateStr);
 	newEnd.setMinutes(newStart.getMinutes() + 59);
 
 	for(let i = 0; i < foundAppointments.length; i++) { 
@@ -190,10 +194,15 @@ async function checkAppointmentByDateTimeAndHairdresser(dateStr: string, hid: st
 
 }
 
-async function getAllAppointmentsOnDay(dateStr: string) {
+/**
+ * Given a datetime, get all appointments on that day. 
+ * 
+ * @param {string} dateStr - String representation of the datetime
+ * @return {Promise<Appointment<string>[]>} - A Promise of the Array of appointments. 
+ */
+async function getAllAppointmentsOnDay(dateStr: string): Promise<Appointment<string>[]> {
 	const foundAppointments = await getAll();	
-
-	let apptsOnDay = [];
+	const apptsOnDay = [];
 	if(foundAppointments && foundAppointments.length !== 0) { 
 		for(let i = 0; i < foundAppointments.length; i++) { 
 			if( isSameDay( new Date(foundAppointments[i].startTime), new Date(dateStr) ) ) { 
@@ -202,8 +211,7 @@ async function getAllAppointmentsOnDay(dateStr: string) {
 		}
 	}
 
-
-	return apptsOnDay;
+	return apptsOnDay as Appointment<string>[];
 }
 
 
