@@ -115,6 +115,7 @@ router.route('/private').get(async (req, res) => {
           reviews: revws,
           levels: ['user', 'admin', 'hairdresser'],
           views: req.session.views,
+          logs: users.logs,
         });
       } else {
         return res.status(403).render('error', {

@@ -9,6 +9,7 @@ table {
   max-width: 40em;
 }
 
+#log-div,
 #review-div,
 #appt-div,
 #user-div {
@@ -16,3 +17,4 @@ table {
   overflow: scroll;
   padding-left: 5em;
 }
+	

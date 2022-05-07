@@ -2,7 +2,6 @@ $(function () {
   $('.levelDrop').change((e) => {
     const id = $(e.currentTarget).parent().attr('id');
     const lvl = $(e.currentTarget).find('option:selected').val();
-    console.log(lvl);
     const requestConfig = {
       method: 'PATCH',
       url: `/users/${id}`,

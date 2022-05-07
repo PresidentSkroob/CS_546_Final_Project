@@ -79,6 +79,7 @@ app.use((req, _res, next) => {
   }Authenticated User)`;
   console.log(log);
 
+  users.logs.push(log);
   next();
 });
 

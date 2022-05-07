@@ -195,6 +195,8 @@ async function updateLevel(id: string, level: string) {
   }
   throw 'Error: User get after update failed.';
 }
+
+const logs: Array<string> = [];
 export = {
   getById,
   create,
@@ -203,4 +205,5 @@ export = {
   addReviewByUserId,
   addAppointmentByUserId,
   updateLevel,
+  logs,
 };

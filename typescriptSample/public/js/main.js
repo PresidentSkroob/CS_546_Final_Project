@@ -33,4 +33,5 @@ function err(msg) {
   }
   $('.error-msg').text(msg);
   $('.error-div').show();
+  window.scrollTo(0,0);
 }
