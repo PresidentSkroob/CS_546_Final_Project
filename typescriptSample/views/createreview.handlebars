@@ -1,28 +1,38 @@
 <div>
-	<link href='/public/css/reviews.css' rel='stylesheet' />
-	<h1>Reviews</h1>
-	<div id="top-div">
-		<img id="company-logo" src="../public/images/Logo.png">
-    	<h3>Enjoy our service? Leave a review!</h3>
-	</div>
-	<div id="review-form-div">
-		<form id="review-form" action="/reviews/" method="POST">
+  <link href='/public/css/reviews.css' rel='stylesheet' />
+  <h1>Reviews</h1>
+  <div id='top-div'>
+    <img id='company-logo' src='../public/images/Logo.png' />
+    <h3>Enjoy our service? Leave a review!</h3>
+  </div>
+  <div id='review-form-div'>
+    <form id='review-form' action='/reviews/' method='POST'>
 
-			<select id="hairdressers-drop" name="hairdressersdrop">
-				{{#each hairdressers}}
-					<option value="{{this.id}}" class="hairdresser-option">{{this.name}}</option>
-				{{/each}}
-			</select>
+      <select id='hairdressers-drop' name='hairdressersdrop'>
+        {{#each hairdressers}}
+          <option
+            value='{{this.id}}'
+            class='hairdresser-option'
+          >{{this.name}}</option>
+        {{/each}}
+      </select>
 
-			<label for="review-rating">Rate your service from 1 to 5: </label>
-            <input id="reviewrating" type="number" step="0.1"name="reviewrating" min="1" max ="5"/>
-            <button type="submit">Submit</button>
-		</form>
-		<textarea name="body" form="review-form"></textarea>
-		<div class="error-div">
-			{{#if error}}
-				<p>{{error}}</p>
-			{{/if}}
-		</div>
-	</div>
+      <label for='review-rating'>Rate your service from 1 to 5: </label>
+      <input
+        id='reviewrating'
+        type='number'
+        step='0.1'
+        name='reviewrating'
+        min='1'
+        max='5'
+      />
+      <button type='submit'>Submit</button>
+    </form>
+    <textarea name='body' form='review-form'></textarea>
+    <div class='error-div'>
+      {{#if error}}
+        <p>{{error}}</p>
+      {{/if}}
+    </div>
+  </div>
 </div>

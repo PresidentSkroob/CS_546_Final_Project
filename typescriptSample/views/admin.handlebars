@@ -1,103 +1,114 @@
-<link href="/public/css/admin.css" rel="stylesheet"/>
+<link href='/public/css/admin.css' rel='stylesheet' />
 <h2>Admin Portal</h2>
 
-Number of Website Views: {{views}}
+Number of Website Views:
+{{views}}
 
 {{#if reviews}}
-	<div>
-  <h3 >Reviews</h3>
-	<div id="review-div">
-  <table>
-    <tr>
-      <th>Poster</th>
-      <th>Hairdresser</th>
-      <th>Review Body</th>
-      <th>Rating</th>
-    </tr>
-    {{#each reviews}}
-      <tr>
-        <td>{{posterId}}</td>
-        <td>{{hairdresserId}}</td>
-        <td class='review-body'>{{body}}</td>
-        <td>{{rating}}</td>
-      </tr>
-    {{/each}}
-  </table>
-	</div>
-	</div>
+  <div>
+    <h3>Reviews</h3>
+    <div id='review-div'>
+      <table>
+        <tr>
+          <th>Poster</th>
+          <th>Hairdresser</th>
+          <th>Review Body</th>
+          <th>Rating</th>
+        </tr>
+        {{#each reviews}}
+          <tr>
+            <td>{{posterId}}</td>
+            <td>{{hairdresserId}}</td>
+            <td class='review-body'>{{body}}</td>
+            <td>{{rating}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+  </div>
 {{/if}}
 
 {{#if appointments}}
-	<div>
-  <h3>Appointments</h3>
-	<div id="appt-div">
-  <table>
-    <tr>
-      <th>Customer</th>
-      <th>Hairdresser</th>
-      <th>Start Time</th>
-      <th>End Time</th>
-      <th>Service</th>
-      <th>Comments</th>
-      <th>Price</th>
-    </tr>
-    {{#each appointments}}
-      <tr id='appt{{index}}'>
-        <td>{{customerId}}</td>
-        <td>{{hairdresserId}}</td>
-        <td>{{stString}}</td>
-        <td>{{etString}}</td>
-        <td>{{service}}</td>
-        <td class="comments">{{comments}}</td>
-        <td>{{price}}</td>
-      </tr>
-    {{/each}}
-  </table>
-	</div>
-	</div>
+  <div>
+    <h3>Appointments</h3>
+    <div id='appt-div'>
+      <table>
+        <tr>
+          <th>Customer</th>
+          <th>Hairdresser</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Service</th>
+          <th>Comments</th>
+          <th>Price</th>
+        </tr>
+        {{#each appointments}}
+          <tr id='appt{{index}}'>
+            <td>{{customerId}}</td>
+            <td>{{hairdresserId}}</td>
+            <td>{{stString}}</td>
+            <td>{{etString}}</td>
+            <td>{{service}}</td>
+            <td class='comments'>{{comments}}</td>
+            <td>{{price}}</td>
+          </tr>
+        {{/each}}
+      </table>
+    </div>
+  </div>
 {{/if}}
 
 {{#if users}}
-<div>
-  <h3>Users</h3>
-	<div id="user-div">
+  <div>
+    <h3>Users</h3>
+    <div id='user-div'>
 
-  <table>
-    <tr>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>Email</th>
-      <th>Job</th>
-      <th>Biography</th>
-      <th>Current Level</th>
-      <th>ID</th>
-    </tr>
-    {{#each users}}
-      <tr id={{_id}}>
-        <td class="firstName">{{firstName}}</td>
-        <td class="lastName">{{lastName}}</td>
-        <td class="email">{{email}}</td>
-        {{#if job}}
-          <td class="job">{{job}}</td>
-        {{else}}
-          <td class="job">N/A</td>
-        {{/if}}
-        {{#if biography}}
-          <td class="biography">{{biography}}</td>
-        {{else}}
-          <td class="biography">None</td>
-        {{/if}}
-        <td class='levelDrop'>
-					{{{generateDropdown level ../levels}}}
-				</td>
-        <td class = "id">{{_id}}</td>
-      </tr>
-    {{/each}}
+      <table>
+        <tr>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Job</th>
+          <th>Biography</th>
+          <th>Current Level</th>
+          <th>ID</th>
+        </tr>
+        {{#each users}}
+          <tr id={{_id}}>
+            <td class='firstName'>{{firstName}}</td>
+            <td class='lastName'>{{lastName}}</td>
+            <td class='email'>{{email}}</td>
+            {{#if job}}
+              <td class='job'>{{job}}</td>
+            {{else}}
+              <td class='job'>N/A</td>
+            {{/if}}
+            {{#if biography}}
+              <td class='biography'>{{biography}}</td>
+            {{else}}
+              <td class='biography'>None</td>
+            {{/if}}
+            <td class='levelDrop'>
+              {{{generateDropdown level ../levels}}}
+            </td>
+            <td class='id'>{{_id}}</td>
+          </tr>
+        {{/each}}
 
-  </table>
-	</div>
-	</div>
+      </table>
+    </div>
+  </div>
 {{/if}}
 
+{{#if logs}}
+  <div>
+    <h3>Logs</h3>
+    <div id='log-div'>
+    {{#each logs}}
+      <p>{{this}}</p>
+    {{/each}}
+		</div>
+  </div>
+{{/if}}
 
-<script src="/public/js/admin.js" defer></script>
+<script src='/public/js/admin.js' defer></script>

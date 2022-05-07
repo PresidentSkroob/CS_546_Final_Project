@@ -15,7 +15,6 @@ $(function () {
           if (response.authenticated) {
             window.location.href = '/';
           } else {
-            console.log(response.error);
             err(response.error);
           }
         },
