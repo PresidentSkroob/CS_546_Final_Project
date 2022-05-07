@@ -19,6 +19,12 @@ $(function() {
 		], 
 		onChange: function(selectedDates, dateStr, instance) { 
 			selectedHairdresser = $('#hairdressersdrop').val();
+
+			if(new Date(dateStr) === "Invalid Date") { 
+				err("Error: Invalid date!");
+				return;
+			}
+
 			var requestConfig = { 
 				method: "POST",
 				url: "/appointments/check",
@@ -37,8 +43,20 @@ $(function() {
 
 				}
 		
-				console.log(res);
+				// console.log(res);
 			});
+		}
+	});
+
+	var datetime = $("#datetime");
+	datetime.change( function() {
+		// console.log("in change");
+		if(isNaN(Date.parse(datetime.val())) ) { 
+			err("Error: Invalid date!");
+			button.hide();
+		} else { 
+			$(".error-div").hide();
+			button.show();
 		}
 	});
 

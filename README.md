@@ -42,5 +42,17 @@ Congratulations! This is the first step in your journey towards using our fully 
 <b> D) Steps to Use </b>
 
 
+- [ ] After arriving on the landing page, log in with your credentials (email & password) and click submit.
+- [ ] Upon logging in you will have the ability to select a day from the calendar (based on the business hours/dates) and book a time.
+- [ ] After selecting a time, you will have the ability to select a service to book, with the specified Hairdresser, shown with the requisite pricing.
+- [ ] Once you have selected your booking information (day, time, and service) you will be redirected to the Appointment Finalization page :tada:
+- [ ] A user who books an appointment will have the ability to leave a review. This review will be shown on the 'Reviews' page.
+- [ ] A user who is navigating the site will also have the ability to navigate to the About page, where they can learn about Ces't la Vie or any of the Hairdresssers.
+- [ ] Additionally, a user who is navigating the site will have the ability to navigate to the Contact page, where they can view the business location, the hours of operation, and business details.
+
+
+
+
+
 
 ©2022

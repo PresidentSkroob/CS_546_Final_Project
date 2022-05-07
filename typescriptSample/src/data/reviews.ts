@@ -190,6 +190,12 @@ async function getAllReviewsByHairdresserId2(
   return foundReviews as Review<string>[];
 }
 
+/**
+ * Query's the Reviews collection for a search term contained in their body field. 
+ * 
+ * @param {string} searchTerm - The term to query by
+ * @return {Promise<Review<string>[]>} - A promise for an array of found reviews. 
+ */
 async function getReviewsBySearchTerm(
   searchTerm: string
 ): Promise<Review<string>[]> {

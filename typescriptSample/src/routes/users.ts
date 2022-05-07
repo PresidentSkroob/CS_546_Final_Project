@@ -177,7 +177,7 @@ router
       }
       const usr = await users.getById(_id);
       const listOfReviewsByCustomerId = await reviews.getAllReviewsByCustomerId2(usr._id!);
-      let userReviews = [];
+      const userReviews = [];
       if (!listOfReviewsByCustomerId || listOfReviewsByCustomerId.length == 0) {
         const empty = {
           empty: "You haven't made any reviews yet!"
