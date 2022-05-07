@@ -47,9 +47,12 @@ router
 
 router
   .route('/signup')
-  .get(async (_req, res) => {
+  .get(async (req, res) => {
     try {
-      res.render('signup', { title: 'Signup' });
+      if (req.session.user) {
+        return res.redirect('/');
+      }
+      return res.render('signup', { title: 'Signup' });
     } catch (e) {
       res.status(500).json({ error: e });
     }
