@@ -1,0 +1,18 @@
+<link href='/public/css/user.css' rel='stylesheet' />
+aaaaaaaa
+<div>
+  <h3>View your appointment history: <a href="/appointments/history/{{user.id}}">here</a></h3>
+  <h3>Your email: {{user.email}}</h3>
+  <br>
+  <h3>Here are your reviews: </h3>
+  <div id="reviews-table">
+        {{user.empty.empty}}
+        {{#each user.reviews}}
+            <div class="review">
+                <h3>This is what {{posterId}} said about you...</h3>
+                <h3>They rated you a {{rating}} out of 5!</h3>
+                <h4>This is what they wrote: </h4><p>{{body}}</p>
+            </div>
+        {{/each}}
+  </div>
+</div>
