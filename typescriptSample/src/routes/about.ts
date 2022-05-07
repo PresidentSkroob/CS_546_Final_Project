@@ -15,7 +15,6 @@ router.use('/', async (req, res) => {
     for (let x = 0; x < foundUsers.length; x++) {
       {
         if (
-          foundUsers[x].level == 'admin' ||
           foundUsers[x].level == 'hairdresser'
         ) {
           let salonistName =
