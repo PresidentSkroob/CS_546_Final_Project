@@ -1,6 +1,22 @@
+<link href='/public/css/user.css' rel='stylesheet' />
+
 <h2>{{user.firstName}} {{user.lastName}}'s Account</h2>
 <div>
-  <h3>Email</h3>
-  {{user.email}}
+  <h3>View your appointment history: <a href="/appointments/history/{{user.id}}">here</a></h3>
+  <h3>Your email: {{user.email}}</h3>
   <button>Edit Email?</button>
+  <br>
+  <h3>Here are the reviews you've made: </h3>
+  <div id="reviews-table">
+        {{user.empty.empty}}
+        {{#each user.reviews}}
+            <div class="review">
+                <h3>This is what you said about {{hairdresserName}}...</h3>
+                <h3>You rated {{hairdresserName}} a {{rating}} out of 5!</h3>
+                <h4>This is what you wrote: </h4><p>{{body}}</p>
+            </div>
+        {{/each}}
+        <br><br>
+        <p>Your reviews provide honest sentiments toward improving our products. Thank you!</p>
+  </div>
 </div>

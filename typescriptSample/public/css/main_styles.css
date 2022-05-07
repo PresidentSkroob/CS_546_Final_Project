@@ -22,7 +22,7 @@ body {
   margin-right: 1em;
 }
 
-.error_div{
+.error_div {
   opacity: 0.5;
   margin: auto;
   text-align: center;
@@ -30,7 +30,7 @@ body {
   font-size: large;
 }
 
-h2.error-header{
+h2.error-header {
   text-align: center;
 }
 

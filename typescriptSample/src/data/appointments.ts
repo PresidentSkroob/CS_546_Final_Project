@@ -87,6 +87,31 @@ async function getAllApptsByCustomerId(
 }
 
 /**
+ * Gets all appointments which have customerId cid
+ * Only difference: returns [] when empty
+ * 
+ * @param {string} cid - The customer id to query by
+ * @return {Promise<Appointment<string>[]>} - A promise for the appointments
+ */
+ async function getAllApptsByCustomerId2(
+  cid: string
+): Promise<Appointment<string>[]> {
+  cid = utils.checkId(cid, 'customer');
+  const appointmentCollection = await appointments();
+  const foundAppointments = (await appointmentCollection
+    .find({
+      customerId: cid,
+    })
+    .toArray()) as Appointment<ObjectId | string>[];
+  if (!foundAppointments || foundAppointments.length === 0)
+    return [];
+  foundAppointments.forEach((elem) => {
+    elem._id = elem._id!.toString();
+  });
+  return foundAppointments as Appointment<string>[];
+}
+
+/**
  * Gets all appointments which have hairdresserId hid
  *
  * @param {string} hid - The hairdresser id to query by
@@ -110,18 +135,27 @@ async function getAllApptsByHairdresserId(
   return foundAppointments as Appointment<string>[];
 }
 
-async function checkAppointment(appt: Appointment) { 
-	const foundAppointments = await getAllApptsByHairdresserId(appt.hairdresserId);
-	if(foundAppointments && foundAppointments.length !== 0) {
-		for(let i = 0; i < foundAppointments.length; i++) { 
-			if( areIntervalsOverlapping(
-				{ start: new Date(appt.startTime), end: new Date(appt.endTime) },
-				{ start: new Date(foundAppointments[i].startTime), end: new Date(foundAppointments[i].endTime) } ) ) {
-					throw `Error: appointment time already taken!`
-				}
-		}
-	}
-	return { valid: true };
+async function checkAppointment(appt: Appointment) {
+  const appointmentCollection = await appointments();
+  const foundAppointments = await getAllApptsByHairdresserId(
+    appt.hairdresserId
+  );
+  if (foundAppointments && foundAppointments.length !== 0) {
+    for (let i = 0; i < foundAppointments.length; i++) {
+      if (
+        areIntervalsOverlapping(
+          { start: new Date(appt.startTime), end: new Date(appt.endTime) },
+          {
+            start: new Date(foundAppointments[i].startTime),
+            end: new Date(foundAppointments[i].endTime),
+          }
+        )
+      ) {
+        throw `Error: appointment time already taken!`;
+      }
+    }
+  }
+  return { valid: true };
 }
 
 async function checkAppointmentByDateTimeAndHairdresser(dateStr: string, hid: string) { 
@@ -178,6 +212,7 @@ export = {
   create,
   getAll,
   getAllApptsByCustomerId,
+  getAllApptsByCustomerId2,
   getAllApptsByHairdresserId,
   checkAppointment,
   getAllAppointmentsOnDay,

@@ -1,18 +1,20 @@
 * {
-    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+  font-family: 'Helvetica Neue Thin', Arial, Helvetica, sans-serif;
 }
 
-table, th, td {
-    border: 1px solid #ed5a58;
+table,
+th,
+td {
+  border: 1px solid #ed5a58;
 }
 td {
-    text-align: center;
+  text-align: center;
 }
 #redirect {
-    display: inline
+  display: inline;
 }
 .appointment {
-    margin-top: 3px;
-    border: 3px solid rgb(44, 108, 44);
-    width: 50%
+  margin-top: 3px;
+  border: 3px solid rgb(44, 108, 44);
+  width: 50%;
 }

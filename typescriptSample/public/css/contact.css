@@ -1,31 +1,31 @@
-.space, .break{
-    margin-left: 8px;
+.space,
+.break {
+  margin-left: 8px;
 }
 h3 {
-    margin-left: 4px;
+  margin-left: 4px;
 }
 .important-info {
-    font-weight: bold;
-    margin-left: 8px;
+  font-weight: bold;
+  margin-left: 8px;
 }
 #google-map {
-    margin-top: 4px;
-    border: 2px solid #ed5a58;
-    width: 50%
+  margin-top: 4px;
+  border: 2px solid #ed5a58;
+  width: 50%;
 }
 #hours {
-    margin-top: 4px;
-    border: 2px solid #ed5a58;
-    width: 40%
+  margin-top: 4px;
+  border: 2px solid #ed5a58;
+  width: 40%;
 }
 #phone-number {
-    margin-top: 4px;
-    border: 2px solid #ed5a58;
-    width: 40%
+  margin-top: 4px;
+  border: 2px solid #ed5a58;
+  width: 40%;
 }
 
-
 #qr-container {
-	margin: 10%;
-	padding: 10%;
+  margin: 10%;
+  padding: 10%;
 }

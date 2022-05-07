@@ -9,16 +9,20 @@ $(function () {
       url: '/contact/qr',
       data: { url: window.location.origin },
     };
-    $.ajax(requestConfig).then((response) => {
-      if (response.success) {
-        $('#qr-img').attr('src', response.img);
-        $('#qr-img').show();
-      } else {
-        err(response.error);
+    $.ajax(requestConfig).then(
+      (response) => {
+        if (response.success) {
+          $('#qr-img').attr('src', response.img);
+          $('#qr-img').show();
+        } else {
+          err(response.error);
+        }
+      },
+      (response) => {
+        err(response.responseJSON.error);
       }
-    });
+    );
   }
 
   onLoad();
-
 });

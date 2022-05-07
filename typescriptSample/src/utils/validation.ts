@@ -1,6 +1,5 @@
 import { Appointment, LoginAttempt, Review, User } from './types';
 import * as utils from './index';
-import { stringify } from 'querystring';
 
 /**
  *
@@ -95,8 +94,8 @@ export function validateUser(
   lastName: string,
   appointmentIds: Array<string> = [],
   reviewIds: Array<string> = [],
-  job: string = "",
-  biography: string = "",
+  job: string = '',
+  biography: string = '',
   level: string = 'user'
 ): User {
   const eml = utils.checkEmail(email, 'user email');
@@ -123,9 +122,10 @@ export function validateUser(
 }
 
 /**
+ * Checks if a login attempt is valid
  *
- * @param email
- * @param password
+ * @param {string} email - A possible user's email
+ * @param {string} password - A possible password
  * @return {LoginAttempt}
  */
 export function validateLoginAttempt(
