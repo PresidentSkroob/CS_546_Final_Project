@@ -6,6 +6,7 @@ import { ObjectId } from 'mongodb';
 import * as utils from '../utils';
 import { Appointment } from '../utils';
 var areIntervalsOverlapping = require('date-fns/areIntervalsOverlapping');
+var isSameDay = require('date-fns/isSameDay');
 
 /**
  * Gets all appointments from the test collection
@@ -157,6 +158,55 @@ async function checkAppointment(appt: Appointment) {
   return { valid: true };
 }
 
+async function checkAppointmentByDateTimeAndHairdresser(dateStr: string, hid: string) { 
+	dateStr = utils.checkDate(dateStr, 'appointment').toISOString();
+	hid = utils.checkId(hid, 'hairdresser');
+	// const appointmentCollection = await appointments();
+	const foundAppointments = await getAllApptsByHairdresserId(hid);	
+
+	// const fAppt = await appointmentCollection.find({ 
+	// 	hairdresserId: new ObjectId(hid),
+	// 	startTime: { $lt: new Date(dateStr).setTime(new Date(dateStr).getTime() + (60 * 60 * 1000) ) },
+	// 	endTime: { $gt: new Date(dateStr) }
+	// }).toArray();
+
+	// if(fAppt && fAppt.length !== 0) throw `Error: appointment time already taken!`
+	let newStart = new Date(dateStr);
+	let newEnd = new Date(dateStr);
+	newEnd.setMinutes(newStart.getMinutes() + 59);
+
+	for(let i = 0; i < foundAppointments.length; i++) { 
+
+		if( areIntervalsOverlapping(
+			{ start: newStart, end: newEnd  }, 
+			{ start: new Date(foundAppointments[i].startTime), end: new Date(foundAppointments[i].endTime )}, 
+			// { inclusive: true } 
+		)) {
+			throw `Error: appointment time already taken!`;
+			// return { valid: false };
+		}
+	}
+	return { valid: true };
+
+}
+
+async function getAllAppointmentsOnDay(dateStr: string) {
+	const foundAppointments = await getAll();	
+
+	let apptsOnDay = [];
+	if(foundAppointments && foundAppointments.length !== 0) { 
+		for(let i = 0; i < foundAppointments.length; i++) { 
+			if( isSameDay( new Date(foundAppointments[i].startTime), new Date(dateStr) ) ) { 
+				apptsOnDay.push(foundAppointments[i]);
+			}
+		}
+	}
+
+
+	return apptsOnDay;
+}
+
+
 export = {
   get,
   create,
@@ -165,4 +215,6 @@ export = {
   getAllApptsByCustomerId2,
   getAllApptsByHairdresserId,
   checkAppointment,
+  getAllAppointmentsOnDay,
+  checkAppointmentByDateTimeAndHairdresser
 };

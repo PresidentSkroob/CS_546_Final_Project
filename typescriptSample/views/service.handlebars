@@ -1,0 +1,22 @@
+<div>
+
+	<p>Your appointment is booked for: {{datetime}} for 1 hour!</p>
+	<p>Your hairdresser is: {{hairdresser.name}}.</p>
+	<form id="apptform" action="/appointments/finalization" method="POST">
+
+		<input type="text" name="datetime" value="{{datetime}}" hidden>
+		<input type="text" name="hairdresser" value="{{hairdresser.id}}" hidden>
+
+		<input type="radio" name="service_selection" value="cutandcolor" checked>Cut and Color: $80<br>
+		<input type="radio" name="service_selection" value="washandcut">Wash and Cut: $65<br>
+		<input type="radio" name="service_selection" value="coloronly">Color Only: $45<br>
+
+		<label for="comments">Comments? Enter them here!</label>
+		<textarea name="comments" form="apptform"></textarea>
+		<button type="submit">Head to Finalization</button>
+
+	</form> 
+
+
+
+</div> 

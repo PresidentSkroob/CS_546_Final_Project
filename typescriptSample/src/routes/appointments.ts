@@ -1,6 +1,7 @@
 import { privateDecrypt } from 'crypto';
 import express = require('express');
 const router: express.Router = new (express.Router as any)();
+import xss from 'xss';
 import data from '../data';
 import * as utils from '../utils';
 import { Appointment } from '../utils';
@@ -35,6 +36,60 @@ router
       res.status(404).json({ error: e });
     }
   });
+
+// Calendar Route for Date/Time selection
+router.get('/calendar', async (req, res) => { 
+	try {
+		if(req.session.user) { 
+			const foundHairdressers = await users.getAllHairdressers();
+			let relevantInformation = [];
+			for(let i = 0; i < foundHairdressers.length; i++) { 
+				relevantInformation.push({id: foundHairdressers[i]._id,
+					 name: foundHairdressers[i].firstName + " " + foundHairdressers[i].lastName });
+			}
+	
+			res.render('calendar', {title: 'Calendar',
+									hairdressers: relevantInformation });
+		} else { 
+			res.redirect('/');
+		}
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({error : e});
+	}
+});
+
+
+
+router.post('/service', async (req, res) => { 
+	try { 
+		if(req.session.user) { 
+			console.log(req.body);
+			const foundHairdresser = await users.getById(xss(req.body.hairdressersdrop));
+			res.render('service', {title: "Service Page", datetime: xss(req.body.datetime), hairdresser: {name: foundHairdresser.firstName + " " + foundHairdresser.lastName, id: xss(req.body.hairdressersdrop)} });
+		} else { 
+			res.redirect("/");
+		}
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({error : e});
+	}
+});
+
+router.post('/finalization', async (req, res) => {
+	console.log(req.body);
+	try { 
+		if(req.session.user) {
+			res.render('finalization', {service: req.body.service_selection, comments: req.body.comments });
+		} else { 
+			res.redirect("/");
+		}
+
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({error: e});
+	}
+})
 
 router.get('/appts/:hid', async (req, res) => {
   try {
@@ -137,6 +192,18 @@ router.get('/history/:cid', async (req, res) => {
   }
 });
 
+router.post('/check', async (req, res) => { 
+	try { 
+		const foundAppointments = await appointments.checkAppointmentByDateTimeAndHairdresser(xss(req.body.dateStr), xss(req.body.hid));
+		
+		res.json({success: true });
+	} catch (e) { 
+		console.log(e);
+		res.json({success: false, error: e });
+		// res.status(400).render('calendar', { title: 'Calendar',  error: e });
+	}
+});
+
 router.route('/:id').get(async (req, res) => {
   try {
     const _id = utils.checkId(req.params.id, 'appointment');
@@ -146,5 +213,6 @@ router.route('/:id').get(async (req, res) => {
     res.status(404).json({ error: e });
   }
 });
+
 
 export = router;

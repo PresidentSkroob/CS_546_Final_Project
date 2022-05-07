@@ -47,7 +47,7 @@ async function main() {
     biography:
       "Alexander has been a salonist for over 15 years after graduating from Hill University with \
     a Masters Degree in Hair Styling. She has been with us here at Ces't La Vie since our founding in 2008.",
-    level: 'admin',
+    level: 'hairdresser',
   });
 
   const hrdsr2 = await users.create({
@@ -62,7 +62,7 @@ async function main() {
       "Zachary, originally a Chemical Engineer from Stevens Institute of Technology, has developed an incredible \
     hair-treatment formula that allows hair to be bleached and color without severely damaging it. This revolutionary \
     product has elongated the health and lifespan of our customer's hair. He has been with us for 6 years, creating smiles and vibrant hairstyles.",
-    level: 'admin',
+    level: 'hairdresser',
   });
 
   console.log('Done seeding users in database');
@@ -70,8 +70,8 @@ async function main() {
   const appt1 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-03-12 12:00 EST').getTime(),
-    endTime: new Date('2022-03-12 13:00 EST').getTime(),
+    startTime: new Date('2022-05-12 12:00 EDT').getTime(),		// 12 to 1
+    endTime: new Date('2022-05-12 13:00 EDT').getTime(),
     service: 'haircut',
     comments: 'First appointment',
     price: 12.99,
@@ -80,8 +80,8 @@ async function main() {
   const appt2 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-03-12 13:00 EST').getTime(),
-    endTime: new Date('2022-03-12 14:00 EST').getTime(),
+    startTime: new Date('2022-05-12 13:00 EDT').getTime(),		// 1 to 2
+    endTime: new Date('2022-05-12 14:00 EDT').getTime(),
     service: 'haircut',
     comments: 'Second appointment',
     price: 14.99,
@@ -90,18 +90,18 @@ async function main() {
   const appt3 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-03-12 14:00 EST').getTime(),
-    endTime: new Date('2022-03-12 15:00 EST').getTime(),
+    startTime: new Date('2022-05-12 14:00 EDT').getTime(),		// 2 to 3
+    endTime: new Date('2022-05-12 15:00 EDT').getTime(),
     service: 'haircut',
     comments: 'Third appointment',
     price: 14.99,
   });
 
-  const appt4 = await appointments.create({
-    customerId: usr2._id!.toString(),
+   const appt4 = await appointments.create({
+    customerId: usr2._id!.toString(),							// Second hairdresser
     hairdresserId: hrdsr2._id!.toString(),
-    startTime: new Date('2022-03-12 15:00 EST').getTime(),
-    endTime: new Date('2022-03-12 16:00 EST').getTime(),
+    startTime: new Date('2022-05-12 15:00 EDT').getTime(),		// 3 to 4
+    endTime: new Date('2022-05-12 16:00 EDT').getTime(),
     service: 'haircut',
     comments: 'Fourth appointment',
     price: 999.99,
