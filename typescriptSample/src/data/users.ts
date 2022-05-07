@@ -173,6 +173,30 @@ async function addAppointmentByUserId(
   return modifiedUsers as User<string>[];
 }
 
+/**
+ *
+ * @param {string} id ID of user to update
+ * @param {string} level new level of user
+ */
+async function updateLevel(id: string, level: string) {
+  const userCollection = await users();
+  const updatedUserStatus = await userCollection.updateOne(
+    { _id: new ObjectId(id) },
+    { $set: { level: level } }
+  );
+
+  if (updatedUserStatus.modifiedCount === 0 || !updatedUserStatus)
+    throw `Error: Modification of user level failed`;
+
+  const modifiedUser = await userCollection.findOne({ _id: new ObjectId(id) });
+
+  if (modifiedUser) {
+    return { success: true };
+  }
+  throw 'Error: User get after update failed.';
+}
+
+const logs: Array<string> = [];
 export = {
   getById,
   create,
@@ -180,4 +204,6 @@ export = {
   checkUser,
   addReviewByUserId,
   addAppointmentByUserId,
+  updateLevel,
+  logs,
 };

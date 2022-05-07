@@ -1,11 +1,10 @@
 import dbConnection from '../config/mongoConnection';
-import { ObjectId } from 'mongodb';
 import data from '../data';
-import { getMaxListeners } from 'process';
 const appointments = data.appointments;
 const reviews = data.reviews;
 const users = data.users;
 
+/* eslint-disable */
 /**
  * Seeds the database before running the main webserver
  */
@@ -20,8 +19,8 @@ async function main() {
     lastName: 'Smith',
     appointmentIds: [],
     reviewIds: [],
-    job: "",
-    biography: "",
+    job: '',
+    biography: '',
     level: 'user',
   });
 
@@ -32,8 +31,8 @@ async function main() {
     lastName: 'Corvin',
     appointmentIds: [],
     reviewIds: [],
-    job: "",
-    biography: "",
+    job: '',
+    biography: '',
     level: 'user',
   });
 
@@ -44,8 +43,9 @@ async function main() {
     lastName: 'Gomez',
     appointmentIds: [],
     reviewIds: [],
-    job: "haircut",
-    biography: "Alexander has been a salonist for over 15 years after graduating from Hill University with \
+    job: 'haircut',
+    biography:
+      "Alexander has been a salonist for over 15 years after graduating from Hill University with \
     a Masters Degree in Hair Styling. She has been with us here at Ces't La Vie since our founding in 2008.",
     level: 'admin',
   });
@@ -57,8 +57,9 @@ async function main() {
     lastName: 'Rohovit',
     appointmentIds: [],
     reviewIds: [],
-    job: "coloring",
-    biography: "Zachary, originally a Chemical Engineer from Stevens Institute of Technology, has developed an incredible \
+    job: 'coloring',
+    biography:
+      "Zachary, originally a Chemical Engineer from Stevens Institute of Technology, has developed an incredible \
     hair-treatment formula that allows hair to be bleached and color without severely damaging it. This revolutionary \
     product has elongated the health and lifespan of our customer's hair. He has been with us for 6 years, creating smiles and vibrant hairstyles.",
     level: 'admin',
@@ -96,7 +97,7 @@ async function main() {
     price: 14.99,
   });
 
-   const appt4 = await appointments.create({
+  const appt4 = await appointments.create({
     customerId: usr2._id!.toString(),
     hairdresserId: hrdsr2._id!.toString(),
     startTime: new Date('2022-03-12 15:00 EST').getTime(),
@@ -138,3 +139,4 @@ async function main() {
 }
 
 main();
+/* eslint-enable */

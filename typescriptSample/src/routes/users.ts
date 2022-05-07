@@ -7,15 +7,11 @@ const appointments = data.appointments;
 const reviews = data.reviews;
 const users = data.users;
 
-// Note: these routes do not yet consider any form of authentication.
-// They merely exist to start us off.
-
 router.get('/', async (_req, res) => {
   try {
     const foundUsers = await users.getAll();
     res.json(foundUsers);
   } catch (e) {
-    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -51,11 +47,13 @@ router
 
 router
   .route('/signup')
-  .get(async (_req, res) => {
+  .get(async (req, res) => {
     try {
-      res.render('signup', { title: 'Signup' });
+      if (req.session.user) {
+        return res.redirect('/');
+      }
+      return res.render('signup', { title: 'Signup' });
     } catch (e) {
-      console.log(e);
       res.status(500).json({ error: e });
     }
   })
@@ -66,7 +64,7 @@ router
         xss(b.email),
         xss(b.password),
         xss(b.firstName),
-        xss(b.lastName),
+        xss(b.lastName)
       );
       b.password = '';
       const status = await users.create(usr);
@@ -74,7 +72,6 @@ router
       req.session.user = status._id!;
       return res.json({ authenticated: true });
     } catch (e) {
-      console.log(e);
       res.status(404).json({ error: e });
     }
   });
@@ -93,9 +90,38 @@ router.route('/private').get(async (req, res) => {
     if (req.session.user) {
       const usr = await users.getById(req.session.user);
       if (usr.level === 'admin') {
-        res.render('admin', { title: `Admin Portal` });
+        const usrs = await users.getAll();
+        const revws = await reviews.getAll();
+        revws.forEach((e) => {
+          const hd = usrs.filter((d) => d._id == e.hairdresserId)[0];
+          e.hairdresserId = `${hd.firstName} ${hd.lastName}`;
+          const p = usrs.filter((d) => d._id == e.posterId)[0];
+          e.posterId = `${p.firstName} ${p.lastName}`;
+          return e;
+        });
+        const appts = await appointments.getAll();
+
+        appts.forEach((e) => {
+          const hd = usrs.filter((d) => d._id == e.hairdresserId)[0];
+          e.hairdresserId = `${hd.firstName} ${hd.lastName}`;
+          const c = usrs.filter((d) => d._id == e.customerId)[0];
+          e.customerId = `${c.firstName} ${c.lastName}`;
+          e.stString = new Date(e.startTime).toLocaleString();
+          e.etString = new Date(e.endTime).toLocaleString();
+          return e;
+        });
+
+        return res.render('admin', {
+          title: `Admin Portal`,
+          users: usrs,
+          appointments: appts,
+          reviews: revws,
+          levels: ['user', 'admin', 'hairdresser'],
+          views: req.session.views,
+          logs: users.logs,
+        });
       } else {
-        res.status(403).render('error', {
+        return res.status(403).render('error', {
           title: 'Insufficient Permissions',
           'error-msg':
             'You do not have sufficient permissions to access this resource.',
@@ -103,10 +129,10 @@ router.route('/private').get(async (req, res) => {
         });
       }
     } else {
-      res.redirect('/users/login');
+      return res.redirect('/users/login');
     }
   } catch (e) {
-    res.status(500).render('error', {
+    return res.status(500).render('error', {
       title: 'Server Error',
       'error-status': 500,
       'error-msg': e,
@@ -114,113 +140,110 @@ router.route('/private').get(async (req, res) => {
   }
 });
 
-router.get('/:id', async (req, res) => {
-  try {
-    let _id = xss(req.params.id);
+router
+  .route('/:id')
+  .get(async (req, res) => {
     try {
-      _id = utils.checkId(_id, 'user');
-    } catch (e) {
-      res.status(404).render('error', {
-        title: 'Page Not Found',
-        'error-msg': e,
-        'error-status': 404,
-      });
-    }
-    const usr = await users.getById(_id);
-    const listOfReviewsByCustomerId = await reviews.getAllReviewsByCustomerId2(usr._id!);
-    let userReviews = [];
-    if (!listOfReviewsByCustomerId || listOfReviewsByCustomerId.length == 0) {
-      const empty = {
-        empty: "You haven't made any reviews yet!"
+      let _id = xss(req.params.id);
+      try {
+        _id = utils.checkId(_id, 'user');
+      } catch (e) {
+        return res.status(404).render('error', {
+          title: 'Page Not Found',
+          'error-msg': e,
+          'error-status': 404,
+        });
+      }
+      if (_id !== req.session.user) {
+        return res.status(403).render('error', {
+          title: 'Access Denied',
+          'error-msg': "Users may not access other users' accounts.",
+          'error-status': 403,
+        });
+      }
+      const usr = await users.getById(_id);
+      const listOfReviewsByCustomerId = await reviews.getAllReviewsByCustomerId2(usr._id!);
+      let userReviews = [];
+      if (!listOfReviewsByCustomerId || listOfReviewsByCustomerId.length == 0) {
+        const empty = {
+          empty: "You haven't made any reviews yet!"
+        }
+        if (usr.level === 'user') {
+          return res.render('user', {
+            title: `${usr.firstName}'s Account`,
+            user: {
+              id: usr._id,
+              firstName: usr.firstName,
+              lastName: usr.lastName,
+              email: usr.email,
+              empty: empty
+            },
+          })
+        }
+      } else {
+        for (let i=0; i < listOfReviewsByCustomerId.length; i++) {
+          let foundHairdresser = await users.getById(listOfReviewsByCustomerId[i].hairdresserId);
+          let salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
+          let obj = {
+            //ratingId: listOfReviewsByCustomerId[i]._id,
+            hairdresserName: salonistName,
+            body: listOfReviewsByCustomerId[i].body,
+            rating: listOfReviewsByCustomerId[i].rating
+          }
+          userReviews.push(obj);
+        }
       }
       if (usr.level === 'user') {
-        return res.render('user', {
+        res.render('user', {
           title: `${usr.firstName}'s Account`,
           user: {
             id: usr._id,
             firstName: usr.firstName,
             lastName: usr.lastName,
             email: usr.email,
-            empty: empty
+            reviews: userReviews,
           },
-        })
-      }
-    } else {
-      for (let i=0; i < listOfReviewsByCustomerId.length; i++) {
-        let foundHairdresser = await users.getById(listOfReviewsByCustomerId[i].hairdresserId);
-        let salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
-        let obj = {
-          //ratingId: listOfReviewsByCustomerId[i]._id,
-          hairdresserName: salonistName,
-          body: listOfReviewsByCustomerId[i].body,
-          rating: listOfReviewsByCustomerId[i].rating
-        }
-        userReviews.push(obj);
-      }
-    }
-
-    if (usr.level === 'user') {
-      res.render('user', {
-        title: `${usr.firstName}'s Account`,
-        user: {
-          id: usr._id,
-          firstName: usr.firstName,
-          lastName: usr.lastName,
-          email: usr.email,
-          reviews: userReviews,
-        },
-      });
-    } else {
-      res.render('user', {
-        title: `${usr.firstName}'s Account`,
-        user: {
-          id: usr._id,
-          firstName: usr.firstName,
-          lastName: usr.lastName,
-          email: usr.email,
-          appointments: await appointments.getAllApptsByHairdresserId(usr._id!),
-          reviews: await reviews.getAllReviewsByHairdresserId(usr._id!),
-        },
-      });
-
-    }
-  } catch (e) {
-    res.status(404).render('error', {
+        });
+      } else {
+        res.render('user', {
+          title: `${usr.firstName}'s Account`,
+          user: {
+            id: usr._id,
+            firstName: usr.firstName,
+            lastName: usr.lastName,
+            email: usr.email,
+            appointments: await appointments.getAllApptsByHairdresserId(usr._id!),
+            reviews: await reviews.getAllReviewsByHairdresserId(usr._id!),
+          },
+        })}
+    } catch (e) {
+    return res.status(404).render('error', {
       title: 'Invalid User ID',
       'error-msg': e,
       'error-status': 404,
     });
-  }
-});
-// router.post('/login', async (req, res) => {
-// 	try {
-// 		const b = req.body;
-// 		console.log(b.email, b.password, b.firstName, b.lastName,
-// 			b.appointmentIds, b.reviewIds, b.level);
-
-// 		const usr = utils.validateUser(
-// 			b.email,
-// 			b.password,
-// 			b.firstName,
-// 			b.lastName,
-// 			b.appointmentIds,
-// 			b.reviewIds,
-// 			b.level
-// 		);
-// 		const checkUser = await users.checkUser(usr);
-// 		if(checkUser) { 		// If the user already exists
-// 			res.json(checkUser);
-// 		}
-
-// 	} catch (e) {
-// 		console.log(e);
-// 		res.status(404).json({error: e});
-// 	}
-// });
-
-// router.get('/logout', async(req, res) => {
-// 	// req.session.destroy();
-// 	res.json({message: "you logged out son"});
-// });
+  }})
+  .patch(async (req, res) => {
+    try {
+      const _id = xss(req.params.id);
+      const level = utils.checkLevel(xss(req.body.level));
+      if (_id === req.session.user && level !== 'admin') {
+        return res.status(400).json({
+          error:
+            'You cannot demote yourself. Please have someone else demote you.',
+        });
+      }
+      const usr = await users.getById(req.session.user);
+      if (usr.level !== 'admin') {
+        return res
+          .status(403)
+          .json({ error: 'You must be an admin to change permission levels' });
+      }
+      const status = await users.updateLevel(_id, level);
+      return res.status(200).json(status);
+    } catch (e) {
+      return res.status(500).json({ error: e });
+    }
+  });
 
 export = router;

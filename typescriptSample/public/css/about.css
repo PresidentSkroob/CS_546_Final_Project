@@ -1,32 +1,35 @@
 #salon-img {
-    width: 40%;
-    height: 40%
+  width: 40%;
+  height: 40%;
 }
 * {
-    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+  font-family: 'Helvetica Neue Thin', Arial, Helvetica, sans-serif;
 }
 
-table, th, td {
-    border: 1px solid #ed5a58;
+table,
+th,
+td {
+  border: 1px solid #ed5a58;
 }
 td {
-    text-align: center;
+  text-align: center;
 }
 
 .biography {
-    margin-top: 2px;
-    border: 2px solid #ed5a58;
-    width: 70%
+  margin-top: 2px;
+  border: 2px solid #ed5a58;
+  width: 70%;
 }
 
-.individual-review{
-    margin: 2px;
-    border: 2px solid rgb(150, 75, 150);
-    width: 70%
+.individual-review {
+  margin: 2px;
+  border: 2px solid rgb(150, 75, 150);
+  width: 70%;
 }
-.scoreRating, .thisPerson {
-    font-weight: bold;
+.scoreRating,
+.thisPerson {
+  font-weight: bold;
 }
 .bodyText {
-    margin-top: 3px
+  margin-top: 3px;
 }

@@ -17,7 +17,11 @@ const constructorMethod = (app: express.Application): void => {
   });
 
   app.use('*', (_, res) => {
-    res.status(404).render('error', { title: "Page Not Found", "error-msg": 'Page not found', "error-status": 404 });
+    res.status(404).render('error', {
+      title: 'Page Not Found',
+      'error-msg': 'Page not found',
+      'error-status': 404,
+    });
   });
 };
 

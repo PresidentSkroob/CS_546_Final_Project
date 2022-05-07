@@ -1,39 +1,65 @@
 <link href='/public/css/contact.css' rel='stylesheet' />
-<script type="module" src="../src/data/contact.ts"></script>
-<h1 class="title">C'est La Vie Salon</h1>
-<h2 class="title">Contact Page</h2>
+<script type='module' src='../src/data/contact.ts'></script>
+<h1 class='title'>C'est La Vie Salon</h1>
+<h2 class='title'>Contact Page</h2>
 
-<div id="phone-number">
-    <h3>How to Contact Us:</h3>
-    <p class="space">Thank you for your interest in C'est La Vie Salon! You may contact us via email
-        or by phone number with the following information below:
-        <br> <br>
-        <div class="important-info">Phone Number: (201) 216-5000</div>
-        <br>
-        <div class="important-info">Email: cestlavie@gmail.com</div>
-        <br><br>
-        <div class="break">
-        Interseted in our wonderful stylists instead? Click 
-        <a href="/about">here</a> instead!
-        </div>
-    </p>
+<div id='phone-number'>
+  <h3>How to Contact Us:</h3>
+  <p class='space'>Thank you for your interest in C'est La Vie Salon! You may
+    contact us via email or by phone number with the following information
+    below:
+    <br />
+    <br />
+    <div class='important-info'>Phone Number: (201) 216-5000</div>
+    <br />
+    <div class='important-info'>Email: cestlavie@gmail.com</div>
+    <br /><br />
+    <div class='break'>
+      Interseted in our wonderful stylists instead? Click
+      <a href='/about'>here</a>
+      instead!
+    </div>
+  </p>
 </div>
 
-<div id="hours">
-    <h3>Hours of Operation</h3>
-    <ul>
-        <li>Sunday: CLOSED</li>
-        <li>Monday: 10am-6pm</li>
-        <li>Tuesday: 10am-6pm</li>
-        <li>Wednesday: 10am-6pm</li>
-        <li>Thursday: 10am-6pm</li>
-        <li>Friday: 10am-6pm</li>
-        <li>Saturday: 12pm-6pm</li>
-    </ul>
+<div id='qr container'>
+  <h3>Share our website with your friends!</h3>
+
+  <img
+    id='qr-img'
+    hidden
+    width='25%'
+    height='25%'
+    alt='QR Code for website'
+    hidden
+  />
+
+  <script src='/public/js/qr.js' defer></script>
 </div>
 
-<div id="google-map">
-    <h3>Map of our location:</h3>
-    <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6045.777956078234!2d-74.0281839!3d4
-    0.7424684!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259dfcaa5e61b%3A0x773d39a6a9cb3b70!2sBabbio%20Center!5e0!3m2!1sen!2sus!4v1651777977611!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+<div id='hours'>
+  <h3>Hours of Operation</h3>
+  <ul>
+    <li>Sunday: CLOSED</li>
+    <li>Monday: 10am-6pm</li>
+    <li>Tuesday: 10am-6pm</li>
+    <li>Wednesday: 10am-6pm</li>
+    <li>Thursday: 10am-6pm</li>
+    <li>Friday: 10am-6pm</li>
+    <li>Saturday: 12pm-6pm</li>
+  </ul>
+</div>
+
+<div id='google-map'>
+  <h3>Map of our location:</h3>
+  <iframe
+    src='https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d6045.777956078234!2d-74.0281839!3d4
+    0.7424684!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89c259dfcaa5e61b%3A0x773d39a6a9cb3b70!2sBabbio%20Center!5e0!3m2!1sen!2sus!4v1651777977611!5m2!1sen!2sus'
+    width='600'
+    height='450'
+    style='border:0;'
+    allowfullscreen=''
+    loading='lazy'
+    referrerpolicy='no-referrer-when-downgrade'
+  ></iframe>
 </div>

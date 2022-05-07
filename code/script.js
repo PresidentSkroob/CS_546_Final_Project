@@ -9,8 +9,6 @@ const date = new Date();
 const renderCalendar = () => {
   date.setDate(1);
 
-  console.log(date.getDay());
-
   const month = date.getMonth();
 
   const monthDays = document.querySelector(".days");

@@ -9,7 +9,7 @@
     "predevbuild": "npm run format && npm run lint",
     "devbuild": "npm run build && npm run seed",
     "build": "tsc",
-    "seed": "node ./dist/tasks/seed.js",
+    "seed": "npm run build && node ./dist/tasks/seed.js",
     "prestart": "npm run build",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -26,6 +26,7 @@
     "express-session": "^1.17.2",
     "handlebars": "^4.7.7",
     "mongo": "^0.1.0",
+    "qrcode": "^1.5.0",
     "xss": "^1.0.11"
   },
   "devDependencies": {
@@ -34,6 +35,7 @@
     "@types/express": "^4.17.13",
     "@types/express-session": "^1.17.4",
     "@types/node": "^16.11.25",
+    "@types/qrcode": "^1.4.2",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "^5.12.1",
     "eslint": "^8.9.0",

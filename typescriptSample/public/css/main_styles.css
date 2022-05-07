@@ -21,3 +21,28 @@ body {
 .login-status {
   margin-right: 1em;
 }
+
+.error_div {
+  opacity: 0.5;
+  margin: auto;
+  text-align: center;
+  font-weight: bolder;
+  font-size: large;
+}
+
+h2.error-header {
+  text-align: center;
+}
+
+p.error-msg {
+  color: red;
+  border: 2px solid red;
+  border-radius: 1em;
+  background-color: rgba(200, 200, 200, 0.2);
+  padding-left: 0.25em;
+  padding-right: 0.25em;
+  margin-left: 5%;
+  margin-right: 5%;
+  hyphens: auto;
+  overflow: auto;
+}

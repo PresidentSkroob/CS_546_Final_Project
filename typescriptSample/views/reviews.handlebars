@@ -1,59 +1,60 @@
 <div>
-	<link href='/public/css/reviews.css' rel='stylesheet' />
-    <h1>Reviews</h1>
-	<div id="top-div">
-		<img id="company-logo" src="/public/images/Logo.png">
-    	<h3><a href="/reviews/create">Enjoy our service? Leave a review!</a></h3>
-	</div>
-    <hr class="col-3 col-md-2 mb-5">
-	<h3>See what our customers think!</h3>
-	<div id="form-div" >
-		<form action="/reviews/high-to-low" method="GET">
-			<label for="sort-desc-button">Sort by High to Low: </label>
-			<button id="sort-desc-button" type="submit">Sort</button>
-		</form>
+  <link href='/public/css/reviews.css' rel='stylesheet' />
+  <h1>Reviews</h1>
+  <div id='top-div'>
+    <img id='company-logo' src='/public/images/Logo.png' />
+    <a href='/reviews/create'>Enjoy our service? Leave a review!</a>
+  </div>
+  <hr class='col-3 col-md-2 mb-5' />
+  <h3>See what our customers think!</h3>
+  <div id='form-div'>
+    <form action='/reviews/high-to-low' method='GET'>
+      <label for='sort-desc-button'>Sort by High to Low: </label>
+      <button id='sort-desc-button' type='submit'>Sort</button>
+    </form>
 
-		<form action="/reviews/low-to-high" method="GET">
-			<label for="sort-asc-button">Sort by Low to High: </label>
-			<button id="sort-asc-button" type="submit">Sort</button>
-		</form>
+    <form action='/reviews/low-to-high' method='GET'>
+      <label for='sort-asc-button'>Sort by Low to High: </label>
+      <button id='sort-asc-button' type='submit'>Sort</button>
+    </form>
 
-		<form action="/reviews/searchreviews" method="POST">
-			<label for="searchReviewTerm">Search Term:</label>
-            <input id="searchReviewTerm" type="text" name="searchReviewTerm" />
-            <button type="submit">Search</button>
-		</form>
+    <form action='/reviews/searchreviews' method='POST'>
+      <label for='searchReviewTerm'>Search Term:</label>
+      <input id='searchReviewTerm' type='text' name='searchReviewTerm' />
+      <button type='submit'>Search</button>
+    </form>
 
-		<form action="/reviews/byhairdresser/" method="GET">
-			<label for="hairdressersdrop">Search By Hairdresser</label>
-			<select id="hairdressersdrop" name="hairdressersdrop">
-				{{#each hairdressers}}
-					<option value="{{this.hid}}" class="hairdresser-option">{{this.name}}</option>
-				{{/each}}
-			</select>
-			<button type="submit">Search</button>
-		</form>
-
-	</div>
-	<div class="error-div">
-		{{#if error}}
-			<p>{{error}}</p>
-		{{/if}}
-	</div>
-	
-    <div id="review-div">
-      <ul id="review-list" style="list-style-type:none;">
-        {{#each reviews}}
-            <li>
-                <h4 class="customer-name">{{customerName}} says: </h4>
-				<h5 class="hairdresser-name">Hairdresser: {{hairdresserName}}</h5>
-                <p class="review-rating">Rating: {{rating}}/5</p>
-                <p class="review-body">{{body}}</p>
-				
-            </li>
-			<hr class="col-3 col-md-2 mb-5">
+    <form action='/reviews/byhairdresser/' method='GET'>
+      <label for='hairdressersdrop'>Search By Hairdresser</label>
+      <select id='hairdressersdrop' name='hairdressersdrop'>
+        {{#each hairdressers}}
+          <option
+            value='{{this.hid}}'
+            class='hairdresser-option'
+          >{{this.name}}</option>
         {{/each}}
-      </ul>
-    </div>
+      </select>
+      <button type='submit'>Search</button>
+    </form>
 
+  </div>
+  <div class='error-div2'>
+    {{#if error}}
+      <p>{{error}}</p>
+    {{/if}}
+  </div>
+
+  <div id='review-div'>
+    {{! <ul id="review-list" style="list-style-type:none;"> }}
+    {{#each reviews}}
+      {{! <li> }}
+      <h4 class='customer-name'>{{customerName}} says: </h4>
+      <h5 class='hairdresser-name'>Hairdresser: {{hairdresserName}}</h5>
+      <p class='review-rating'>Rating: {{rating}}/5</p>
+      <p class='review-body'>{{body}}</p>
+      {{! </li> }}
+      <hr class='col-3 col-md-2 mb-5' />
+    {{/each}}
+    {{! </ul> }}
+  </div>
 </div>
