@@ -52,16 +52,16 @@ router.get('/history/:cid', async (req, res) => {
   try {
     // must be authenticated and logged in to view history
     const _id = utils.checkId(req.session.user, 'customer id');
-    const foundAppointments = await appointments.getAllApptsByCustomerId(_id);
+    const foundAppointments = await appointments.getAllApptsByCustomerId2(_id);
     // Going to parse the list of appointments to pass stringified data
     let appointmentParser = [];
 
     // filter out an error message if no appoint history
-    // if (foundAppointments.length == 0) {
-    //   let noAppointmentsNotif = "Hey! You have no previous appointments booked. If you think this is an error,\
-    //   please contact customer support!"
-    //   res.render('custappointhis', { noAppointmentsNotif });
-    // }
+    if (foundAppointments.length == 0) {
+      let noAppointmentsNotif = "Hey! You have no previous appointments booked. If you think this is an error,\
+      please contact customer support!"
+      res.render('custappointhis', { noAppointmentsNotif, title: 'Appointment History'});
+    } else {
 
     for (let i = 0; i < foundAppointments.length; i++) {
       let foundHairdresser = await users.getById(
@@ -131,6 +131,7 @@ router.get('/history/:cid', async (req, res) => {
       appointmentParser,
       title: 'Appointment History',
     });
+  }
   } catch (e) {
     res.status(404).json({ error: e });
   }
