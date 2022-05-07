@@ -30,6 +30,20 @@
             <div class="biography">
             <p>Get to know them with a small biography:<br><br>
             {{biography}}</p>
+            <h3>Look at the reviews for this hairdresser:</h3>
+
+            {{#each reviews}}
+                <div class="individual-review">
+                    <p class="scoreRating"r>Rating: {{rating}}</p>
+                    
+                    <p>
+                    <div class="thisPerson">This person says... </div>
+                    <div class="bodyText">{{body}}</div>
+                    </p>
+                </div>
+            {{/each}}
+
+            {{emptyStr}}
             </div>
 
             <br><br>

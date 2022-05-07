@@ -18,3 +18,15 @@ td {
     border: 2px solid #ed5a58;
     width: 70%
 }
+
+.individual-review{
+    margin: 2px;
+    border: 2px solid rgb(150, 75, 150);
+    width: 70%
+}
+.scoreRating, .thisPerson {
+    font-weight: bold;
+}
+.bodyText {
+    margin-top: 3px
+}
