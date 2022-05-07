@@ -107,86 +107,171 @@ router.get('/history/:cid', async (req, res) => {
   try {
     // must be authenticated and logged in to view history
     const _id = utils.checkId(req.session.user, 'customer id');
-    const foundAppointments = await appointments.getAllApptsByCustomerId2(_id);
-    // Going to parse the list of appointments to pass stringified data
-    let appointmentParser = [];
+    const usr = await users.getById(_id);
+    if (usr.level !== 'hairdresser') {
+      const foundAppointments = await appointments.getAllApptsByCustomerId2(_id);
+      // Going to parse the list of appointments to pass stringified data
+      let appointmentParser = [];
 
-    // filter out an error message if no appoint history
-    if (foundAppointments.length == 0) {
-      let noAppointmentsNotif = "Hey! You have no previous appointments booked. If you think this is an error,\
+      // filter out an error message if no appoint history
+      if (foundAppointments.length == 0) {
+        let noAppointmentsNotif = "Hey! You have no previous appointments booked. If you think this is an error,\
       please contact customer support!"
-      res.render('custappointhis', { noAppointmentsNotif, title: 'Appointment History'});
+        res.render('custappointhis', { noAppointmentsNotif, title: 'Appointment History' });
+      } else {
+
+        for (let i = 0; i < foundAppointments.length; i++) {
+          let foundHairdresser = await users.getById(
+            foundAppointments[i].hairdresserId
+          );
+          let salonistName =
+            foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
+          let startDate = new Date(foundAppointments[i].startTime);
+          let endDate = new Date(foundAppointments[i].endTime);
+          //date parsing
+
+          function ordinal_suffix_of(num: number) {
+            var j = num % 10,
+              k = num % 100;
+            if (j == 1 && k != 11) {
+              return num + 'st';
+            }
+            if (j == 2 && k != 12) {
+              return num + 'nd';
+            }
+            if (j == 3 && k != 13) {
+              return num + 'rd';
+            }
+            return num + 'th';
+          }
+
+          var month = startDate.getUTCMonth(); // jan - 0, dec - 11
+          var day = startDate.getUTCDate();
+          var year = startDate.getUTCFullYear();
+          let monthsArr = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+          ];
+          let fullDay =
+            monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
+
+          let typeService = foundAppointments[i].service;
+          if (typeService == 'haircut') {
+            typeService = 'Haircut';
+          }
+          let comments = foundAppointments[i].comments;
+          let price = foundAppointments[i].price;
+
+          let thisObj = {
+            dateAlone: fullDay,
+            hairdresserName: salonistName,
+            startTime: startDate,
+            endTime: endDate,
+            service: typeService,
+            comments: comments,
+            price: price,
+          };
+          appointmentParser.push(thisObj);
+        }
+
+        res.render('custappointhis', {
+          appointmentParser,
+          title: 'Appointment History',
+        });
+      }
     } else {
+      const foundAppointments = await appointments.getAllApptsByHairdresserId2(_id);
+      // Going to parse the list of appointments to pass stringified data
+      let appointmentParser = [];
 
-    for (let i = 0; i < foundAppointments.length; i++) {
-      let foundHairdresser = await users.getById(
-        foundAppointments[i].hairdresserId
-      );
-      let salonistName =
-        foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
-      let startDate = new Date(foundAppointments[i].startTime);
-      let endDate = new Date(foundAppointments[i].endTime);
-      //date parsing
+      // filter out an error message if no appoint history
+      if (foundAppointments.length == 0) {
+        let noAppointmentsNotif = "Hey! You have no appointments booked. If you think this is an error,\
+      please contact customer support!"
+        res.render('hdappts', { noAppointmentsNotif, title: 'Appointment History' });
+      } else {
 
-      function ordinal_suffix_of(num: number) {
-        var j = num % 10,
-          k = num % 100;
-        if (j == 1 && k != 11) {
-          return num + 'st';
+        for (let i = 0; i < foundAppointments.length; i++) {
+          let foundCustomer = await users.getById(
+            foundAppointments[i].customerId
+          );
+          let customerName =
+            foundCustomer.firstName + ' ' + foundCustomer.lastName;
+          let startDate = new Date(foundAppointments[i].startTime);
+          let endDate = new Date(foundAppointments[i].endTime);
+          //date parsing
+
+          function ordinal_suffix_of(num: number) {
+            var j = num % 10,
+              k = num % 100;
+            if (j == 1 && k != 11) {
+              return num + 'st';
+            }
+            if (j == 2 && k != 12) {
+              return num + 'nd';
+            }
+            if (j == 3 && k != 13) {
+              return num + 'rd';
+            }
+            return num + 'th';
+          }
+
+          var month = startDate.getUTCMonth(); // jan - 0, dec - 11
+          var day = startDate.getUTCDate();
+          var year = startDate.getUTCFullYear();
+          let monthsArr = [
+            'January',
+            'February',
+            'March',
+            'April',
+            'May',
+            'June',
+            'July',
+            'August',
+            'September',
+            'October',
+            'November',
+            'December',
+          ];
+          let fullDay =
+            monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
+
+          let typeService = foundAppointments[i].service;
+          if (typeService == 'haircut') {
+            typeService = 'Haircut';
+          }
+          let comments = foundAppointments[i].comments;
+          let price = foundAppointments[i].price;
+
+          let thisObj = {
+            dateAlone: fullDay,
+            hairdresserName: customerName,
+            startTime: startDate,
+            endTime: endDate,
+            service: typeService,
+            comments: comments,
+            price: price,
+          };
+          appointmentParser.push(thisObj);
         }
-        if (j == 2 && k != 12) {
-          return num + 'nd';
-        }
-        if (j == 3 && k != 13) {
-          return num + 'rd';
-        }
-        return num + 'th';
+
+        res.render('hdappt', {
+          appointmentParser,
+          title: 'Appointment History',
+        });
       }
-
-      var month = startDate.getUTCMonth(); // jan - 0, dec - 11
-      var day = startDate.getUTCDate();
-      var year = startDate.getUTCFullYear();
-      let monthsArr = [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May',
-        'June',
-        'July',
-        'August',
-        'September',
-        'October',
-        'November',
-        'December',
-      ];
-      let fullDay =
-        monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
-
-      let typeService = foundAppointments[i].service;
-      if (typeService == 'haircut') {
-        typeService = 'Haircut';
-      }
-      let comments = foundAppointments[i].comments;
-      let price = foundAppointments[i].price;
-
-      let thisObj = {
-        dateAlone: fullDay,
-        hairdresserName: salonistName,
-        startTime: startDate,
-        endTime: endDate,
-        service: typeService,
-        comments: comments,
-        price: price,
-      };
-      appointmentParser.push(thisObj);
+      
     }
-
-    res.render('custappointhis', {
-      appointmentParser,
-      title: 'Appointment History',
-    });
-  }
   } catch (e) {
     res.status(404).json({ error: e });
   }

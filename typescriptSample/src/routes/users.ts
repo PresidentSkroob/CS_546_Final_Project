@@ -140,17 +140,17 @@ router.route('/private').get(async (req, res) => {
   }
 });
 
-router.get('/hairdressers', async(req, res) => { 
-	try { 
-		const foundHairdressers = await users.getAllHairdressers();
-		res.json({ hairdressers: foundHairdressers });
-	} catch (e) { 
-		console.log(e);
-		res.status(404).render('error', {
-			'error-msg': e,
-			'error-status': 404,
-		})
-	}
+router.get('/hairdressers', async (req, res) => {
+  try {
+    const foundHairdressers = await users.getAllHairdressers();
+    res.json({ hairdressers: foundHairdressers });
+  } catch (e) {
+    console.log(e);
+    res.status(404).render('error', {
+      'error-msg': e,
+      'error-status': 404,
+    })
+  }
 });
 
 
@@ -182,7 +182,7 @@ router
         const empty = {
           empty: "You haven't made any reviews yet!"
         }
-        if (usr.level === 'user') {
+        if (usr.level !== 'hairdresser') {
           return res.render('user', {
             title: `${usr.firstName}'s Account`,
             user: {
@@ -195,7 +195,7 @@ router
           })
         }
       } else {
-        for (let i=0; i < listOfReviewsByCustomerId.length; i++) {
+        for (let i = 0; i < listOfReviewsByCustomerId.length; i++) {
           let foundHairdresser = await users.getById(listOfReviewsByCustomerId[i].hairdresserId);
           let salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
           let obj = {
@@ -207,7 +207,7 @@ router
           userReviews.push(obj);
         }
       }
-      if (usr.level === 'user') {
+      if (usr.level !=='hairdresser') {
         res.render('user', {
           title: `${usr.firstName}'s Account`,
           user: {
@@ -219,24 +219,40 @@ router
           },
         });
       } else {
-        res.render('user', {
+        const usrs = await users.getAll();
+        const appts = await appointments.getAllApptsByHairdresserId(usr._id!);
+        appts.forEach((e) => {
+          const c = usrs.filter((d) => d._id == e.customerId)[0];
+          e.customerId = `${c.firstName} ${c.lastName}`;
+          return e;
+        });
+
+        const rvws = await reviews.getAllReviewsByHairdresserId2(usr._id!);
+        rvws.forEach((e) => {
+          const c = usrs.filter((d) => d._id == e.posterId)[0];
+          e.posterId = `${c.firstName} ${c.lastName}`;
+          return e;
+        });
+        res.render('hairdresser', {
           title: `${usr.firstName}'s Account`,
           user: {
             id: usr._id,
             firstName: usr.firstName,
             lastName: usr.lastName,
             email: usr.email,
-            appointments: await appointments.getAllApptsByHairdresserId(usr._id!),
-            reviews: await reviews.getAllReviewsByHairdresserId(usr._id!),
+            appointments: appts,
+            reviews: rvws,
           },
-        })}
+        })
+      }
     } catch (e) {
-    return res.status(404).render('error', {
-      title: 'Invalid User ID',
-      'error-msg': e,
-      'error-status': 404,
-    });
-  }})
+      return res.status(404).render('error', {
+        title: 'Invalid User ID',
+        'error-msg': e,
+        'error-status': 404,
+      });
+    }
+  })
   .patch(async (req, res) => {
     try {
       const _id = xss(req.params.id);

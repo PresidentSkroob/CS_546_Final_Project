@@ -135,6 +135,31 @@ async function getAllApptsByHairdresserId(
   return foundAppointments as Appointment<string>[];
 }
 
+/**
+ * Gets all appointments which have hairdresserId hid
+ * Only difference: returns [] when empty
+ *
+ * @param {string} hid - The hairdresser id to query by
+ * @return {Promise<Appointment<string>[]>} - A promise for the appointments
+ */
+async function getAllApptsByHairdresserId2(
+  hid: string
+): Promise<Appointment<string>[]> {
+  hid = utils.checkId(hid, 'hairdresser');
+  const appointmentCollection = await appointments();
+  const foundAppointments = (await appointmentCollection
+    .find({
+      hairdresserId: hid,
+    })
+    .toArray()) as Appointment<ObjectId | string>[];
+  if (!foundAppointments || foundAppointments.length === 0)
+    return [];
+  foundAppointments.forEach((elem) => {
+    elem._id = elem._id!.toString();
+  });
+  return foundAppointments as Appointment<string>[];
+}
+
 async function checkAppointment(appt: Appointment) {
   const appointmentCollection = await appointments();
   const foundAppointments = await getAllApptsByHairdresserId(
@@ -214,6 +239,7 @@ export = {
   getAllApptsByCustomerId,
   getAllApptsByCustomerId2,
   getAllApptsByHairdresserId,
+  getAllApptsByHairdresserId2,
   checkAppointment,
   getAllAppointmentsOnDay,
   checkAppointmentByDateTimeAndHairdresser
