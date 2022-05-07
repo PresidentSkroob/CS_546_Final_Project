@@ -7,8 +7,6 @@ const reviews = data.reviews;
 const users = data.users;
 const appointments = data.appointments;
 
-
-
 router.get('/create', async (req, res) => {
   try {
     if (req.session.user) {

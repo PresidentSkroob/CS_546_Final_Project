@@ -1,18 +1,9 @@
-// $(function() {
-// 	$("#datetime").flatpickr({
-// 		enableTime: true,
-// 		minTime: "10:00",
-// 		maxTime: "18:00",
-// 		inline: true
-// 	})
-
-
-// });
-
-
 $(function() {
 
-	var dateTime = $('#datetime');
+
+	var selectedHairdresser = $('#hairdressersdrop').val();
+	var button = $('#submitbutton'); 
+	button.hide();
 
 	flatpickr("#datetime", {
 		enableTime: true,
@@ -27,21 +18,55 @@ $(function() {
 
 		], 
 		onChange: function(selectedDates, dateStr, instance) { 
-			console.log(`dateStr in onChange: ${dateStr}`)
+			selectedHairdresser = $('#hairdressersdrop').val();
 			var requestConfig = { 
 				method: "POST",
-				url: "/appointments/bydate",
-				data: JSON.stringify({ dateStr: dateStr } ),
+				url: "/appointments/check",
+				data: JSON.stringify({ dateStr: dateStr,
+									   hid: selectedHairdresser }),
 				contentType: 'application/json'
 			}
 
 			$.ajax(requestConfig).then(function (res) { 
+				if(res.success === false) { 
+					err(res.error);
+					button.hide();
+				} else {
+					$(".error-div").hide();
+					button.show();
+
+				}
+		
 				console.log(res);
-
 			});
-
-
-
 		}
 	});
+
+	// var dateForm = $('#datehairform');
+	// dateForm.submit(function (event) {
+	// 	event.preventDefault();
+	// 	var dateTime = $('#datetime');
+	// 	console.log(dateTime.val());
+	// 	console.log(selectedHairdresser);
+
+		
+
+	// 	var requestConfig = { 
+	// 		method: "GET", 
+	// 		url: '/appointments/service',
+	// 		data: JSON.stringify({
+	// 			datestr: dateTime.val(), 
+	// 			hid: selectedHairdresser
+	// 		}),
+	// 		contentType: 'application/json',
+	// 		success: function(data) { 
+	// 			window.location.href = "/appointments/service"
+	// 		}
+	// 	}
+
+	// 	$.ajax(requestConfig);
+
+	// });
+	
+
 });

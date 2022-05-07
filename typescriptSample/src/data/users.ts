@@ -173,6 +173,18 @@ async function addAppointmentByUserId(
   return modifiedUsers as User<string>[];
 }
 
+async function getAllHairdressers() { 
+	const userCollection = await users();
+	const foundUsers = (await userCollection.find({ level: "hairdresser" }).toArray()) as Array<
+	  User<ObjectId | string>
+	>;
+  
+	foundUsers.forEach((elem) => {
+	  elem._id = elem._id!.toString();
+	});
+	return foundUsers as User<string>[];
+}
+
 export = {
   getById,
   create,
@@ -180,4 +192,5 @@ export = {
   checkUser,
   addReviewByUserId,
   addAppointmentByUserId,
+  getAllHairdressers
 };

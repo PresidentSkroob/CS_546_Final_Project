@@ -114,6 +114,19 @@ router.route('/private').get(async (req, res) => {
   }
 });
 
+router.get('/hairdressers', async(req, res) => { 
+	try { 
+		const foundHairdressers = await users.getAllHairdressers();
+		res.json({ hairdressers: foundHairdressers });
+	} catch (e) { 
+		console.log(e);
+		res.status(404).render('error', {
+			'error-msg': e,
+			'error-status': 404,
+		})
+	}
+});
+
 router.get('/:id', async (req, res) => {
   try {
     let _id = xss(req.params.id);
