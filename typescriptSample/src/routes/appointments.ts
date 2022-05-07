@@ -1,3 +1,4 @@
+import { time } from 'console';
 import { privateDecrypt } from 'crypto';
 import express = require('express');
 const router: express.Router = new (express.Router as any)();
@@ -80,7 +81,59 @@ router.post('/finalization', async (req, res) => {
 	console.log(req.body);
 	try { 
 		if(req.session.user) {
-			res.render('finalization', {service: req.body.service_selection, comments: req.body.comments });
+      let foundHairdresser = await users.getById(req.body.hairdresser);
+      let salonistName = foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
+      let date = new Date(req.body.datetime).getTime();
+      let price = 0;
+      if (req.body.service_selection == "cutandcolor") {
+        price = 80;
+      } else if (req.body.service_selection == "washandcut") {
+        price = 65;
+      } else {
+        price = 45;
+      }
+      let a = new Date(req.body.datetime);
+      a.setHours(a.getHours()+1);
+      let timeEnd = a.getTime();
+      let renderedInfo = {
+        hairdresserId: req.body.hairdresser,
+        hairdresser: salonistName,
+        timeLiteralStart: date,
+        timeLiteralEnd: timeEnd,
+        timeFormat: req.body.datetime,
+        comments: req.body.comments,
+        service: req.body.service_selection,
+        price: price
+      }
+      console.log(renderedInfo);
+			res.render('finalization', renderedInfo);
+		} else { 
+			res.redirect("/");
+		}
+
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({error: e});
+	}
+})
+
+router.post('/confirmation', async (req, res) => {
+	console.log(req.body);
+	try { 
+		if(req.session.user) {
+      const b = req.body;
+      console.log(b);
+      const appt = utils.validateAppointment(
+        req.session.user,
+        b.hairdresserId,
+        parseFloat(b.timeLiteralStart),
+        parseFloat(b.timeLiteralEnd),
+        b.service,
+        b.comments,
+        parseFloat(b.price)
+      );
+      appointments.create(appt);
+			res.render('confirmation');
 		} else { 
 			res.redirect("/");
 		}
