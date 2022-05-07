@@ -65,6 +65,18 @@ async function main() {
     level: 'hairdresser',
   });
 
+  const admin = await users.create({
+    email: 'phill@stevens.edu',
+    password: 'password1234',
+    firstName: 'Patrick',
+    lastName: 'Hill',
+    appointmentIds: [],
+    reviewIds: [],
+    job: '',
+    biography: '',
+    level:'admin'
+  })
+
   console.log('Done seeding users in database');
 
   const appt1 = await appointments.create({

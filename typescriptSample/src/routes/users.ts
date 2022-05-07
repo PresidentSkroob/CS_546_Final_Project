@@ -78,7 +78,7 @@ router
 
 router.route('/logout').get((req, res) => {
   try {
-    req.session.user = '';
+    req.session.destroy((e) => { if (e) { console.log(e); } else {console.log('Session destroyed successfully')} });
     res.json({ success: true });
   } catch (e) {
     res.status(500).json({ error: e });
