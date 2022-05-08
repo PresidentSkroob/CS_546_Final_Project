@@ -38,6 +38,8 @@ Congratulations! This is the first step in your journey towards using our fully 
 
 ###### - 1. QR Code: A QR code to allow someone to directly link to the website.
 
+###### - 2. Allows businesses to give credits or discounts to customers on an absolute (ex. $5 off haircuts in March) or a repeating (ex. get 5 haircuts, get the next one half off) basis.
+
 
 <b> D) Steps to Use </b>
 
