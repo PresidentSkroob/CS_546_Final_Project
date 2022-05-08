@@ -110,10 +110,12 @@ export function idToStr(obj: types.Schema<any>): types.Schema<string> {
  */
 export function checkId(id: string, objName: string): string {
   id = id.trim();
-  if (id.length === 0) {
+  if (!id || id.length === 0) {
     throw 'Error: id cannot be an empty string or just spaces';
   }
-  if (!ObjectId.isValid(id)) throw `Error: invalid ${objName} ID`;
+  if (!ObjectId.isValid(id)) {
+    throw `Error: invalid ${objName} ID`;
+  }
 
   return id;
 }
@@ -140,7 +142,7 @@ export function checkDate(date: string | number, dateName: string): Date {
  * @return {string} - The validated email address
  */
 export function checkEmail(email: string, emailName: string): string {
-  email = checkString(email, 'email address');
+  email = checkString(email, 'email address').toLowerCase();
   // This Regex is RFC 5322, sourced from http://emailregex.com/
   // It is a bit unwieldly, so some other implementation/location might be better.
   const reg =
