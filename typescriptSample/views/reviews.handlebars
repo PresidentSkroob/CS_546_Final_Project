@@ -1,11 +1,11 @@
 <div>
   <link href='/public/css/reviews.css' rel='stylesheet' />
   <div id='top-div'>
-    <img id='company-logo' src='/public/images/Logo.png' />
+    <img id='company-logo' src='/public/images/Logo.png' alt="Company Logo" />
     <a href='/reviews/create'>Enjoy our service? Leave a review!</a>
   </div>
   <hr class='col-3 col-md-2 mb-5' />
-  <h3>See what our customers think!</h3>
+  <p>See what our customers think!</p>
   <div id='form-div'>
     <form action='/reviews/high-to-low' method='GET'>
       <label for='sort-desc-button'>Sort by High to Low: </label>
@@ -47,8 +47,8 @@
     {{! <ul id="review-list" style="list-style-type:none;"> }}
     {{#each reviews}}
       {{! <li> }}
-      <h4 class='customer-name'>{{customerName}} says: </h4>
-      <h5 class='hairdresser-name'>Hairdresser: {{hairdresserName}}</h5>
+      <p class='customer-name'>{{customerName}} says: </p>
+      <p class='hairdresser-name'>Hairdresser: {{hairdresserName}}</p>
       <p class='review-rating'>Rating: {{rating}}/5</p>
       <p class='review-body'>{{body}}</p>
       {{! </li> }}
