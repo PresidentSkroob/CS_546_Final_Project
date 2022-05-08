@@ -56,7 +56,7 @@ Congratulations! This is the first step in your journey towards using our fully 
 
 <b> E) How to Run </b>
 
-The following lines will install any dependencies, seed the database, and start the server. This assumes that you already have an instance of MongoDB running. Please check seed script for credentials.
+The following lines will install any dependencies, seed the database, and start the server. This assumes that you already have an instance of MongoDB running. Please check seed script (src/tasks/seed.ts) for credentials.
 
 ```sh
 npm install
