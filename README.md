@@ -1,10 +1,12 @@
 # C'est La Vie
 
-![This is the logo](/code/docs/Logo.png)
+![This is the logo](public/images/Logo.png)
 
 CS_546: Web Dev 1 // Professor Hill // Stevens Institue of Technology // Spring '22
 
 Authors: Jared Kronyak <jkronyak@stevens.edu>; Alice Huston <shuston@stevens.edu>; Eric Song <esong@stevens.edu>; Isaac Miller <imiller1@stevens.edu>
+
+See section E for usage instructions.
 
 <b> A) Overview </b>
 
@@ -53,6 +55,8 @@ Congratulations! This is the first step in your journey towards using our fully 
 - [ ] Additionally, a user who is navigating the site will have the ability to navigate to the Contact page, where they can view the business location, the hours of operation, and business details.
 
 <b> E) How to Run </b>
+
+The following lines will install any dependencies, seed the database, and start the server. This assumes that you already have an instance of MongoDB running. Please check seed script (src/tasks/seed.ts) for credentials.
 
 ```sh
 npm install

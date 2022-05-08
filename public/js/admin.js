@@ -6,7 +6,8 @@ $(function () {
       .val()
       .trim()
       .toLowerCase();
-    if (lvl !== 'client' && lvl !== 'admin' && lvl !== 'hairdresser') {
+    console.log(lvl);
+    if (lvl !== 'user' && lvl !== 'admin' && lvl !== 'hairdresser') {
       return err('Level must be one of (client|admin|hairdresser)');
     }
     const requestConfig = {
