@@ -2,7 +2,7 @@ $(function () {
   $('.levelDrop').change((e) => {
     const id = $(e.currentTarget).parent().attr('id');
     const lvl = $(e.currentTarget).find('option:selected').val();
-    if (lvl !== 'client' || lvl !== 'admin' || lvl !== 'hairdresser') {
+    if (lvl !== 'client' && lvl !== 'admin' && lvl !== 'hairdresser') {
       err('Level must be one of (client|admin|hairdresser)');
     }
     const requestConfig = {
