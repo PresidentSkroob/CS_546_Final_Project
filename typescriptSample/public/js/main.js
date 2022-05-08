@@ -11,6 +11,7 @@ $(function () {
         if (response.success) {
           $('.login-status').hide();
           $('.portal').hide();
+          window.location.href = '/';
         } else {
           err(response.error);
         }
