@@ -6,6 +6,8 @@ CS_546: Web Dev 1 // Professor Hill // Stevens Institue of Technology // Spring 
 
 Authors: Jared Kronyak <jkronyak@stevens.edu>; Alice Huston <shuston@stevens.edu>; Eric Song <esong@stevens.edu>; Isaac Miller <imiller1@stevens.edu>
 
+See section E for usage instructions.
+
 <b> A) Overview </b>
 
 Congratulations! This is the first step in your journey towards using our fully functional faux-business of C'est La Vie. Functioning in all ways like a real business, C'est La Vie is Hairsalon with Hairdressers/Barbers located in Hoboken, New Jersey, with a dynamic web app that allows any user to create an account, schedule an appointment, select the type of service, leave a review, and engage with the business!
