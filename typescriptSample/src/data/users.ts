@@ -40,11 +40,11 @@ async function getById(id: string): Promise<User<string>> {
 }
 
 /**
- * Finds a user with a given first and last names. 
- * 
+ * Finds a user with a given first and last names.
+ *
  * @param {string} first - The first name to search by
  * @param {string} last - The last name to search by
- * @return {Promise<User<string>>} -  A Promise for the found User. 
+ * @return {Promise<User<string>>} -  A Promise for the found User.
  */
 async function getByFirstAndLast(
   first: string,
@@ -141,8 +141,8 @@ async function addReviewByUserId(
 }
 /**
  *
- * @param {Appointment} appointment - The appointment to add. 
- * @return {Promise<User<string>>} - A Promise for the updated User. 
+ * @param {Appointment} appointment - The appointment to add.
+ * @return {Promise<User<string>>} - A Promise for the updated User.
  */
 async function addAppointmentByUserId(
   appointment: Appointment<string | ObjectId>
@@ -182,19 +182,19 @@ async function addAppointmentByUserId(
 
 /**
  * Gets all Users with level hairdresser
- * 
- * @return {Promise<User<string>[]>} - A promise for the hairdressers. 
+ *
+ * @return {Promise<User<string>[]>} - A promise for the hairdressers.
  */
-async function getAllHairdressers(): Promise<User<string>[]> { 
-	const userCollection = await users();
-	const foundUsers = (await userCollection.find({ level: "hairdresser" }).toArray()) as Array<
-	  User<ObjectId | string>
-	>;
-  
-	foundUsers.forEach((elem) => {
-	  elem._id = elem._id!.toString();
-	});
-	return foundUsers as User<string>[];
+async function getAllHairdressers(): Promise<User<string>[]> {
+  const userCollection = await users();
+  const foundUsers = (await userCollection
+    .find({ level: 'hairdresser' })
+    .toArray()) as Array<User<ObjectId | string>>;
+
+  foundUsers.forEach((elem) => {
+    elem._id = elem._id!.toString();
+  });
+  return foundUsers as User<string>[];
 }
 
 /**

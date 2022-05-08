@@ -124,7 +124,7 @@ async function getAllReviewsByCustomerId(
  * @param {string} cid - The customer/poster id to query by
  * @return {Promise<Review<string>[]>} - A promise for the reviews
  */
- async function getAllReviewsByCustomerId2(
+async function getAllReviewsByCustomerId2(
   cid: string
 ): Promise<Review<string>[]> {
   cid = utils.checkId(cid, 'customer');
@@ -134,8 +134,7 @@ async function getAllReviewsByCustomerId(
       posterId: cid,
     })
     .toArray()) as Review<ObjectId | string>[];
-  if (!foundReviews || foundReviews.length === 0)
-    return [];
+  if (!foundReviews || foundReviews.length === 0) return [];
   foundReviews.forEach((elem) => {
     elem._id = elem._id!.toString();
   });
@@ -191,10 +190,10 @@ async function getAllReviewsByHairdresserId2(
 }
 
 /**
- * Query's the Reviews collection for a search term contained in their body field. 
- * 
+ * Query's the Reviews collection for a search term contained in their body field.
+ *
  * @param {string} searchTerm - The term to query by
- * @return {Promise<Review<string>[]>} - A promise for an array of found reviews. 
+ * @return {Promise<Review<string>[]>} - A promise for an array of found reviews.
  */
 async function getReviewsBySearchTerm(
   searchTerm: string

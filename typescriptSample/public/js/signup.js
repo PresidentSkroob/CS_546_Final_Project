@@ -26,7 +26,7 @@ $(function () {
           email: email,
           password: password,
           firstName: firstName,
-          lastName: lastName
+          lastName: lastName,
         },
       };
       $.ajax(requestConfig).then(
@@ -38,7 +38,7 @@ $(function () {
           }
         },
         (response) => {
-        console.log(response)
+          console.log(response);
           err(response.responseJSON.error);
         }
       );

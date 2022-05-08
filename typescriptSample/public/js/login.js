@@ -4,9 +4,9 @@ $(function () {
     if ($(ev.target).attr('id') == 'login-btn') {
       const email = $('#floatingInput').val().trim();
       const password = $('#floatingPassword').val().trim();
-      
+
       if (email.length === 0) {
-        return err('Email must not be empty or only spaces')
+        return err('Email must not be empty or only spaces');
       }
 
       if (password.length === 0) {
@@ -18,7 +18,7 @@ $(function () {
         url: '/users/login',
         data: {
           email: email,
-          password: password
+          password: password,
         },
       };
       $.ajax(requestConfig).then(

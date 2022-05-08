@@ -44,45 +44,56 @@ router.get('/calendar', async (req, res) => {
       for (let i = 0; i < foundHairdressers.length; i++) {
         relevantInformation.push({
           id: foundHairdressers[i]._id,
-          name: foundHairdressers[i].firstName + " " + foundHairdressers[i].lastName
+          name:
+            foundHairdressers[i].firstName +
+            ' ' +
+            foundHairdressers[i].lastName,
         });
       }
 
       res.render('calendar', {
         title: 'Calendar',
-        hairdressers: relevantInformation
+        hairdressers: relevantInformation,
       });
     } else {
       res.redirect('/');
     }
   } catch (e) {
     console.log(e);
-    res.status(500).render('error',
-	 { title: 'Error',
-	 	'error-msg': e,
-		 'error-status': 500
-	});
+    res
+      .status(500)
+      .render('error', { title: 'Error', 'error-msg': e, 'error-status': 500 });
   }
 });
-
-
 
 router.post('/service', async (req, res) => {
   try {
     if (req.session.user) {
-      const _id = utils.checkId(xss(req.body.hairdressersdrop), "hairdresser id");
-      utils.checkDate(xss(req.body.datetime), "appointment datetime").toLocaleString();
+      const _id = utils.checkId(
+        xss(req.body.hairdressersdrop),
+        'hairdresser id'
+      );
+      utils
+        .checkDate(xss(req.body.datetime), 'appointment datetime')
+        .toLocaleString();
       const foundHairdresser = await users.getById(xss(_id));
-      res.render('service', { title: "Service Page", datetime: xss(req.body.datetime), hairdresser: { name: foundHairdresser.firstName + " " + foundHairdresser.lastName, id: xss(req.body.hairdressersdrop) } });
+      res.render('service', {
+        title: 'Service Page',
+        datetime: xss(req.body.datetime),
+        hairdresser: {
+          name: foundHairdresser.firstName + ' ' + foundHairdresser.lastName,
+          id: xss(req.body.hairdressersdrop),
+        },
+      });
     } else {
-      res.redirect("/");
+      res.redirect('/');
     }
   } catch (e) {
     console.log(e);
     res.status(400).render('error', {
       title: 'Error',
       'error-msg': e,
-      'error-status': 400
+      'error-status': 400,
     });
   }
 });
@@ -91,12 +102,13 @@ router.post('/finalization', async (req, res) => {
   try {
     if (req.session.user) {
       const foundHairdresser = await users.getById(xss(req.body.hairdresser));
-      const salonistName = foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
+      const salonistName =
+        foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
       const date = new Date(req.body.datetime).getTime();
       let price = 0;
-      if (xss(req.body.service_selection) == "cutandcolor") {
+      if (xss(req.body.service_selection) == 'cutandcolor') {
         price = 80;
-      } else if (xss(req.body.service_selection) == "washandcut") {
+      } else if (xss(req.body.service_selection) == 'washandcut') {
         price = 65;
       } else {
         price = 45;
@@ -112,20 +124,20 @@ router.post('/finalization', async (req, res) => {
         timeFormat: xss(req.body.datetime),
         comments: xss(req.body.comments),
         service: xss(req.body.service_selection),
-        price: price
-      }
+        price: price,
+      };
       res.render('finalization', renderedInfo);
     } else {
-      res.redirect("/");
+      res.redirect('/');
     }
-
-	} catch (e) { 
-		res.status(400).render('error',{
-			title: 'Error',
-			'error-msg': e,
-			'error-status': 400 });	
-	}
-})
+  } catch (e) {
+    res.status(400).render('error', {
+      title: 'Error',
+      'error-msg': e,
+      'error-status': 400,
+    });
+  }
+});
 
 router.post('/confirmation', async (req, res) => {
   try {
@@ -143,19 +155,17 @@ router.post('/confirmation', async (req, res) => {
       appointments.create(appt);
       res.render('confirmation');
     } else {
-      res.redirect("/");
+      res.redirect('/');
     }
-
   } catch (e) {
     console.log(e);
     res.status(400).render('error', {
       title: 'Error',
       'error-msg': e,
-      'error-status': 400
+      'error-status': 400,
     });
   }
-})
-
+});
 
 router.get('/history/:cid', async (req, res) => {
   try {
@@ -166,17 +176,21 @@ router.get('/history/:cid', async (req, res) => {
     const _id = utils.checkId(req.session.user, 'customer id');
     const usr = await users.getById(_id);
     if (usr.level !== 'hairdresser') {
-      const foundAppointments = await appointments.getAllApptsByCustomerId2(_id);
+      const foundAppointments = await appointments.getAllApptsByCustomerId2(
+        _id
+      );
       // Going to parse the list of appointments to pass stringified data
       const appointmentParser = [];
 
       // filter out an error message if no appoint history
       if (foundAppointments.length == 0) {
-        const noAppointmentsNotif = "Hey! You have no previous appointments booked. If you think this is an error,\
-      please contact customer support!"
-        res.render('custappointhis', { noAppointmentsNotif, title: 'Appointment History' });
+        const noAppointmentsNotif =
+          'Hey! You have no previous appointments booked. If you think this is an error, please contact customer support!';
+        res.render('custappointhis', {
+          noAppointmentsNotif,
+          title: 'Appointment History',
+        });
       } else {
-
         for (let i = 0; i < foundAppointments.length; i++) {
           const foundHairdresser = await users.getById(
             foundAppointments[i].hairdresserId
@@ -187,9 +201,14 @@ router.get('/history/:cid', async (req, res) => {
           const endDate = new Date(foundAppointments[i].endTime);
           // date parsing
 
-          function ordinal_suffix_of(num: number) {
+          /**
+           * Get ordinal suffix for number
+           * @param {Number} num - number to process
+           * @return {string} ordinal suffix of num
+           */
+          function ordinalSuffixOf(num: number) {
             const j = num % 10;
-              const k = num % 100;
+            const k = num % 100;
             if (j == 1 && k != 11) {
               return num + 'st';
             }
@@ -220,7 +239,7 @@ router.get('/history/:cid', async (req, res) => {
             'December',
           ];
           const fullDay =
-            monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
+            monthsArr[month] + ' ' + ordinalSuffixOf(day) + ', ' + year;
 
           let typeService = foundAppointments[i].service;
           if (typeService == 'haircut') {
@@ -247,17 +266,21 @@ router.get('/history/:cid', async (req, res) => {
         });
       }
     } else {
-      const foundAppointments = await appointments.getAllApptsByHairdresserId2(_id);
+      const foundAppointments = await appointments.getAllApptsByHairdresserId2(
+        _id
+      );
       // Going to parse the list of appointments to pass stringified data
       const appointmentParser = [];
 
       // filter out an error message if no appoint history
       if (foundAppointments.length == 0) {
-        const noAppointmentsNotif = "Hey! You have no appointments booked. If you think this is an error,\
-      please contact customer support!"
-        res.render('hdappts', { noAppointmentsNotif, title: 'Appointment History' });
+        const noAppointmentsNotif =
+          'Hey! You have no appointments booked. If you think this is an error, please contact customer support!';
+        res.render('hdappts', {
+          noAppointmentsNotif,
+          title: 'Appointment History',
+        });
       } else {
-
         for (let i = 0; i < foundAppointments.length; i++) {
           const foundCustomer = await users.getById(
             foundAppointments[i].customerId
@@ -268,9 +291,14 @@ router.get('/history/:cid', async (req, res) => {
           const endDate = new Date(foundAppointments[i].endTime);
           // date parsing
 
-          function ordinal_suffix_of(num: number) {
+          /**
+           * Get ordinal suffix for number
+           * @param {Number} num - number to process
+           * @return {string} ordinal suffix of num
+           */
+          function ordinalSuffixOf(num: number) {
             const j = num % 10;
-              const k = num % 100;
+            const k = num % 100;
             if (j == 1 && k != 11) {
               return num + 'st';
             }
@@ -301,7 +329,7 @@ router.get('/history/:cid', async (req, res) => {
             'December',
           ];
           const fullDay =
-            monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
+            monthsArr[month] + ' ' + ordinalSuffixOf(day) + ', ' + year;
 
           let typeService = foundAppointments[i].service;
           if (typeService == 'haircut') {
@@ -327,7 +355,6 @@ router.get('/history/:cid', async (req, res) => {
           title: 'Appointment History',
         });
       }
-
     }
   } catch (e) {
     console.log(e);
@@ -337,18 +364,21 @@ router.get('/history/:cid', async (req, res) => {
 
 router.post('/check', async (req, res) => {
   try {
-	  try { 
-		let _id = xss(req.body.hid);
-		_id = utils.checkId(_id, 'hairdresser id');
-	  } catch (e) {
-		  console.log(e);
-		  res.status(404).render('error', {
-			  title: "Error", 
-			  'error-msg': e,
-			  'error-status': 404
-		  });
-	  }
-    await appointments.checkAppointmentByDateTimeAndHairdresser(xss(req.body.dateStr), xss(req.body.hid));
+    try {
+      const _id = xss(req.body.hid);
+      utils.checkId(_id, 'hairdresser id');
+    } catch (e) {
+      console.log(e);
+      res.status(404).render('error', {
+        title: 'Error',
+        'error-msg': e,
+        'error-status': 404,
+      });
+    }
+    await appointments.checkAppointmentByDateTimeAndHairdresser(
+      xss(req.body.dateStr),
+      xss(req.body.hid)
+    );
 
     res.json({ success: true });
   } catch (e) {
@@ -376,7 +406,5 @@ router.route('/:id').get(async (req, res) => {
     res.status(404).json({ error: e });
   }
 });
-
-
 
 export = router;

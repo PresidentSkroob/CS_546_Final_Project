@@ -89,11 +89,11 @@ async function getAllApptsByCustomerId(
 /**
  * Gets all appointments which have customerId cid
  * Only difference: returns [] when empty
- * 
+ *
  * @param {string} cid - The customer id to query by
  * @return {Promise<Appointment<string>[]>} - A promise for the appointments
  */
- async function getAllApptsByCustomerId2(
+async function getAllApptsByCustomerId2(
   cid: string
 ): Promise<Appointment<string>[]> {
   cid = utils.checkId(cid, 'customer');
@@ -103,8 +103,7 @@ async function getAllApptsByCustomerId(
       customerId: cid,
     })
     .toArray()) as Appointment<ObjectId | string>[];
-  if (!foundAppointments || foundAppointments.length === 0)
-    return [];
+  if (!foundAppointments || foundAppointments.length === 0) return [];
   foundAppointments.forEach((elem) => {
     elem._id = elem._id!.toString();
   });
@@ -152,8 +151,7 @@ async function getAllApptsByHairdresserId2(
       hairdresserId: hid,
     })
     .toArray()) as Appointment<ObjectId | string>[];
-  if (!foundAppointments || foundAppointments.length === 0)
-    return [];
+  if (!foundAppointments || foundAppointments.length === 0) return [];
   foundAppointments.forEach((elem) => {
     elem._id = elem._id!.toString();
   });
@@ -162,9 +160,9 @@ async function getAllApptsByHairdresserId2(
 
 /**
  * Checks if an Appointment's stand and end time are not already tae
- * 
+ *
  * @param {Appointment} appt - The Appointment to check
- * @return {Object} - An object containing true if the given Appointment is valid. 
+ * @return {Object} - An object containing true if the given Appointment is valid.
  */
 async function checkAppointment(appt: Appointment) {
   const foundAppointments = await getAllApptsByHairdresserId(
@@ -189,56 +187,65 @@ async function checkAppointment(appt: Appointment) {
 }
 
 /**
- * Given dateStr and an hairdresserId, check if an hour timeslot after dateStr is already 
- * taken. 
- * 
- * @param {string} dateStr - String representation of the datetime. 
- * @param {string} hid - The hairdresserId to query by. 
- * @return {Object} - Contains {valid: true} if the appointment can be added, false if not. 
+ * Given dateStr and an hairdresserId, check if an hour timeslot after dateStr is already
+ * taken.
+ *
+ * @param {string} dateStr - String representation of the datetime.
+ * @param {string} hid - The hairdresserId to query by.
+ * @return {Object} - Contains {valid: true} if the appointment can be added, false if not.
  */
-async function checkAppointmentByDateTimeAndHairdresser(dateStr: string, hid: string) { 
-	dateStr = utils.checkDate(dateStr, 'appointment').toISOString();
-	hid = utils.checkId(hid, 'hairdresser');
-	const foundAppointments = await getAllApptsByHairdresserId(hid);	
-	const newStart = new Date(dateStr);
-	const newEnd = new Date(dateStr);
-	newEnd.setMinutes(newStart.getMinutes() + 59);
+async function checkAppointmentByDateTimeAndHairdresser(
+  dateStr: string,
+  hid: string
+) {
+  dateStr = utils.checkDate(dateStr, 'appointment').toISOString();
+  hid = utils.checkId(hid, 'hairdresser');
+  const foundAppointments = await getAllApptsByHairdresserId(hid);
+  const newStart = new Date(dateStr);
+  const newEnd = new Date(dateStr);
+  newEnd.setMinutes(newStart.getMinutes() + 59);
 
-	for(let i = 0; i < foundAppointments.length; i++) { 
-
-		if( areIntervalsOverlapping(
-			{ start: newStart, end: newEnd  }, 
-			{ start: new Date(foundAppointments[i].startTime), end: new Date(foundAppointments[i].endTime )}, 
-			// { inclusive: true } 
-		)) {
-			throw `Error: appointment time already taken!`;
-			// return { valid: false };
-		}
-	}
-	return { valid: true };
-
+  for (let i = 0; i < foundAppointments.length; i++) {
+    if (
+      areIntervalsOverlapping(
+        { start: newStart, end: newEnd },
+        {
+          start: new Date(foundAppointments[i].startTime),
+          end: new Date(foundAppointments[i].endTime),
+        }
+        // { inclusive: true }
+      )
+    ) {
+      throw `Error: appointment time already taken!`;
+      // return { valid: false };
+    }
+  }
+  return { valid: true };
 }
 
 /**
- * Given a datetime, get all appointments on that day. 
- * 
+ * Given a datetime, get all appointments on that day.
+ *
  * @param {string} dateStr - String representation of the datetime
- * @return {Promise<Appointment<string>[]>} - A Promise of the Array of appointments. 
+ * @return {Promise<Appointment<string>[]>} - A Promise of the Array of appointments.
  */
-async function getAllAppointmentsOnDay(dateStr: string): Promise<Appointment<string>[]> {
-	const foundAppointments = await getAll();	
-	const apptsOnDay = [];
-	if(foundAppointments && foundAppointments.length !== 0) { 
-		for(let i = 0; i < foundAppointments.length; i++) { 
-			if( isSameDay( new Date(foundAppointments[i].startTime), new Date(dateStr) ) ) { 
-				apptsOnDay.push(foundAppointments[i]);
-			}
-		}
-	}
+async function getAllAppointmentsOnDay(
+  dateStr: string
+): Promise<Appointment<string>[]> {
+  const foundAppointments = await getAll();
+  const apptsOnDay = [];
+  if (foundAppointments && foundAppointments.length !== 0) {
+    for (let i = 0; i < foundAppointments.length; i++) {
+      if (
+        isSameDay(new Date(foundAppointments[i].startTime), new Date(dateStr))
+      ) {
+        apptsOnDay.push(foundAppointments[i]);
+      }
+    }
+  }
 
-	return apptsOnDay as Appointment<string>[];
+  return apptsOnDay as Appointment<string>[];
 }
-
 
 export = {
   get,
@@ -250,5 +257,5 @@ export = {
   getAllApptsByHairdresserId2,
   checkAppointment,
   getAllAppointmentsOnDay,
-  checkAppointmentByDateTimeAndHairdresser
+  checkAppointmentByDateTimeAndHairdresser,
 };

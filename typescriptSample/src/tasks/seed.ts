@@ -74,15 +74,15 @@ async function main() {
     reviewIds: [],
     job: '',
     biography: '',
-    level:'admin'
-  })
+    level: 'admin',
+  });
 
   console.log('Done seeding users in database');
 
   const appt1 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-05-12 12:00 EDT').getTime(),		// 12 to 1
+    startTime: new Date('2022-05-12 12:00 EDT').getTime(), // 12 to 1
     endTime: new Date('2022-05-12 13:00 EDT').getTime(),
     service: 'haircut',
     comments: 'First appointment',
@@ -92,7 +92,7 @@ async function main() {
   const appt2 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-05-12 13:00 EDT').getTime(),		// 1 to 2
+    startTime: new Date('2022-05-12 13:00 EDT').getTime(), // 1 to 2
     endTime: new Date('2022-05-12 14:00 EDT').getTime(),
     service: 'haircut',
     comments: 'Second appointment',
@@ -102,17 +102,17 @@ async function main() {
   const appt3 = await appointments.create({
     customerId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
-    startTime: new Date('2022-05-12 14:00 EDT').getTime(),		// 2 to 3
+    startTime: new Date('2022-05-12 14:00 EDT').getTime(), // 2 to 3
     endTime: new Date('2022-05-12 15:00 EDT').getTime(),
     service: 'haircut',
     comments: 'Third appointment',
     price: 14.99,
   });
 
-   const appt4 = await appointments.create({
-    customerId: usr2._id!.toString(),							// Second hairdresser
+  const appt4 = await appointments.create({
+    customerId: usr2._id!.toString(), // Second hairdresser
     hairdresserId: hrdsr2._id!.toString(),
-    startTime: new Date('2022-05-12 15:00 EDT').getTime(),		// 3 to 4
+    startTime: new Date('2022-05-12 15:00 EDT').getTime(), // 3 to 4
     endTime: new Date('2022-05-12 16:00 EDT').getTime(),
     service: 'haircut',
     comments: 'Fourth appointment',

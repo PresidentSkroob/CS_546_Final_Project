@@ -1,10 +1,8 @@
 import express = require('express');
 const router: express.Router = new (express.Router as any)();
 import data from '../data';
-import * as utils from '../utils';
 const reviews = data.reviews;
 const users = data.users;
-const appointments = data.appointments;
 
 router.use('/', async (req, res) => {
   try {
@@ -14,9 +12,7 @@ router.use('/', async (req, res) => {
 
     for (let x = 0; x < foundUsers.length; x++) {
       {
-        if (
-          foundUsers[x].level == 'hairdresser'
-        ) {
+        if (foundUsers[x].level == 'hairdresser') {
           const salonistName =
             foundUsers[x].firstName + ' ' + foundUsers[x].lastName;
           const prof =
@@ -24,9 +20,8 @@ router.use('/', async (req, res) => {
             foundUsers[x].job.slice(1);
           const biography = foundUsers[x].biography;
 
-          const reviewByHaidresser = await reviews.getAllReviewsByHairdresserId2(
-            foundUsers[x]._id!
-          );
+          const reviewByHaidresser =
+            await reviews.getAllReviewsByHairdresserId2(foundUsers[x]._id!);
           if (!reviewByHaidresser || reviewByHaidresser.length == 0) {
             const emptyStr = 'No reviews for this hairdresser!';
             const thisObj = {
