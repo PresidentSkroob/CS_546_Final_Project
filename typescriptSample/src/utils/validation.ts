@@ -148,12 +148,9 @@ export function validateLoginAttempt(
  * @param {number} amount - Amount of discount
  * @return {Discount}
  */
- export function validateDiscount(
-  name: string,
-  amount: number
-): Discount {
+export function validateDiscount(name: string, amount: number): Discount {
   const nm = utils.checkString(name, 'discount', false);
-  const am = utils.checkNumber(amount, 1, 25, "amount");
+  const am = utils.checkNumber(amount, 1, 25, 'amount');
   const usr: Discount = {
     name: nm,
     amount: am, // Note: This password is NOT hashed. It is hashed when it is stored in the DB.

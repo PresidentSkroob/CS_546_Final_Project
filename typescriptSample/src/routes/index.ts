@@ -5,7 +5,6 @@ import users from './users';
 import contact from './contact';
 import about from './about';
 
-
 const constructorMethod = (app: express.Application): void => {
   app.use('/appointments', appointments);
   app.use('/reviews', reviews);

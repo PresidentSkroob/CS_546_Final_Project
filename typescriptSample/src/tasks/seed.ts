@@ -149,12 +149,12 @@ async function main() {
   console.log('Done seeding reviews in database');
 
   const disc1 = await discounts.create({
-    name: "welcome",
-    amount: 20
+    name: 'welcome',
+    amount: 20,
   });
   const disc2 = await discounts.create({
-    name: "take10",
-    amount: 10
+    name: 'take10',
+    amount: 10,
   });
   console.log('Done seeding discounts in database');
   dbConnection.closeConnection();

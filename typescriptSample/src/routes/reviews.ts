@@ -36,6 +36,7 @@ router.get('/create', async (req, res) => {
       res.redirect('/reviews');
     }
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -53,6 +54,7 @@ router.post('/', async (req, res) => {
 
     res.redirect('/reviews');
   } catch (e) {
+    console.log(e);
     const foundAppointments = await appointments.getAllApptsByCustomerId(
       req.session.user
     );
@@ -125,6 +127,7 @@ router.get('/', async (req, res) => {
       title: 'Reviews',
     });
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -156,6 +159,7 @@ router.get('/high-to-low', async (req, res) => {
       hairdressers: res.locals.partials.hairdressers,
     });
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -187,6 +191,7 @@ router.get('/low-to-high', async (req, res) => {
       hairdressers: res.locals.partials.hairdressers,
     });
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -231,6 +236,7 @@ router.post('/searchreviews', async (req, res) => {
       hairdressers: res.locals.partials.hairdressers,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).render('reviews', {
       title: 'Reviews',
       hairdressers: res.locals.partials.hairdressers,
@@ -245,6 +251,7 @@ router.get('/userc/:cid', async (req, res) => {
     const foundReviews = await reviews.getAllReviewsByCustomerId(_id);
     res.json(foundReviews);
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -277,6 +284,7 @@ router.get('/byhairdresser/', async (req, res) => {
       hairdressers: res.locals.partials.hairdressers,
     });
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -287,6 +295,7 @@ router.get('/userh/:hid', async (req, res) => {
     const foundReviews = await reviews.getAllReviewsByHairdresserId(_id);
     res.json(foundReviews);
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
@@ -297,6 +306,7 @@ router.get('/:id', async (req, res) => {
     const revw = await reviews.getById(_id);
     res.json(revw);
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });

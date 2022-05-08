@@ -50,6 +50,7 @@ router.use('/', async (req, res) => {
 
     res.render('about', { listOfAdmins, title: 'About Us' });
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });

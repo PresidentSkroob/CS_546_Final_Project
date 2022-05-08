@@ -7,6 +7,7 @@ router.route('/qr').post(async (req, res) => {
     const im = await qrcode.toDataURL(req.body.url);
     return res.json({ success: true, img: im });
   } catch (e) {
+    console.log(e);
     return res.status(500).json({ error: e });
   }
 });

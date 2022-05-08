@@ -19,4 +19,4 @@ const getCollectionFn = (collection: string) => {
 export const appointments = getCollectionFn('appointments');
 export const reviews = getCollectionFn('reviews');
 export const users = getCollectionFn('users');
-export const discounts = getCollectionFn("discounts");
+export const discounts = getCollectionFn('discounts');

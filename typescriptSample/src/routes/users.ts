@@ -255,6 +255,7 @@ router
         });
       }
     } catch (e) {
+      console.log(e);
       return res.status(404).render('error', {
         title: 'Invalid User ID',
         'error-msg': e,
@@ -281,6 +282,7 @@ router
       const status = await users.updateLevel(_id, level);
       return res.status(200).json(status);
     } catch (e) {
+      console.log(e);
       return res.status(500).json({ error: e });
     }
   });
