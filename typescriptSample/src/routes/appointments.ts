@@ -1,3 +1,4 @@
+import e = require('express');
 import express = require('express');
 const router: express.Router = new (express.Router as any)();
 import xss from 'xss';
@@ -106,37 +107,58 @@ router.post('/service', async (req, res) => {
 router.post('/finalization', async (req, res) => {
   try {
     if (req.session.user) {
-      console.log(req.body);
-      const foundHairdresser = await users.getById(req.body.hairdresser);
+	  const _id = utils.checkId(xss(req.body.hairdresser), 'hairdresser');
+      const foundHairdresser = await users.getById(_id);
       const salonistName =
         foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
-      const date = new Date(req.body.datetime).getTime();
+      const date = new Date(xss(req.body.datetime)).getTime();
       let price = 0;
-      if (req.body.service_selection == 'cutandcolor') {
+      if (xss(req.body.service_selection) == 'cutandcolor') {
         price = 80;
-      } else if (req.body.service_selection == 'washandcut') {
+      } else if (xss(req.body.service_selection) == 'washandcut') {
         price = 65;
-      } else {
+      } else if (xss(req.body.service_selection) == 'coloronly') {
         price = 45;
-      }
+      } else { 	// If the service_selection is not valid
+		  return res.status(400).render('error', {
+			  title: 'Error',
+			  'error-msg': 'Invalid service selection',
+			  'error-status': 400
+		  });
+	  }
       const listOfDiscounts = await discounts.getAll();
       for (let i = 0; i < listOfDiscounts.length; i++) {
-        if (listOfDiscounts[i].name == req.body.discount) {
+        if (listOfDiscounts[i].name == xss(req.body.discount)) {
           price = price - listOfDiscounts[i].amount;
         }
       }
-      const a = new Date(req.body.datetime);
+      const a = new Date(xss(req.body.datetime));
       a.setHours(a.getHours() + 1);
       const timeEnd = a.getTime();
+	  let typeService = xss(req.body.service_selection);
+
+	 if (typeService == 'cutandcolor') { 
+		  typeService = 'Cut and Color';
+	  } else if (typeService == 'coloronly') {
+		  typeService = 'Color Only';
+	  } else if (typeService == 'washandcut') { 
+		  typeService = 'Wash and Cut';
+	  } else { 
+		return res.status(400).render('error', {
+			title: 'Error',
+			'error-msg': 'Invalid service selection',
+			'error-status': 400
+		});
+	  }
       const renderedInfo = {
-        hairdresserId: req.body.hairdresser,
+        hairdresserId: xss(req.body.hairdresser),
         hairdresser: salonistName,
         timeLiteralStart: date,
         timeLiteralEnd: timeEnd,
-        timeFormat: req.body.datetime,
-        comments: req.body.comments,
-        service: req.body.service_selection,
-        discount: req.body.discount,
+        timeFormat: xss(req.body.datetime),
+        comments: xss(req.body.comments),
+        service: typeService,
+        discount: xss(req.body.discount),
         price: price,
       };
       res.render('finalization', renderedInfo);
@@ -145,7 +167,12 @@ router.post('/finalization', async (req, res) => {
     }
   } catch (e) {
     console.log(e);
-    res.status(404).json({ error: e });
+	res.status(400).render('error', { 
+		title: 'Error', 
+		'error-msg': e,
+		'error-status': 400
+	})
+    // res.status(404).json({ error: e });
   }
 });
 
@@ -254,7 +281,13 @@ router.get('/history/:cid', async (req, res) => {
           let typeService = foundAppointments[i].service;
           if (typeService == 'haircut') {
             typeService = 'Haircut';
-          }
+          } else if (typeService == 'cutandcolor') { 
+			  typeService = 'Cut and Color';
+		  } else if (typeService == 'coloronly') {
+			  typeService = 'Color Only';
+		  } else if (typeService == 'washandcut') { 
+				typeService = 'Wash and Cut';
+		  }
           const comments = foundAppointments[i].comments;
           const price = foundAppointments[i].price;
 

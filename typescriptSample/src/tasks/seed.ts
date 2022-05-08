@@ -78,23 +78,23 @@ async function main() {
   console.log('Done seeding users in database');
 
   const appt1 = await appointments.create({
-    customerId: usr1._id!.toString(),
+    customerId: usr2._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
     startTime: new Date('2022-05-12 12:00 EDT').getTime(), // 12 to 1
     endTime: new Date('2022-05-12 13:00 EDT').getTime(),
-    service: 'haircut',
-    comments: 'First appointment',
-    price: 12.99,
+    service: 'coloronly',
+    comments: 'My first time getting a coloring.',
+    price: 45,
   });
 
   const appt2 = await appointments.create({
     customerId: usr1._id!.toString(),
-    hairdresserId: hrdsr1._id!.toString(),
+    hairdresserId: hrdsr2._id!.toString(),
     startTime: new Date('2022-05-12 13:00 EDT').getTime(), // 1 to 2
     endTime: new Date('2022-05-12 14:00 EDT').getTime(),
-    service: 'haircut',
-    comments: 'Second appointment',
-    price: 14.99,
+    service: 'washandcut',
+    comments: 'I would like to use size 2 clippers',
+    price: 65,
   });
 
   const appt3 = await appointments.create({
@@ -102,9 +102,9 @@ async function main() {
     hairdresserId: hrdsr1._id!.toString(),
     startTime: new Date('2022-05-12 14:00 EDT').getTime(), // 2 to 3
     endTime: new Date('2022-05-12 15:00 EDT').getTime(),
-    service: 'haircut',
-    comments: 'Third appointment',
-    price: 14.99,
+    service: 'cutandcolor',
+    comments: 'Lets make it three colors.',
+    price: 80,
   });
 
   const appt4 = await appointments.create({
@@ -112,26 +112,26 @@ async function main() {
     hairdresserId: hrdsr2._id!.toString(),
     startTime: new Date('2022-05-12 15:00 EDT').getTime(), // 3 to 4
     endTime: new Date('2022-05-12 16:00 EDT').getTime(),
-    service: 'haircut',
-    comments: 'Fourth appointment',
-    price: 999.99,
+    service: 'washandcut',
+    comments: 'Squared neckline please.',
+    price: 65,
   });
 
   console.log('Done seeding appointments in database');
 
   const review1 = await reviews.create({
-    posterId: usr1._id!.toString(),
+    posterId: usr2._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
     // appointmentId: appt1._id!.toString(),
-    body: 'First review',
+    body: 'I believe that the service was first-class!',
     rating: 4.6,
   });
 
   const review2 = await reviews.create({
     posterId: usr1._id!.toString(),
-    hairdresserId: hrdsr1._id!.toString(),
+    hairdresserId: hrdsr2._id!.toString(),
     // appointmentId: appt2._id!.toString(),
-    body: 'Second review',
+    body: 'I disliked the cut from the second it started!',
     rating: 1.3,
   });
 
@@ -139,7 +139,7 @@ async function main() {
     posterId: usr1._id!.toString(),
     hairdresserId: hrdsr1._id!.toString(),
     // appointmentId: appt3._id!.toString(),
-    body: 'third review',
+    body: 'This was my third time here, and I just had to leave a good review.',
     rating: 4.8,
   });
 
