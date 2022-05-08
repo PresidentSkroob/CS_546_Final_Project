@@ -345,6 +345,17 @@ router.get('/history/:cid', async (req, res) => {
 
 router.post('/check', async (req, res) => {
   try {
+	  try { 
+		let _id = xss(req.body.hid);
+		_id = utils.checkId(_id, 'hairdresser id');
+	  } catch (e) {
+		  console.log(e);
+		  res.status(404).render('error', {
+			  title: "Error", 
+			  'error-msg': e,
+			  'error-status': 404
+		  });
+	  }
     await appointments.checkAppointmentByDateTimeAndHairdresser(xss(req.body.dateStr), xss(req.body.hid));
 
     res.json({ success: true });
