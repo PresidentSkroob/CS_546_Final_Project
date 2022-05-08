@@ -3,19 +3,28 @@
 	<p>Your appointment is booked for: {{datetime}} for 1 hour!</p>
 	<p>Your hairdresser is: {{hairdresser.name}}.</p>
 	<form id="apptform" action="/appointments/finalization" method="POST">
+		<fieldset id="group1">
+			<input type="text" name="datetime" value="{{datetime}}" hidden>
+			<input type="text" name="hairdresser" value="{{hairdresser.id}}" hidden>
 
-		<input type="text" name="datetime" value="{{datetime}}" hidden>
-		<input type="text" name="hairdresser" value="{{hairdresser.id}}" hidden>
+			<input type="radio" name="service_selection" value="cutandcolor" checked>Cut and Color: $80<br>
+			<input type="radio" name="service_selection" value="washandcut">Wash and Cut: $65<br>
+			<input type="radio" name="service_selection" value="coloronly">Color Only: $45<br>
 
-		<input type="radio" name="service_selection" value="cutandcolor" checked>Cut and Color: $80<br>
-		<input type="radio" name="service_selection" value="washandcut">Wash and Cut: $65<br>
-		<input type="radio" name="service_selection" value="coloronly">Color Only: $45<br>
+			<label for="comments">Comments? Enter them here!</label>
+			<textarea name="comments" form="apptform"></textarea>
+		</fieldset>
 
-		<label for="comments">Comments? Enter them here!</label>
-		<textarea name="comments" form="apptform"></textarea>
+		<br><br>
+
+		<fieldset id="group2">
+			<h3>Choose a discount!</h3>
+			{{#each discount}}
+				<input type="radio" name="discount" value="{{name}}">{{name}}: ${{amount}}<br>
+			{{/each}}
+		</fieldset>	
 		<button type="submit">Head to Finalization</button>
-
-	</form> 
+	</form>
 
 
 

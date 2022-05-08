@@ -7,6 +7,8 @@
 <h3>Type of service: </h3><p>{{service}}</p>
 <h3>Any comments you made: </h3><p>{{comments}}</p>
 <h3>The appointment will cost:</h3><p>${{price}}. Pay when you get here!</p>
+<h3>You used discount code: {{discount}}!</h3>
+
 
 <form id="finalizationForm" action="/appointments/confirmation" method="POST">
 
@@ -16,6 +18,6 @@
         <input type="string" name="service" value="{{service}}" hidden>
         <input type="string" name="comments" value="{{comments}}" hidden>
         <input type="string" name="price" value="{{price}}" hidden>
-
+        <br><br><br>
 		<button type="submit">Submit Appointment</button>
 </form>

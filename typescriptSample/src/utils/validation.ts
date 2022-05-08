@@ -1,4 +1,4 @@
-import { Appointment, LoginAttempt, Review, User } from './types';
+import { Appointment, Discount, LoginAttempt, Review, User } from './types';
 import * as utils from './index';
 
 /**
@@ -137,6 +137,26 @@ export function validateLoginAttempt(
   const usr: LoginAttempt = {
     email: eml,
     password: pwd, // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
+  };
+  return usr;
+}
+
+/**
+ * Checks if a discount is valid
+ *
+ * @param {string} name - Name of discount
+ * @param {number} amount - Amount of discount
+ * @return {Discount}
+ */
+ export function validateDiscount(
+  name: string,
+  amount: number
+): Discount {
+  const nm = utils.checkString(name, 'discount', false);
+  const am = utils.checkNumber(amount, 1, 25, "amount");
+  const usr: Discount = {
+    name: nm,
+    amount: am, // Note: This password is NOT hashed. It is hashed when it is stored in the DB.
   };
   return usr;
 }

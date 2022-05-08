@@ -3,6 +3,7 @@ import data from '../data';
 const appointments = data.appointments;
 const reviews = data.reviews;
 const users = data.users;
+const discounts = data.discounts;
 
 /* eslint-disable */
 /**
@@ -47,7 +48,7 @@ async function main() {
     biography:
       "Alexander has been a salonist for over 15 years after graduating from Hill University with \
     a Masters Degree in Hair Styling. She has been with us here at Ces't La Vie since our founding in 2008.",
-    level: 'hairdresser',
+    level: 'admin',
   });
 
   const hrdsr2 = await users.create({
@@ -147,6 +148,15 @@ async function main() {
 
   console.log('Done seeding reviews in database');
 
+  const disc1 = await discounts.create({
+    name: "welcome",
+    amount: 20
+  });
+  const disc2 = await discounts.create({
+    name: "take10",
+    amount: 10
+  });
+  console.log('Done seeding discounts in database');
   dbConnection.closeConnection();
 }
 

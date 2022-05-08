@@ -5,6 +5,7 @@ import data from '../data';
 import * as utils from '../utils';
 const users = data.users;
 const appointments = data.appointments;
+const discounts = data.discounts;
 
 router
   .route('/')
@@ -66,78 +67,80 @@ router.get('/calendar', async (req, res) => {
   }
 });
 
-router.post('/service', async (req, res) => {
-  try {
-    if (req.session.user) {
-      const _id = utils.checkId(
-        xss(req.body.hairdressersdrop),
-        'hairdresser id'
-      );
-      utils
-        .checkDate(xss(req.body.datetime), 'appointment datetime')
-        .toLocaleString();
-      const foundHairdresser = await users.getById(xss(_id));
-      res.render('service', {
-        title: 'Service Page',
-        datetime: xss(req.body.datetime),
-        hairdresser: {
-          name: foundHairdresser.firstName + ' ' + foundHairdresser.lastName,
-          id: xss(req.body.hairdressersdrop),
-        },
+
+
+router.post('/service', async (req, res) => { 
+	try { 
+		if(req.session.user) { 
+			const _id = utils.checkId(xss(req.body.hairdressersdrop), "hairdresser id");
+			utils.checkDate(req.body.datetime, "appointment datetime").toLocaleString();
+			const foundHairdresser = await users.getById(xss(_id));
+      const listOfDiscounts = await discounts.getAll();
+			res.render('service', {
+        title: "Service Page", 
+        datetime: xss(req.body.datetime), 
+        hairdresser: {name: foundHairdresser.firstName + " " + foundHairdresser.lastName, id: xss(req.body.hairdressersdrop)},
+        discount: listOfDiscounts,
       });
-    } else {
-      res.redirect('/');
-    }
-  } catch (e) {
-    console.log(e);
-    res.status(400).render('error', {
-      title: 'Error',
-      'error-msg': e,
-      'error-status': 400,
-    });
-  }
+		} else { 
+			res.redirect("/");
+		}
+	} catch (e) { 
+		console.log(e);
+		res.status(400).render('error', {
+			title: 'Error',
+			'error-msg': e,
+			'error-status': 400
+		});
+	}
 });
 
 router.post('/finalization', async (req, res) => {
-  try {
-    if (req.session.user) {
-      const foundHairdresser = await users.getById(xss(req.body.hairdresser));
-      const salonistName =
-        foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
-      const date = new Date(req.body.datetime).getTime();
+	try { 
+		if(req.session.user) {
+      console.log(req.body);
+      let foundHairdresser = await users.getById(req.body.hairdresser);
+      let salonistName = foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
+      let date = new Date(req.body.datetime).getTime();
       let price = 0;
-      if (xss(req.body.service_selection) == 'cutandcolor') {
+      if (req.body.service_selection == "cutandcolor") {
         price = 80;
-      } else if (xss(req.body.service_selection) == 'washandcut') {
+      } else if (req.body.service_selection == "washandcut") {
         price = 65;
       } else {
         price = 45;
       }
-      const a = new Date(xss(req.body.datetime));
-      a.setHours(a.getHours() + 1);
-      const timeEnd = a.getTime();
-      const renderedInfo = {
-        hairdresserId: xss(req.body.hairdresser),
+      const listOfDiscounts = await discounts.getAll();
+      for (let i=0; i<listOfDiscounts.length; i++) {
+        if (listOfDiscounts[i].name == req.body.discount) {
+          price = price - listOfDiscounts[i].amount;
+        }
+      }
+      let a = new Date(req.body.datetime);
+      a.setHours(a.getHours()+1);
+      let timeEnd = a.getTime();
+      let renderedInfo = {
+        hairdresserId: req.body.hairdresser,
         hairdresser: salonistName,
         timeLiteralStart: date,
         timeLiteralEnd: timeEnd,
-        timeFormat: xss(req.body.datetime),
-        comments: xss(req.body.comments),
-        service: xss(req.body.service_selection),
-        price: price,
-      };
-      res.render('finalization', renderedInfo);
-    } else {
-      res.redirect('/');
-    }
-  } catch (e) {
-    res.status(400).render('error', {
-      title: 'Error',
-      'error-msg': e,
-      'error-status': 400,
-    });
-  }
-});
+        timeFormat: req.body.datetime,
+        comments: req.body.comments,
+        service: req.body.service_selection,
+        discount: req.body.discount,
+        price: price
+      }
+			res.render('finalization', renderedInfo);
+		} else { 
+			res.redirect("/");
+		}
+
+	} catch (e) { 
+		console.log(e);
+		res.status(404).json({error: e});
+	}
+})
+
 
 router.post('/confirmation', async (req, res) => {
   try {
@@ -166,6 +169,7 @@ router.post('/confirmation', async (req, res) => {
     });
   }
 });
+
 
 router.get('/history/:cid', async (req, res) => {
   try {
