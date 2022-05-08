@@ -46,8 +46,7 @@ async function main() {
     reviewIds: [],
     job: 'haircut',
     biography:
-      "Alexander has been a salonist for over 15 years after graduating from Hill University with \
-    a Masters Degree in Hair Styling. She has been with us here at Ces't La Vie since our founding in 2008.",
+      "Alexander has been a salonist for over 15 years after graduating from Hill University with a Masters Degree in Hair Styling. She has been with us here at C'est La Vie since our founding in 2008.",
     level: 'hairdresser',
   });
 
@@ -60,9 +59,7 @@ async function main() {
     reviewIds: [],
     job: 'coloring',
     biography:
-      "Zachary, originally a Chemical Engineer from Stevens Institute of Technology, has developed an incredible \
-    hair-treatment formula that allows hair to be bleached and color without severely damaging it. This revolutionary \
-    product has elongated the health and lifespan of our customer's hair. He has been with us for 6 years, creating smiles and vibrant hairstyles.",
+      "Zachary, originally a Chemical Engineer from Stevens Institute of Technology, has developed an incredible hair-treatment formula that allows hair to be bleached and color without severely damaging it. This revolutionary product has elongated the health and lifespan of our customer's hair. He has been with us for 6 years, creating smiles and vibrant hairstyles.",
     level: 'hairdresser',
   });
 

@@ -49,7 +49,7 @@ const hbs = create({
         html = html.concat(
           `<option value=${e.toLowerCase()} ${
             choice == e ? 'selected' : ''
-          }>${e}</option>`
+          }>${e.toLowerCase()}</option>`
         );
       });
       return html.concat('</select>');
@@ -84,6 +84,8 @@ app.use((req, _res, next) => {
 });
 
 app.use((req, _res, next) => {
+  if (!req.session.views)
+    req.session.views = 0;
   if (req.originalUrl === '/') {
     req.session.views++;
   }
