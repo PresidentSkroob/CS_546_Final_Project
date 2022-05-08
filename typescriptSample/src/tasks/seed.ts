@@ -47,7 +47,7 @@ async function main() {
     job: 'haircut',
     biography:
       "Alexander has been a salonist for over 15 years after graduating from Hill University with a Masters Degree in Hair Styling. She has been with us here at C'est La Vie since our founding in 2008.",
-    level: 'admin',
+    level: 'hairdresser',
   });
 
   const hrdsr2 = await users.create({
