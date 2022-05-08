@@ -1,12 +1,11 @@
 <link href='/public/css/appointhist.css' rel='stylesheet' />
-<h1 id='homepage-title'>Appointment History</h1>
 
 <div>
   <div id='appointment-table'>
     {{noAppointmentsNotif}}<br><br>
     {{#each appointmentParser}}
       <div class='appointment'>
-        <h3>This is the information for the appointment you booked on:
+        <h3>This is the information for the appointment you booked for:
           {{dateAlone}}</h3>
         <table>
           <tr>

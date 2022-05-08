@@ -1,16 +1,14 @@
 <link href='/public/css/appointhist.css' rel='stylesheet' />
-<h1 id='homepage-title'>Appointment History</h1>
-
 <div>
   <div id='appointment-table'>
     {{noAppointmentsNotif}}<br><br>
     {{#each appointmentParser}}
       <div class='appointment'>
-        <h3>This is the information for the appointment you booked on:
+        <h3>This is the information for the appointment booked for:
           {{dateAlone}}</h3>
         <table>
           <tr>
-            <th>Your salonist</th>
+            <th>Your Customer</th>
             <td>{{hairdresserName}}</td>
           </tr>
           <tr>
@@ -31,15 +29,8 @@
 
           </tr>
         </table>
-        <p>Comments you had when booking: {{comments}}</p>
-        <h3>Please give us feedback! Leave a review by clicking
-          <a href='/reviews/create'>here</a></h3>
+        <p>Comments they had when booking: {{comments}}</p>
       </div>
     {{/each}}
   </div>
-  <script
-    src='/docs/5.1/dist/js/bootstrap.bundle.min.js'
-    integrity='sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p'
-    crossorigin='anonymous'
-  ></script>
 </div>

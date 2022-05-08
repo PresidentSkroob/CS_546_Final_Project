@@ -78,7 +78,13 @@ router
 
 router.route('/logout').get((req, res) => {
   try {
-    req.session.destroy((e) => { if (e) { console.log(e); } else {console.log('Session destroyed successfully')} });
+    req.session.destroy((e) => {
+      if (e) {
+        console.log(e);
+      } else {
+        console.log('Session destroyed successfully');
+      }
+    });
     res.json({ success: true });
   } catch (e) {
     res.status(500).json({ error: e });
@@ -149,10 +155,9 @@ router.get('/hairdressers', async (req, res) => {
     res.status(404).render('error', {
       'error-msg': e,
       'error-status': 404,
-    })
+    });
   }
 });
-
 
 router
   .route('/:id')
@@ -176,12 +181,13 @@ router
         });
       }
       const usr = await users.getById(_id);
-      const listOfReviewsByCustomerId = await reviews.getAllReviewsByCustomerId2(usr._id!);
+      const listOfReviewsByCustomerId =
+        await reviews.getAllReviewsByCustomerId2(usr._id!);
       const userReviews = [];
       if (!listOfReviewsByCustomerId || listOfReviewsByCustomerId.length == 0) {
         const empty = {
-          empty: "You haven't made any reviews yet!"
-        }
+          empty: "You haven't made any reviews yet!",
+        };
         if (usr.level !== 'hairdresser') {
           return res.render('user', {
             title: `${usr.firstName}'s Account`,
@@ -190,24 +196,27 @@ router
               firstName: usr.firstName,
               lastName: usr.lastName,
               email: usr.email,
-              empty: empty
+              empty: empty,
             },
-          })
+          });
         }
       } else {
         for (let i = 0; i < listOfReviewsByCustomerId.length; i++) {
-          let foundHairdresser = await users.getById(listOfReviewsByCustomerId[i].hairdresserId);
-          let salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
-          let obj = {
-            //ratingId: listOfReviewsByCustomerId[i]._id,
+          const foundHairdresser = await users.getById(
+            listOfReviewsByCustomerId[i].hairdresserId
+          );
+          const salonistName =
+            foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
+          const obj = {
+            // ratingId: listOfReviewsByCustomerId[i]._id,
             hairdresserName: salonistName,
             body: listOfReviewsByCustomerId[i].body,
-            rating: listOfReviewsByCustomerId[i].rating
-          }
+            rating: listOfReviewsByCustomerId[i].rating,
+          };
           userReviews.push(obj);
         }
       }
-      if (usr.level !=='hairdresser') {
+      if (usr.level !== 'hairdresser') {
         res.render('user', {
           title: `${usr.firstName}'s Account`,
           user: {
@@ -243,7 +252,7 @@ router
             appointments: appts,
             reviews: rvws,
           },
-        })
+        });
       }
     } catch (e) {
       return res.status(404).render('error', {

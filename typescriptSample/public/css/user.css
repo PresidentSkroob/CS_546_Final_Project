@@ -1,11 +1,11 @@
 * {
-    font-family: "Helvetica Neue Thin", Arial, Helvetica, sans-serif
+  font-family: 'Helvetica Neue Thin', Arial, Helvetica, sans-serif;
 }
 .review {
-    border: 1px solid #ed5a58;
-    margin-top: 2px;
-    width: 50%
+  border: 1px solid #ed5a58;
+  margin-top: 2px;
+  width: 50%;
 }
 button {
-    text-align: center;
+  text-align: center;
 }

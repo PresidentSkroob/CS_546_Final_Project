@@ -23,3 +23,11 @@
   color: red;
   font-weight: bold;
 }
+
+.customer-name {
+  font-weight: bold;
+}
+
+.hairdresser-name {
+  font-style: italic;
+}

@@ -21,13 +21,13 @@ router
     try {
       const b = req.body;
       const appt = utils.validateAppointment(
-        b.customerId,
-        b.hairdresserId,
-        b.startTime,
-        b.endTime,
-        b.service,
-        b.comments,
-        b.price
+        xss(b.customerId),
+        xss(b.hairdresserId),
+        Number(xss(b.startTime)),
+        Number(xss(b.endTime)),
+        xss(b.service),
+        xss(b.comments),
+        Number(xss(b.price))
       );
       if (await appointments.checkAppointment(appt))
         res.json(await appointments.create(appt));
@@ -45,20 +45,25 @@ router.get('/calendar', async (req, res) => {
       for (let i = 0; i < foundHairdressers.length; i++) {
         relevantInformation.push({
           id: foundHairdressers[i]._id,
-          name: foundHairdressers[i].firstName + " " + foundHairdressers[i].lastName
+          name:
+            foundHairdressers[i].firstName +
+            ' ' +
+            foundHairdressers[i].lastName,
         });
       }
 
       res.render('calendar', {
         title: 'Calendar',
-        hairdressers: relevantInformation
+        hairdressers: relevantInformation,
       });
     } else {
       res.redirect('/');
     }
   } catch (e) {
     console.log(e);
-    res.status(404).json({ error: e });
+    res
+      .status(500)
+      .render('error', { title: 'Error', 'error-msg': e, 'error-status': 500 });
   }
 });
 
@@ -67,7 +72,7 @@ router.get('/calendar', async (req, res) => {
 router.post('/service', async (req, res) => { 
 	try { 
 		if(req.session.user) { 
-			const _id = utils.checkId(req.body.hairdressersdrop, "hairdresser id");
+			const _id = utils.checkId(xss(req.body.hairdressersdrop), "hairdresser id");
 			utils.checkDate(req.body.datetime, "appointment datetime").toLocaleString();
 			const foundHairdresser = await users.getById(xss(_id));
       const listOfDiscounts = await discounts.getAll();
@@ -136,77 +141,78 @@ router.post('/finalization', async (req, res) => {
 	}
 })
 
+
 router.post('/confirmation', async (req, res) => {
-	try { 
-		if(req.session.user) {
+  try {
+    if (req.session.user) {
       const b = req.body;
       const appt = utils.validateAppointment(
         req.session.user,
-        b.hairdresserId,
-        parseFloat(b.timeLiteralStart),
-        parseFloat(b.timeLiteralEnd),
-        b.service,
-        b.comments,
-        parseFloat(b.price)
+        xss(b.hairdresserId),
+        parseFloat(xss(b.timeLiteralStart)),
+        parseFloat(xss(b.timeLiteralEnd)),
+        xss(b.service),
+        xss(b.comments),
+        parseFloat(xss(b.price))
       );
       appointments.create(appt);
-			res.render('confirmation');
-		} else { 
-			res.redirect("/");
-		}
-
+      res.render('confirmation');
+    } else {
+      res.redirect('/');
+    }
   } catch (e) {
     console.log(e);
     res.status(400).render('error', {
       title: 'Error',
       'error-msg': e,
-      'error-status': 400
+      'error-status': 400,
     });
-  }
-})
-
-router.get('/appts/:hid', async (req, res) => {
-  try {
-    const _id = utils.checkId(req.params.hid, 'hairdresser id');
-    const foundAppointments = await appointments.getAllApptsByHairdresserId(
-      _id
-    );
-    res.json(foundAppointments);
-  } catch (e) {
-    res.status(404).json({ error: e });
   }
 });
 
+
 router.get('/history/:cid', async (req, res) => {
   try {
+    if (!req.session.user) {
+      return res.redirect('/');
+    }
     // must be authenticated and logged in to view history
     const _id = utils.checkId(req.session.user, 'customer id');
     const usr = await users.getById(_id);
     if (usr.level !== 'hairdresser') {
-      const foundAppointments = await appointments.getAllApptsByCustomerId2(_id);
+      const foundAppointments = await appointments.getAllApptsByCustomerId2(
+        _id
+      );
       // Going to parse the list of appointments to pass stringified data
-      let appointmentParser = [];
+      const appointmentParser = [];
 
       // filter out an error message if no appoint history
       if (foundAppointments.length == 0) {
-        let noAppointmentsNotif = "Hey! You have no previous appointments booked. If you think this is an error,\
-      please contact customer support!"
-        res.render('custappointhis', { noAppointmentsNotif, title: 'Appointment History' });
+        const noAppointmentsNotif =
+          'Hey! You have no previous appointments booked. If you think this is an error, please contact customer support!';
+        res.render('custappointhis', {
+          noAppointmentsNotif,
+          title: 'Appointment History',
+        });
       } else {
-
         for (let i = 0; i < foundAppointments.length; i++) {
-          let foundHairdresser = await users.getById(
+          const foundHairdresser = await users.getById(
             foundAppointments[i].hairdresserId
           );
-          let salonistName =
+          const salonistName =
             foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
-          let startDate = new Date(foundAppointments[i].startTime);
-          let endDate = new Date(foundAppointments[i].endTime);
-          //date parsing
+          const startDate = new Date(foundAppointments[i].startTime);
+          const endDate = new Date(foundAppointments[i].endTime);
+          // date parsing
 
-          function ordinal_suffix_of(num: number) {
-            var j = num % 10,
-              k = num % 100;
+          /**
+           * Get ordinal suffix for number
+           * @param {Number} num - number to process
+           * @return {string} ordinal suffix of num
+           */
+          function ordinalSuffixOf(num: number) {
+            const j = num % 10;
+            const k = num % 100;
             if (j == 1 && k != 11) {
               return num + 'st';
             }
@@ -219,10 +225,10 @@ router.get('/history/:cid', async (req, res) => {
             return num + 'th';
           }
 
-          var month = startDate.getUTCMonth(); // jan - 0, dec - 11
-          var day = startDate.getUTCDate();
-          var year = startDate.getUTCFullYear();
-          let monthsArr = [
+          const month = startDate.getUTCMonth(); // jan - 0, dec - 11
+          const day = startDate.getUTCDate();
+          const year = startDate.getUTCFullYear();
+          const monthsArr = [
             'January',
             'February',
             'March',
@@ -236,17 +242,17 @@ router.get('/history/:cid', async (req, res) => {
             'November',
             'December',
           ];
-          let fullDay =
-            monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
+          const fullDay =
+            monthsArr[month] + ' ' + ordinalSuffixOf(day) + ', ' + year;
 
           let typeService = foundAppointments[i].service;
           if (typeService == 'haircut') {
             typeService = 'Haircut';
           }
-          let comments = foundAppointments[i].comments;
-          let price = foundAppointments[i].price;
+          const comments = foundAppointments[i].comments;
+          const price = foundAppointments[i].price;
 
-          let thisObj = {
+          const thisObj = {
             dateAlone: fullDay,
             hairdresserName: salonistName,
             startTime: startDate,
@@ -264,30 +270,39 @@ router.get('/history/:cid', async (req, res) => {
         });
       }
     } else {
-      const foundAppointments = await appointments.getAllApptsByHairdresserId2(_id);
+      const foundAppointments = await appointments.getAllApptsByHairdresserId2(
+        _id
+      );
       // Going to parse the list of appointments to pass stringified data
-      let appointmentParser = [];
+      const appointmentParser = [];
 
       // filter out an error message if no appoint history
       if (foundAppointments.length == 0) {
-        let noAppointmentsNotif = "Hey! You have no appointments booked. If you think this is an error,\
-      please contact customer support!"
-        res.render('hdappts', { noAppointmentsNotif, title: 'Appointment History' });
+        const noAppointmentsNotif =
+          'Hey! You have no appointments booked. If you think this is an error, please contact customer support!';
+        res.render('hdappts', {
+          noAppointmentsNotif,
+          title: 'Appointment History',
+        });
       } else {
-
         for (let i = 0; i < foundAppointments.length; i++) {
-          let foundCustomer = await users.getById(
+          const foundCustomer = await users.getById(
             foundAppointments[i].customerId
           );
-          let customerName =
+          const customerName =
             foundCustomer.firstName + ' ' + foundCustomer.lastName;
-          let startDate = new Date(foundAppointments[i].startTime);
-          let endDate = new Date(foundAppointments[i].endTime);
-          //date parsing
+          const startDate = new Date(foundAppointments[i].startTime);
+          const endDate = new Date(foundAppointments[i].endTime);
+          // date parsing
 
-          function ordinal_suffix_of(num: number) {
-            var j = num % 10,
-              k = num % 100;
+          /**
+           * Get ordinal suffix for number
+           * @param {Number} num - number to process
+           * @return {string} ordinal suffix of num
+           */
+          function ordinalSuffixOf(num: number) {
+            const j = num % 10;
+            const k = num % 100;
             if (j == 1 && k != 11) {
               return num + 'st';
             }
@@ -300,10 +315,10 @@ router.get('/history/:cid', async (req, res) => {
             return num + 'th';
           }
 
-          var month = startDate.getUTCMonth(); // jan - 0, dec - 11
-          var day = startDate.getUTCDate();
-          var year = startDate.getUTCFullYear();
-          let monthsArr = [
+          const month = startDate.getUTCMonth(); // jan - 0, dec - 11
+          const day = startDate.getUTCDate();
+          const year = startDate.getUTCFullYear();
+          const monthsArr = [
             'January',
             'February',
             'March',
@@ -317,17 +332,17 @@ router.get('/history/:cid', async (req, res) => {
             'November',
             'December',
           ];
-          let fullDay =
-            monthsArr[month] + ' ' + ordinal_suffix_of(day) + ', ' + year;
+          const fullDay =
+            monthsArr[month] + ' ' + ordinalSuffixOf(day) + ', ' + year;
 
           let typeService = foundAppointments[i].service;
           if (typeService == 'haircut') {
             typeService = 'Haircut';
           }
-          let comments = foundAppointments[i].comments;
-          let price = foundAppointments[i].price;
+          const comments = foundAppointments[i].comments;
+          const price = foundAppointments[i].price;
 
-          let thisObj = {
+          const thisObj = {
             dateAlone: fullDay,
             hairdresserName: customerName,
             startTime: startDate,
@@ -344,16 +359,30 @@ router.get('/history/:cid', async (req, res) => {
           title: 'Appointment History',
         });
       }
-
     }
   } catch (e) {
+    console.log(e);
     res.status(404).json({ error: e });
   }
 });
 
 router.post('/check', async (req, res) => {
   try {
-    await appointments.checkAppointmentByDateTimeAndHairdresser(xss(req.body.dateStr), xss(req.body.hid));
+    try {
+      const _id = xss(req.body.hid);
+      utils.checkId(_id, 'hairdresser id');
+    } catch (e) {
+      console.log(e);
+      res.status(404).render('error', {
+        title: 'Error',
+        'error-msg': e,
+        'error-status': 404,
+      });
+    }
+    await appointments.checkAppointmentByDateTimeAndHairdresser(
+      xss(req.body.dateStr),
+      xss(req.body.hid)
+    );
 
     res.json({ success: true });
   } catch (e) {
@@ -365,13 +394,21 @@ router.post('/check', async (req, res) => {
 
 router.route('/:id').get(async (req, res) => {
   try {
-    const _id = utils.checkId(req.params.id, 'appointment');
+    let _id: string = '';
+    try {
+      _id = utils.checkId(xss(req.params.id), 'appointment');
+    } catch (e) {
+      return res.status(404).render('error', {
+        title: 'Page Not Found',
+        'error-msg': e,
+        'error-status': 404,
+      });
+    }
     const appt = await appointments.get(_id);
     res.json(appt);
   } catch (e) {
     res.status(404).json({ error: e });
   }
 });
-
 
 export = router;
