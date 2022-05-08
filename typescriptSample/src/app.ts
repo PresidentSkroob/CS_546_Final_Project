@@ -49,7 +49,7 @@ const hbs = create({
         html = html.concat(
           `<option value=${e.toLowerCase()} ${
             choice == e ? 'selected' : ''
-          }>${e}</option>`
+          }>${e.toLowerCase()}</option>`
         );
       });
       return html.concat('</select>');
