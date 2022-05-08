@@ -37,6 +37,12 @@ export interface User<T = undefined> extends Schema<T> {
   level: string;
 }
 
+export interface Discount<T = undefined> extends Schema<T> {
+  _id?: T;
+  name: string;
+  amount: number;
+}
+
 export interface LoginAttempt {
   email: string;
   password: string; // Note: This password is NOT hashed. It is hashed when it is stored in the DB.

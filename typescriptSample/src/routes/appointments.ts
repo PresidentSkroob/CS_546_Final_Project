@@ -5,6 +5,7 @@ import data from '../data';
 import * as utils from '../utils';
 const users = data.users;
 const appointments = data.appointments;
+const discounts = data.discounts;
 
 router
   .route('/')
@@ -69,7 +70,13 @@ router.post('/service', async (req, res) => {
 			const _id = utils.checkId(req.body.hairdressersdrop, "hairdresser id");
 			utils.checkDate(req.body.datetime, "appointment datetime").toLocaleString();
 			const foundHairdresser = await users.getById(xss(_id));
-			res.render('service', {title: "Service Page", datetime: xss(req.body.datetime), hairdresser: {name: foundHairdresser.firstName + " " + foundHairdresser.lastName, id: xss(req.body.hairdressersdrop)} });
+      const listOfDiscounts = await discounts.getAll();
+			res.render('service', {
+        title: "Service Page", 
+        datetime: xss(req.body.datetime), 
+        hairdresser: {name: foundHairdresser.firstName + " " + foundHairdresser.lastName, id: xss(req.body.hairdressersdrop)},
+        discount: listOfDiscounts,
+      });
 		} else { 
 			res.redirect("/");
 		}
@@ -86,6 +93,7 @@ router.post('/service', async (req, res) => {
 router.post('/finalization', async (req, res) => {
 	try { 
 		if(req.session.user) {
+      console.log(req.body);
       let foundHairdresser = await users.getById(req.body.hairdresser);
       let salonistName = foundHairdresser.firstName + ' ' + foundHairdresser.lastName;
       let date = new Date(req.body.datetime).getTime();
@@ -96,6 +104,12 @@ router.post('/finalization', async (req, res) => {
         price = 65;
       } else {
         price = 45;
+      }
+      const listOfDiscounts = await discounts.getAll();
+      for (let i=0; i<listOfDiscounts.length; i++) {
+        if (listOfDiscounts[i].name == req.body.discount) {
+          price = price - listOfDiscounts[i].amount;
+        }
       }
       let a = new Date(req.body.datetime);
       a.setHours(a.getHours()+1);
@@ -108,6 +122,7 @@ router.post('/finalization', async (req, res) => {
         timeFormat: req.body.datetime,
         comments: req.body.comments,
         service: req.body.service_selection,
+        discount: req.body.discount,
         price: price
       }
 			res.render('finalization', renderedInfo);
