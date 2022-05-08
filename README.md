@@ -50,7 +50,12 @@ Congratulations! This is the first step in your journey towards using our fully 
 - [ ] A user who is navigating the site will also have the ability to navigate to the About page, where they can learn about C'est La Vie or any of the Hairdresssers.
 - [ ] Additionally, a user who is navigating the site will have the ability to navigate to the Contact page, where they can view the business location, the hours of operation, and business details.
 
+<b> E) How to Run </b>
 
+- [ ] npm install
+- [ ] npm i
+- [ ] npm run seed
+- [ ] start
 
 
 
