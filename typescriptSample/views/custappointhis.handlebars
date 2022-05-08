@@ -1,11 +1,12 @@
 <link href='/public/css/appointhist.css' rel='stylesheet' />
+<h1 id='homepage-title'>Appointment History</h1>
 
 <div>
   <div id='appointment-table'>
     {{noAppointmentsNotif}}<br><br>
     {{#each appointmentParser}}
       <div class='appointment'>
-        <h3>This is the information for the appointment you booked for:
+        <h3>This is the information for the appointment you booked on:
           {{dateAlone}}</h3>
         <table>
           <tr>
@@ -32,7 +33,7 @@
         </table>
         <p>Comments you had when booking: {{comments}}</p>
         <h3>Please give us feedback! Leave a review by clicking
-          <a href='/reviews/create'>here</a></h3>
+          <a href='/reviews/create'>here to leave a review!</a></h3>
       </div>
     {{/each}}
   </div>

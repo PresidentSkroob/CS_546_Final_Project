@@ -7,12 +7,13 @@
 			<input type="text" name="datetime" value="{{datetime}}" hidden>
 			<input type="text" name="hairdresser" value="{{hairdresser.id}}" hidden>
 
+			<h3>Select a service</h3>
 			<input type="radio" name="service_selection" value="cutandcolor" checked>Cut and Color: $80<br>
 			<input type="radio" name="service_selection" value="washandcut">Wash and Cut: $65<br>
 			<input type="radio" name="service_selection" value="coloronly">Color Only: $45<br>
 
 			<label for="comments">Comments? Enter them here!</label>
-			<textarea name="comments" form="apptform"></textarea>
+			<textarea name="comments" form="apptform" id="comments"></textarea>
 		</fieldset>
 
 		<br><br>
@@ -20,7 +21,7 @@
 		<fieldset id="group2">
 			<h3>Choose a discount!</h3>
 			{{#each discount}}
-				<input type="radio" name="discount" value="{{name}}">{{name}}: ${{amount}}<br>
+				<input type="radio" name="discount" value="{{name}}" checked>{{name}}: ${{amount}}<br>
 			{{/each}}
 		</fieldset>	
 		<button type="submit">Head to Finalization</button>
@@ -28,4 +29,4 @@
 
 
 
-</div>
+</div> 
