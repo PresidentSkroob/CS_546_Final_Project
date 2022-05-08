@@ -55,7 +55,7 @@ Congratulations! This is the first step in your journey towards using our fully 
 - [ ] npm install
 - [ ] npm i
 - [ ] npm run seed
-- [ ] start
+- [ ] npm start
 
 
 
