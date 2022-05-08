@@ -52,11 +52,11 @@ Congratulations! This is the first step in your journey towards using our fully 
 
 <b> E) How to Run </b>
 
-- [ ] npm install
-- [ ] npm i
-- [ ] npm run seed
-- [ ] npm start
-
+```sh
+npm install
+npm run seed
+npm start
+```
 
 
 
