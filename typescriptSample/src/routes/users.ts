@@ -196,10 +196,10 @@ router
         }
       } else {
         for (let i = 0; i < listOfReviewsByCustomerId.length; i++) {
-          let foundHairdresser = await users.getById(listOfReviewsByCustomerId[i].hairdresserId);
-          let salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
-          let obj = {
-            //ratingId: listOfReviewsByCustomerId[i]._id,
+          const foundHairdresser = await users.getById(listOfReviewsByCustomerId[i].hairdresserId);
+          const salonistName = foundHairdresser.firstName + " " + foundHairdresser.lastName;
+          const obj = {
+            // ratingId: listOfReviewsByCustomerId[i]._id,
             hairdresserName: salonistName,
             body: listOfReviewsByCustomerId[i].body,
             rating: listOfReviewsByCustomerId[i].rating
