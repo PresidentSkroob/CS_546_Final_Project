@@ -28,7 +28,7 @@ router.get('/create', async (req, res) => {
         ...new Map(relevantInformation.map((v) => [v.id, v])).values(),
       ];
 
-      res.render('createreview', { hairdressers: relevantInformation });
+      res.render('createreview', { title: "Create Review", hairdressers: relevantInformation });
     } else {
       res.redirect('/reviews');
     }
@@ -70,7 +70,7 @@ router.post('/', async (req, res) => {
 
     res
       .status(400)
-      .render('createreview', { hairdressers: relevantInformation, error: e });
+      .render('createreview', { title: "Create Review", hairdressers: relevantInformation, error: e });
   }
 });
 
@@ -146,6 +146,7 @@ router.get('/high-to-low', async (req, res) => {
       relevantInformation.push(cur);
     }
     res.render('reviews', {
+	  title: "Reviews",
       reviews: relevantInformation,
       hairdressers: res.locals.partials.hairdressers,
     });
@@ -176,6 +177,7 @@ router.get('/low-to-high', async (req, res) => {
       relevantInformation.push(cur);
     }
     res.render('reviews', {
+	  title: "Reviews",
       reviews: relevantInformation,
       hairdressers: res.locals.partials.hairdressers,
     });
@@ -186,9 +188,16 @@ router.get('/low-to-high', async (req, res) => {
 
 router.post('/searchreviews', async (req, res) => {
   try {
-    let searchReviewTerm = xss(req.body.searchReviewTerm);
-    searchReviewTerm = utils.checkString(searchReviewTerm, 'searchReviewTerm');
-
+	  let searchReviewTerm = xss(req.body.searchReviewTerm);
+	  try { 
+    	searchReviewTerm = utils.checkString(searchReviewTerm, 'searchReviewTerm');
+	  } catch (e) { 
+		return res.status(400).render('reviews', {
+			title: "Reviews",
+			hairdressers: res.locals.partials.hairdressers,
+			error: e,
+		  });
+	  }
     const foundReviews = await reviews.getReviewsBySearchTerm(searchReviewTerm);
     const relevantInformation = [];
     for (let i = 0; i < foundReviews.length; i++) {
@@ -209,11 +218,13 @@ router.post('/searchreviews', async (req, res) => {
       relevantInformation.push(cur);
     }
     res.render('reviews', {
+	  title: "Reviews",
       reviews: relevantInformation,
       hairdressers: res.locals.partials.hairdressers,
     });
   } catch (e) {
-    res.status(400).render('reviews', {
+    res.status(500).render('reviews', {
+	  title: "Reviews",
       hairdressers: res.locals.partials.hairdressers,
       error: e,
     });
