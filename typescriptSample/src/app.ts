@@ -84,6 +84,8 @@ app.use((req, _res, next) => {
 });
 
 app.use((req, _res, next) => {
+  if (!req.session.views)
+    req.session.views = 0;
   if (req.originalUrl === '/') {
     req.session.views++;
   }
