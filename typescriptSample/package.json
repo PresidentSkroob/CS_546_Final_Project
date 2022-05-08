@@ -5,7 +5,7 @@
   "main": "dist/app.js",
   "scripts": {
     "format": "prettier --write \"./**/*.+(js|ts|html|css)\"",
-    "lint": "eslint --ext .js,.ts ./src",
+    "lint": "eslint --ext .js,.ts ./src && eslint --ext .js ./public",
     "predevbuild": "npm run format && npm run lint",
     "devbuild": "npm run build && npm run seed",
     "build": "tsc",

@@ -1,6 +1,6 @@
 $(function () {
-  var selectedHairdresser = $('#hairdressersdrop').val();
-  var button = $('#submitbutton');
+  let selectedHairdresser = $('#hairdressersdrop').val();
+  const button = $('#submitbutton');
   button.hide();
 
   flatpickr('#datetime', {
@@ -22,7 +22,7 @@ $(function () {
         return;
       }
 
-      var requestConfig = {
+      const requestConfig = {
         method: 'POST',
         url: '/appointments/check',
         data: JSON.stringify({ dateStr: dateStr, hid: selectedHairdresser }),
@@ -43,7 +43,7 @@ $(function () {
     },
   });
 
-  var datetime = $('#datetime');
+  const datetime = $('#datetime');
   datetime.change(function () {
     // console.log("in change");
     if (isNaN(Date.parse(datetime.val()))) {
