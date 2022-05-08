@@ -2,7 +2,7 @@
   <link href='/public/css/reviews.css' rel='stylesheet' />
   <div id='top-div'>
     <img id='company-logo' src='../public/images/Logo.png' alt="Company Logo" />
-    <h3>Enjoy our service? Leave a review!</h3>
+    <p>Enjoy our service? Leave a review!</p>
   </div>
   <div id='review-form-div'>
     <form id='review-form' action='/reviews/' method='POST'>
@@ -27,7 +27,8 @@
       />
       <button type='submit'>Submit</button>
     </form>
-    <textarea name='body' form='review-form'></textarea>
+	<label for="body">Leave your comments here:</label>
+    <textarea name="body" id="body" form='review-form'></textarea>
     <div class='error-div'>
       {{#if error}}
         <p>{{error}}</p>
